@@ -101,6 +101,7 @@ class AuthGroups extends ShieldAuthGroups
             'users.edit',
             'users.delete',
             'beta.access',
+            'organizations.create'
         ],
         'developer' => [
             'admin.access',

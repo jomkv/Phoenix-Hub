@@ -16,7 +16,7 @@ class UsersController extends BaseController
    */
   public function viewLogin(): string
   {
-    return view('pages/user/loginPage');
+    return view('pages/user/login');
   }
 
   /**
@@ -26,7 +26,7 @@ class UsersController extends BaseController
    */
   public function viewSignup(): string
   {
-    return view('pages/user/loginPage');
+    return view('pages/user/signup');
   }
 
   /**

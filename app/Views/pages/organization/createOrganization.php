@@ -2,7 +2,7 @@
 
 <?= $this->extend("layouts/defaultDev") ?>
 
-<?= $this->section("title") ?>Admin Login <?= $this->endSection() ?>
+<?= $this->section("title") ?>Create Organization <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
 

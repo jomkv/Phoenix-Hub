@@ -18,7 +18,7 @@ class AdminController extends BaseController
    */
   public function viewLogin(): string
   {
-    return view('pages/admin/loginPage');
+    return view('pages/admin/login');
   }
 
   /**
@@ -28,7 +28,17 @@ class AdminController extends BaseController
    */
   public function viewSignup(): string
   {
-    return view('pages/admin/signupPage');
+    return view('pages/admin/signup');
+  }
+
+  /**
+   * @desc Returns a view to admin dashboard
+   * @route GET /admin
+   * @access public
+   */
+  public function viewDashboard(): string
+  {
+    return view('pages/admin/dashboard');
   }
 
   /**

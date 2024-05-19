@@ -18,9 +18,9 @@ class OrganizationController extends BaseController
   }
 
   /**
-   * @desc Returns a view to signup page
+   * @desc Creates a new organization
    * @route POST /organization/new
-   * @access public
+   * @access private
    */
   public function createOrg()
   {
@@ -44,6 +44,29 @@ class OrganizationController extends BaseController
     } catch (\Exception $e) {
       log_message('error', 'Error creating organization: ' . $e->getMessage());
       return redirect()->to('/organization/new')->with('error', 'An error occurred. Please try again later.');
+    }
+  }
+
+  /**
+   * @desc Returns a view to organization's offered products
+   * @route GET /:orgId/products
+   * @access public
+   */
+  public function viewOrgProducts($orgId)
+  {
+    try {
+      $orgModel = new OrganizationModel();
+
+      $org = $orgModel->find($orgId);
+
+      if (!$org) {
+        return redirect()->to('/')->with('error', 'An error occurred. Organization not found.');
+      }
+
+      return view('pages/organization/products', ['organization' => $org, 'products' => []]);
+    } catch (\Exception $e) {
+      log_message('error', 'Error viewing organization products: ' . $e->getMessage());
+      return redirect()->to('/')->with('error', 'An error occurred. Please try again later.');
     }
   }
 }
