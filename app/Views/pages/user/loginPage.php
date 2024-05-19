@@ -1,6 +1,6 @@
 <?php helper('form'); ?>
 
-<?= $this->extend("layouts/default") ?>
+<?= $this->extend("layouts/defaultDev") ?>
 
 <?= $this->section("title") ?>Create Task <?= $this->endSection() ?>
 

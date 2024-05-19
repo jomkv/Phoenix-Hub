@@ -26,7 +26,7 @@ use CodeIgniter\Shield\Authentication\Passwords\NothingPersonalValidator;
 use CodeIgniter\Shield\Authentication\Passwords\PwnedValidator;
 use CodeIgniter\Shield\Authentication\Passwords\ValidatorInterface;
 use CodeIgniter\Shield\Models\UserModel;
-use App\Models\UserAuthModel;
+use App\Models\CustomUserModel;
 
 class Auth extends ShieldAuth
 {
@@ -408,7 +408,7 @@ class Auth extends ShieldAuth
      * @var array<string, string>
      */
     public array $tables = [
-        'users'             => 'users_shield',
+        'users'             => 'users',
         'identities'        => 'auth_identities',
         'logins'            => 'auth_logins',
         'token_logins'      => 'auth_token_logins',
@@ -429,7 +429,7 @@ class Auth extends ShieldAuth
      *
      * @var class-string<UserModel>
      */
-    public string $userProvider = UserAuthModel::class;
+    public string $userProvider = CustomUserModel::class;
 
     /**
      * Returns the URL that a user should be redirected

@@ -4,12 +4,12 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateUserTable extends Migration
+class CreateStudentTable extends Migration
 {
     public function up()
     {
         $fields = [
-            'user_id' => [
+            'student_id' => [
                 'type'              => 'INT',
                 'unsigned'          => true,
                 'auto_increment'    => true,
@@ -20,11 +20,6 @@ class CreateUserTable extends Migration
                 'constraint'        => '50',
                 'null'              => false,
                 'unique'            => true,
-            ],
-            'password' => [
-                'type'              => 'VARCHAR',
-                'constraint'        => '255',
-                'null'              => false,
             ],
             'email' => [
                 'type'              => 'VARCHAR',
@@ -57,13 +52,13 @@ class CreateUserTable extends Migration
 
         $this->forge->addField($fields);
 
-        $this->forge->addPrimaryKey('user_id');
+        $this->forge->addPrimaryKey('student_id');
 
-        $this->forge->createTable('users');
+        $this->forge->createTable('students');
     }
 
     public function down()
     {
-        $this->forge->dropTable('users');
+        $this->forge->dropTable('students');
     }
 }

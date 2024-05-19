@@ -28,24 +28,23 @@ class AddUserIdRefToUsersShield extends Migration
     public function up()
     {
         $fields = [
-            'ref_user_id' => [
+            'student_id' => [
                 'type'              => 'INT',
                 'unsigned'          => true,
-                'null'              => false,
-                'unique'            => true,
+                'null'              => true,
             ],
         ];
 
         $this->forge->addColumn($this->tables['users'], $fields);
 
-        // * TODO: code below does not work
-        // $this->forge->addForeignKey('ref_user_id', 'users', 'user_id', 'CASCADE', 'CASCADE', 'fk_auth_user_id');
+        // * not sure if this works
+        //$this->forge->addForeignKey('student_id', 'students', 'student_id', 'CASCADE', 'CASCADE', 'fk_student_id');
     }
 
     public function down()
     {
         $fields = [
-            'ref_user_id',
+            'student_id',
         ];
         $this->forge->dropColumn($this->tables['users'], $fields);
     }
