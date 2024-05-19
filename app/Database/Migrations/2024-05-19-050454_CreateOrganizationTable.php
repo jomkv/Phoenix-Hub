@@ -40,6 +40,10 @@ class CreateOrganizationTable extends Migration
                 'constraint'        => '255',
                 'null'              => true,
             ],
+            'deleted_at' => [
+                'type'              => 'DATETIME',
+                'null'              => true,
+            ]
         ];
 
         $this->forge->addField($fields);

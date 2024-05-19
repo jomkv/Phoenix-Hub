@@ -42,10 +42,9 @@ class CreateProductTable extends Migration
                 'unsigned'              => true,
                 'null'                  => false,
             ],
-            'is_deleted' => [
-                'type'                  => 'BOOLEAN',
-                'null'                  => false,
-                'default'               => false,
+            'deleted_at' => [
+                'type'                  => 'DATETIME',
+                'null'                  => true,
             ]
         ];
 
