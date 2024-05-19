@@ -14,6 +14,9 @@ $routes->get('/signup', 'UsersController::viewSignup');
 $routes->get('/admin/login', 'AdminController::viewLogin');
 $routes->get('/admin/signup', 'AdminController::viewSignup');
 
+// * Organization
+$routes->get('/organization/new', 'OrganizationController::viewCreateOrg');
+
 /**
  * @var RouteCollection $routes
  */
@@ -25,3 +28,6 @@ $routes->post('/signup', 'UsersController::signup');
 $routes->post('/admin/login', 'AdminController::login');
 $routes->post('/admin/signup', 'AdminController::signup');
 $routes->get('/admin/logout', 'AdminController::logout');
+
+// * Organization
+$routes->post('/organization/new', 'OrganizationController::createOrg');
