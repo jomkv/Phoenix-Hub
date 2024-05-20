@@ -9,8 +9,8 @@ class OrganizationController extends BaseController
 {
   /**
    * @desc Returns a view to create new organization form
-   * @route GET /organization/new
-   * @access public
+   * @route GET /admin/organization/new
+   * @access private
    */
   public function viewCreateOrg(): string
   {
@@ -19,7 +19,7 @@ class OrganizationController extends BaseController
 
   /**
    * @desc Creates a new organization
-   * @route POST /organization/new
+   * @route POST /admin/organization/new
    * @access private
    */
   public function createOrg()

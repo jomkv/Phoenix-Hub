@@ -16,6 +16,10 @@ class UsersController extends BaseController
    */
   public function viewLogin(): string
   {
+    if (auth()->loggedIn()) {
+      return redirect()->to('/');
+    }
+
     return view('pages/user/login');
   }
 

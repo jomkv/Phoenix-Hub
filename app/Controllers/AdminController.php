@@ -16,8 +16,12 @@ class AdminController extends BaseController
    * @route GET /admin/login
    * @access public
    */
-  public function viewLogin(): string
+  public function viewLogin()
   {
+    if (auth()->loggedIn()) {
+      return redirect()->to('/admin');
+    }
+
     return view('pages/admin/login');
   }
 
@@ -34,7 +38,7 @@ class AdminController extends BaseController
   /**
    * @desc Returns a view to admin dashboard
    * @route GET /admin
-   * @access public
+   * @access private
    */
   public function viewDashboard(): string
   {
@@ -53,7 +57,7 @@ class AdminController extends BaseController
 
       // * Check if user already logged in
       if ($auth->loggedIn()) {
-        return redirect()->to('/admin/login')->with('error', 'Already logged in, kindly logout first before trying again.');
+        return redirect()->to('/admin')->with('error', 'Already logged in.');
       }
 
       $data = $this->request->getPost();
@@ -62,14 +66,14 @@ class AdminController extends BaseController
 
       // * If login attempt fail, redirect back to login
       if (!$loginAttempt->isOK()) {
-        return redirect()->to('/admin/login')->with('error', 'Wrong credentials. Please try again.');
+        return redirect()->to('/login/admin')->with('error', 'Wrong credentials. Please try again.');
       }
 
       log_message('info', 'Admin ' . $data['email'] . ' logged in.');
-      return redirect()->to('/admin/login')->with('info', 'User logged in.');
+      return redirect()->to('/admin')->with('info', 'User logged in.');
     } catch (\Exception $e) {
       log_message('error', 'Error admin login: ' . $e->getMessage());
-      return redirect()->to('/admin/login')->with('error', 'An error occurred. Please try again.');
+      return redirect()->to('/login/admin')->with('error', 'An error occurred. Please try again.');
     }
   }
 
@@ -96,7 +100,7 @@ class AdminController extends BaseController
       // * Give new user admin role
       $user->addGroup('superadmin');
 
-      return redirect()->to('/admin/login');
+      return redirect()->to('/login/admin');
     } catch (\Exception $e) {
       log_message('error', 'Error admin signup: ' . $e->getMessage());
       return redirect()->to('/admin/signup')->with('error', 'An error occurred. Please try again.');
@@ -114,15 +118,15 @@ class AdminController extends BaseController
       $auth = auth();
 
       if (!$auth->loggedIn()) {
-        return redirect()->to('/admin/login')->with('error', 'Logout failed, session not detected.');
+        return redirect()->to('/login/admin')->with('error', 'Logout failed, session not detected.');
       }
 
       $auth->logout();
 
-      return redirect()->to('/admin/login');
+      return redirect()->to('/login/admin');
     } catch (\Exception $e) {
       log_message('error', 'Error admin logout: ' . $e->getMessage());
-      return redirect()->to('/admin/login')->with('error', 'An error occurred. Please try again.');
+      return redirect()->to('/login/admin')->with('error', 'An error occurred. Please try again.');
     }
   }
 }

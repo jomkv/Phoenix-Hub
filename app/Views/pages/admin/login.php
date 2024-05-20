@@ -8,7 +8,7 @@
 
 <h1> Admin Login </h1>
 
-<?= form_open('/admin/login') ?>
+<?= form_open('/login/admin') ?>
 <label for="content">Email</label>
 <input type="text" name="email" id="email">
 

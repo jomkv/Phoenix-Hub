@@ -10,9 +10,15 @@ class AdminFilter implements FilterInterface
 {
   public function before(RequestInterface $request, $arguments = null)
   {
-    $user = auth()->user();
+    $auth = auth();
 
-    if (!$user->inGroup('superadmin')) {
+    // * Check if logged in
+    if (!$auth->loggedIn()) {
+      return redirect()->to('/login/admin');
+    }
+
+    // * Check if admin
+    if (!$auth->user()->inGroup('superadmin')) {
       return redirect()->to('/')->with('error', 'User not authorized.');
     }
   }
