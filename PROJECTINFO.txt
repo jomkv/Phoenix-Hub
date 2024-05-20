@@ -1,4 +1,4 @@
 DB Tables (Tables Listed here are the tables we can touch, everything else is generated either by SHIELD or CI4 so those should not be modified):
-1. users
+1. students
 2. organizations
 3. products
