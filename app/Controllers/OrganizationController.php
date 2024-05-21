@@ -15,7 +15,7 @@ class OrganizationController extends BaseController
    */
   public function viewCreateOrg(): string
   {
-    return view('pages/organization/createOrganization');
+    return view('pages/admin/createOrganization');
   }
 
   /**
@@ -67,7 +67,7 @@ class OrganizationController extends BaseController
 
       $products = $productModel->where('organization_id', $orgId)->findAll();
 
-      return view('pages/organization/products', ['organization' => $org, 'products' => $products]);
+      return view('pages/organization/productsOffered', ['organization' => $org, 'products' => $products]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing organization products: ' . $e->getMessage());
       return redirect()->to('/')->with('error', 'An error occurred. Please try again later.');

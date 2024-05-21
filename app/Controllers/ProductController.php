@@ -25,7 +25,7 @@ class ProductController extends BaseController
         return redirect()->to('/admin/organization/new')->with('info', 'There must be an Organization before creating a product.');
       }
 
-      return view('pages/product/createProduct', ['organizations' => $orgs]);
+      return view('pages/admin/createProduct', ['organizations' => $orgs]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing create product: ' . $e->getMessage());
       return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');

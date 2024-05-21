@@ -8,7 +8,7 @@
 
 <h1> Create Organization </h1>
 
-<?= form_open('/organization/new') ?>
+<?= form_open('/admin/organization/new') ?>
 <label for="organization_name">Organization Name</label>
 <input type="text" name="organization_name" id="organization_name">
 
