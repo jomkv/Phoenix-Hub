@@ -43,5 +43,7 @@ $routes->post('/admin/organization/new', 'OrganizationController::createOrg');
 
 // * Admin Products
 
+$routes->get('/admin/product', 'ProductController::viewAdminProducts');
+
 $routes->get('/admin/product/new', 'ProductController::viewCreateProduct');
 $routes->post('/admin/product/new', 'ProductController::createProduct');

@@ -33,6 +33,30 @@ class ProductController extends BaseController
   }
 
   /**
+   * @desc Returns a view to admin's products menu
+   * @route GET /admin/product
+   * @access private
+   */
+  public function viewAdminProducts()
+  {
+    try {
+      $productModel = new ProductModel();
+
+      $products = $productModel->findAll();
+
+      // If no orgs found
+      if (empty($orgs)) {
+        $products = [];
+      }
+
+      return view('pages/admin/products', ['products' => $products]);
+    } catch (\Exception $e) {
+      log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
+      return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');
+    }
+  }
+
+  /**
    * @desc Creates a new product
    * @route POST /admin/product/new
    * @access private
