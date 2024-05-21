@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrganizationModel;
+use App\Models\ProductModel;
 use Exception;
 
 class OrganizationController extends BaseController
@@ -31,19 +32,19 @@ class OrganizationController extends BaseController
 
       // * If data does not pass validation
       if (!$model->validate($data)) {
-        return redirect()->to('/organization/new')->with('error', ['errors' => $model->errors()]);
+        return redirect()->to('/admin/organization/new')->with('error', ['errors' => $model->errors()]);
       };
 
       $isSuccess = $model->insert($data, false);
 
       if (!$isSuccess) {
-        return throw new Exception('Error occurred, unable to create new organization');
+        return redirect()->to('/admin/organization/new')->with('error', ['errors' => 'Error occurred, unable to create new organization']);
       }
 
-      return redirect()->to('/organization/new')->with('info', 'Organization successfully created');
+      return redirect()->to('/admin/organization/new')->with('info', 'Organization successfully created');
     } catch (\Exception $e) {
       log_message('error', 'Error creating organization: ' . $e->getMessage());
-      return redirect()->to('/organization/new')->with('error', 'An error occurred. Please try again later.');
+      return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
     }
   }
 
@@ -56,6 +57,7 @@ class OrganizationController extends BaseController
   {
     try {
       $orgModel = new OrganizationModel();
+      $productModel = new ProductModel();
 
       $org = $orgModel->find($orgId);
 
@@ -63,7 +65,9 @@ class OrganizationController extends BaseController
         return redirect()->to('/')->with('error', 'An error occurred. Organization not found.');
       }
 
-      return view('pages/organization/products', ['organization' => $org, 'products' => []]);
+      $products = $productModel->where('organization_id', $orgId)->findAll();
+
+      return view('pages/organization/products', ['organization' => $org, 'products' => $products]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing organization products: ' . $e->getMessage());
       return redirect()->to('/')->with('error', 'An error occurred. Please try again later.');

@@ -103,7 +103,7 @@ class AdminController extends BaseController
       return redirect()->to('/login/admin');
     } catch (\Exception $e) {
       log_message('error', 'Error admin signup: ' . $e->getMessage());
-      return redirect()->to('/admin/signup')->with('error', 'An error occurred. Please try again.');
+      return redirect()->to('/signup/admin')->with('error', 'An error occurred. Please try again.');
     }
   }
 

@@ -11,7 +11,9 @@
 <h2>Products Offered: </h2>
 
 <?php foreach ($products as $product) : ?>
-  <h4>hehe product</h4>
+  <h3><?= $product['product_name'] ?></h3>
+  <h3><?= $product['price'] ?></h3>
+  <br>
 <?php endforeach ?>
 
 <?= $this->endSection() ?>

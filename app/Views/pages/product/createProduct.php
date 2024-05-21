@@ -8,12 +8,12 @@
 
 <h1>Add Product</h1>
 
-<?= form_open('/organization/new') ?>
+<?= form_open('/admin/product/new') ?>
 
 <label for="organization_id">Organization</label>
 <select name="organization_id" id="organization_id">
   <?php foreach ($organizations as $org) : ?>
-    <option value="organization_id"><?= $org["organization_name"]; ?></option>
+    <option value="<?= $org["organization_id"]; ?>"><?= $org["organization_name"]; ?></option>
   <?php endforeach ?>
 </select>
 

@@ -32,8 +32,8 @@ $routes->get('/admin/logout', 'AdminController::logout');
 
 $routes->environment('development', static function ($routes) {
   // Allow signup up of admin only on development environment
-  $routes->get('/admin/signup', 'AdminController::viewSignup');
-  $routes->post('/admin/signup', 'AdminController::signup');
+  $routes->get('/signup/admin', 'AdminController::viewSignup');
+  $routes->post('/signup/admin', 'AdminController::signup');
 });
 
 // * Admin Organization
@@ -44,3 +44,4 @@ $routes->post('/admin/organization/new', 'OrganizationController::createOrg');
 // * Admin Products
 
 $routes->get('/admin/product/new', 'ProductController::viewCreateProduct');
+$routes->post('/admin/product/new', 'ProductController::createProduct');

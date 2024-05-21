@@ -8,7 +8,7 @@
 
 <h1> Admin Signup </h1>
 
-<?= form_open('/admin/signup') ?>
+<?= form_open('/signup/admin') ?>
 <label for="title">Username</label>
 <input type="text" name="username" id="username">
 
