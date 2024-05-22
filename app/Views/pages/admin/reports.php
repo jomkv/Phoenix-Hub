@@ -1,9 +1,9 @@
 <?= $this->extend("layouts/adminDefault") ?>
 
-<?= $this->section("title") ?>Admin | Dashboard <?= $this->endSection() ?>
+<?= $this->section("title") ?>Admin | Reports <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
 
-<h1> Admin Dashboard </h1>
+<h1> Reports </h1>
 
 <?= $this->endSection() ?>

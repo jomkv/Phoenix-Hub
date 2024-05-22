@@ -6,45 +6,6 @@ use CodeIgniter\Shield\Entities\User;
 
 class AdminController extends BaseController
 {
-  public function index(): string
-  {
-    return view('welcome_message');
-  }
-
-  /**
-   * @desc Returns a view to admin login page
-   * @route GET /admin/login
-   * @access public
-   */
-  public function viewLogin()
-  {
-    if (auth()->loggedIn()) {
-      return redirect()->to('/admin');
-    }
-
-    return view('pages/admin/login');
-  }
-
-  /**
-   * @desc Returns a view to admin signup page
-   * @route GET /admin/signup
-   * @access public
-   */
-  public function viewSignup(): string
-  {
-    return view('pages/admin/signup');
-  }
-
-  /**
-   * @desc Returns a view to admin dashboard
-   * @route GET /admin
-   * @access private
-   */
-  public function viewDashboard(): string
-  {
-    return view('pages/admin/dashboard');
-  }
-
   /**
    * @desc admin login
    * @route POST /admin/login

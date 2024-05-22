@@ -22,17 +22,23 @@ $routes->get('/(:num)/products', 'OrganizationController::viewOrgProducts/$1');
  * ADMIN ROUTES
  */
 
-// * Admin User
-$routes->get('/login/admin', 'AdminController::viewLogin');
-$routes->post('/login/admin', 'AdminController::login');
+// * Admin Main Views
+$routes->get('/login/admin', 'AdminViewController::viewLogin'); // login
+$routes->get('/admin', 'AdminViewController::viewDashboard'); // dashboard
+$routes->get('/admin/organization', 'AdminViewController::viewOrganizations'); // organizations
+$routes->get('/admin/product', 'AdminViewController::viewProducts'); // products
+$routes->get('/admin/pending', 'AdminViewController::viewPending'); // pending purchases
+$routes->get('/admin/reports', 'AdminViewController::viewReports'); // reports
+$routes->get('/admin/history', 'AdminViewController::viewHistory'); // pending purchases
 
-$routes->get('/admin', 'AdminController::viewDashboard');
+// * Admin User
+$routes->post('/login/admin', 'AdminController::login');
 
 $routes->get('/admin/logout', 'AdminController::logout');
 
 $routes->environment('development', static function ($routes) {
   // Allow signup up of admin only on development environment
-  $routes->get('/signup/admin', 'AdminController::viewSignup');
+  $routes->get('/signup/admin', 'AdminViewController::viewSignup');
   $routes->post('/signup/admin', 'AdminController::signup');
 });
 
@@ -42,8 +48,5 @@ $routes->get('/admin/organization/new', 'OrganizationController::viewCreateOrg')
 $routes->post('/admin/organization/new', 'OrganizationController::createOrg');
 
 // * Admin Products
-
-$routes->get('/admin/product', 'ProductController::viewAdminProducts');
-
 $routes->get('/admin/product/new', 'ProductController::viewCreateProduct');
 $routes->post('/admin/product/new', 'ProductController::createProduct');
