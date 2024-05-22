@@ -9,7 +9,7 @@
   </div>
   <ul class="sidebar-nav">
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link">
+      <a href="<?= url_to('AdminController::viewDashboard') ?>" class="sidebar-link">
         <i class="bi bi-grid-1x2-fill"></i>
         <span>Dashboard</span>
       </a>
@@ -21,18 +21,10 @@
       </a>
     </li>
     <li class="sidebar-item">
-      <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#products_nav" aria-expanded="false" aria-controls="auth">
+      <a href="<?= url_to('ProductController::viewAdminProducts') ?>" class="sidebar-link">
         <i class="bi bi-bag-dash-fill"></i>
         <span>Products</span>
       </a>
-      <ul id="products_nav" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link">List</a>
-        </li>
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link">Create</a>
-        </li>
-      </ul>
     </li>
     <li class="sidebar-item">
       <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#pending_nav" aria-expanded="false" aria-controls="multi">

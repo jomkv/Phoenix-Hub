@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/defaultDev") ?>
+<?= $this->extend("layouts/adminDefault") ?>
 
 <?= $this->section("title") ?>Admin Dashboard <?= $this->endSection() ?>
 
