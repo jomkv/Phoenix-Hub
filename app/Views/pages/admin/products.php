@@ -11,16 +11,16 @@
     <h1>Products</h1>
   </div>
   <div class="col-2">
-    <button class="btn btn-primary align-self-center">Create New Product</button>
+    <a href="<?= url_to('ProductController::viewCreateProduct') ?>"><button class="btn btn-primary align-self-center">Create New Product</button></a>
   </div>
   <div class="col-2">
 
     <label for="select-org" class="form-label">Filter by Organization</label>
     <select id="select-org" class="form-select">
       <option>None</option>
-      <option>One</option>
-      <option>Two</option>
-      <option>Three</option>
+      <?php foreach ($organizations as $org) : ?>
+        <option value="<?= $org['organization_id'] ?>"><?= $org['organization_name'] ?></option>
+      <?php endforeach ?>
     </select>
   </div>
 
@@ -40,107 +40,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-          <tr>
-            <td>#1</td>
-            <td>Phoenix Shirt</td>
-            <td>450</td>
-            <td>10</td>
-            <td class="text-right">
-              <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
-              <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
-            </td>
-          </tr>
-
+          <?php foreach ($products as $product) : ?>
+            <tr>
+              <td># <?= $product['product_id']; ?></td>
+              <td><?= $product['product_name']; ?></td>
+              <td>₱<?= $product['price']; ?></td>
+              <td><?= $product['stock']; ?></td>
+              <td class="text-right">
+                <button class="btn btn-primary badge-pill" style="width:80px;">EDIT</button>
+                <button class="btn btn-primary badge-pill" style="width:80px;">DELETE</button>
+              </td>
+            </tr>
+          <?php endforeach ?>
         </tbody>
       </table>
     </div>

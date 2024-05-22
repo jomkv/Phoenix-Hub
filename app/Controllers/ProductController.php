@@ -41,7 +41,9 @@ class ProductController extends BaseController
   {
     try {
       $productModel = new ProductModel();
+      $orgModel = new OrganizationModel();
 
+      $orgs = $orgModel->findAll();
       $products = $productModel->findAll();
 
       // If no orgs found
@@ -49,7 +51,7 @@ class ProductController extends BaseController
         $products = [];
       }
 
-      return view('pages/admin/products', ['products' => $products]);
+      return view('pages/admin/products', ['products' => $products, 'organizations' => $orgs]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
       return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');
@@ -88,7 +90,7 @@ class ProductController extends BaseController
         return redirect()->to('/admin/product/new')->with('error', ['errors' => 'Error occurred, unable to create new product']);
       }
 
-      return redirect()->to('/admin/product/new')->with('info', 'Product successfully created');
+      return redirect()->to('/admin/product')->with('info', 'Product successfully created');
     } catch (\Exception $e) {
       log_message('error', 'Error creating organization: ' . $e->getMessage());
       return redirect()->to('/admin/product/new')->with('error', 'An error occurred. Please try again later.');
