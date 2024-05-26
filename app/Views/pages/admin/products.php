@@ -12,7 +12,6 @@
   </div>
   <div class="col-2">
     <a href="<?= url_to('ProductController::viewCreateProduct') ?>"><button class="btn btn-primary align-self-center">Create New Product</button></a>
-    <button class="btn btn-primary" id="create_toast">Toast</button>
   </div>
   <div class="col-2">
 
@@ -43,10 +42,10 @@
         <tbody id="products-container">
           <?php foreach ($products as $product) : ?>
             <tr data-product-id="<?= $product['product_id'] ?>">
-              <td># <?= $product['product_id']; ?></td>
-              <td><?= $product['product_name']; ?></td>
-              <td>₱<?= $product['price']; ?></td>
-              <td><?= $product['stock']; ?></td>
+              <td class="tr-product-id"># <?= $product['product_id']; ?></td>
+              <td class="tr-product-name"><?= $product['product_name']; ?></td>
+              <td class="tr-product-price">₱<?= $product['price']; ?></td>
+              <td class="tr-product-stock"><?= $product['stock']; ?></td>
               <td class="text-right">
                 <button data-product-id="<?= $product['product_id'] ?>" type="button" data-bs-toggle="modal" data-bs-target="#editProductModal" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</button>
                 <button data-product-id="<?= $product['product_id'] ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn" style="width:80px;">DELETE</button>
@@ -180,23 +179,26 @@
     $('#edit-product-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/product/${editProductId}`;
 
+      const data = {
+        product_name: $('#product_name').val(),
+        description: $('#description').val(),
+        price: $('#price').val(),
+        stock: $('#stock').val(),
+      }
       $.ajax({
         url: url,
         type: 'PUT',
-        data: {
-          product_name: $('#product_name').val(),
-          description: $('#description').val(),
-          price: $('#price').val(),
-          stock: $('#stock').val(),
-        },
+        data: data,
         success: () => {
           const editedRow = $(`tr[data-product-id="${editProductId}"]`);
-          editedRow.find('.product-name').text(data.product_name); // Update product name cell
-          editedRow.find('.product-description').text(data.description); // Update description cell
-          editedRow.find('.product-price').text(data.price); // Update price cell
-          editedRow.find('.product-stock').text(data.stock); // Update stock cell
+
+          editedRow.find('.tr-product-name').text(data.product_name);
+          editedRow.find('.tr-product-description').text(data.description);
+          editedRow.find('.tr-product-price').text(data.price);
+          editedRow.find('.tr-product-stock').text(data.stock);
           generateInfoToast('Product Edited!');
-          $('#editProductModal').modal('hide'); // Close "Edit Product" modal
+
+          $('#editProductModal').modal('hide'); // Close modal
         },
         error: (jqXHR, textStatus, errorThrown) => {
           console.log("AJAX Error: ", textStatus, errorThrown)
@@ -204,10 +206,6 @@
       })
     })
 
-    $('#create_toast').click(() => {
-      console.log('click')
-      generateInfoToast('tite');
-    })
   });
 </script>
 <?= $this->endSection() ?>
