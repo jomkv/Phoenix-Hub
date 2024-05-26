@@ -33,28 +33,48 @@ class ProductController extends BaseController
   }
 
   /**
-   * @desc Returns a view to admin's products menu
-   * @route GET /admin/product
+   * @desc Get product info
+   * @route GET /admin/product/all
    * @access private
    */
-  public function viewAdminProducts()
+  public function getAllProducts()
   {
     try {
       $productModel = new ProductModel();
-      $orgModel = new OrganizationModel();
 
-      $orgs = $orgModel->findAll();
       $products = $productModel->findAll();
 
-      // If no orgs found
-      if (empty($orgs)) {
-        $products = [];
+      if (!$products) {
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Unable to get products']);
       }
 
-      return view('pages/admin/products', ['products' => $products, 'organizations' => $orgs]);
+      return $this->response->setStatusCode(200)->setJSON($products);
     } catch (\Exception $e) {
-      log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
-      return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');
+      log_message('error', 'Error fetching products: ' . $e->getMessage());
+      return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
+    }
+  }
+
+  /**
+   * @desc Get product info
+   * @route GET /admin/product/:productId
+   * @access private
+   */
+  public function getProduct($productId)
+  {
+    try {
+      $productModel = new ProductModel();
+
+      $product = $productModel->find($productId);
+
+      if (!$product) {
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Unable to get product']);
+      }
+
+      return $this->response->setStatusCode(200)->setJSON($product);
+    } catch (\Exception $e) {
+      log_message('error', 'Error finding product: ' . $e->getMessage());
+      return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
     }
   }
 
@@ -94,6 +114,67 @@ class ProductController extends BaseController
     } catch (\Exception $e) {
       log_message('error', 'Error creating organization: ' . $e->getMessage());
       return redirect()->to('/admin/product/new')->with('error', 'An error occurred. Please try again later.');
+    }
+  }
+
+  /**
+   * @desc Edit product
+   * @route PUT /admin/product/:productId
+   * @access private
+   */
+  public function editProduct($productId)
+  {
+    try {
+      $productModel = new ProductModel();
+
+      $data = $this->request->getRawInput();
+
+      // * If data does not pass validation
+      if (!$productModel->validate($data)) {
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Error occurred, unable to edit product', 'errors' => $productModel->errors()]);
+      };
+
+      // * Check if organization_id exists
+      // $orgExists = $orgModel->find($data['organization_id']);
+
+      // if (!$orgExists) {
+      //   return redirect()->to('/admin/product/new')->with('error', ['errors' => "Invalid organization_id, organization not found."]);
+      // }
+
+      // * Create new product
+      $isSuccess = $productModel->update($productId, $data);
+
+      if (!$isSuccess) {
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Error occurred, unable to edit product']);
+      }
+
+      return $this->response->setStatusCode(200)->setJSON(['message' => 'Product Edit successful']);
+    } catch (\Exception $e) {
+      log_message('error', 'Error creating organization: ' . $e->getMessage());
+      return $this->response->setStatusCode(500)->setJSON(['message' => 'An error occurred, unable to edit product']);
+    }
+  }
+
+  /**
+   * @desc Delete product
+   * @route DELETE /admin/product/:productId
+   * @access private
+   */
+  public function deleteProduct($productId)
+  {
+    try {
+      $productModel = new ProductModel();
+
+      $isSuccess = $productModel->delete($productId);
+
+      if (!$isSuccess) {
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Unable to delete product']);
+      }
+
+      return $this->response->setStatusCode(200)->setJSON(['message' => 'Product successfuly deleted']);
+    } catch (\Exception $e) {
+      log_message('error', 'Error deleting product: ' . $e->getMessage());
+      return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
     }
   }
 }

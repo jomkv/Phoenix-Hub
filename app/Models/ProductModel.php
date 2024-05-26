@@ -63,7 +63,7 @@ class ProductModel extends Model
     ],
   ];
   // protected $skipValidation       = false;
-  // protected $cleanValidationRules = true;
+  protected $cleanValidationRules = true;
 
   // * Callbacks
   // protected $allowCallbacks = true;

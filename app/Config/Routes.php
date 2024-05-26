@@ -48,5 +48,10 @@ $routes->get('/admin/organization/new', 'OrganizationController::viewCreateOrg')
 $routes->post('/admin/organization/new', 'OrganizationController::createOrg');
 
 // * Admin Products
+
+$routes->get('/admin/product/all', 'ProductController::getAllProducts');
+$routes->get('/admin/product/(:num)', 'ProductController::getProduct/$1');
 $routes->get('/admin/product/new', 'ProductController::viewCreateProduct');
 $routes->post('/admin/product/new', 'ProductController::createProduct');
+$routes->put('/admin/product/(:num)', 'ProductController::editProduct/$1');
+$routes->delete('/admin/product/(:num)', 'ProductController::deleteProduct/$1', ['as' => 'delete_product']);
