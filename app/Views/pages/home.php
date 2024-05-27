@@ -12,7 +12,7 @@
                                 <!-- NAVBAR -->
 <nav class="navbar fixed-top" style="background-color: green;">
   <div class="container-fluid">
-    <a class="navbar-brand text-center" href="#">Phoenix Shop</a>
+    <a class="navbar-brand text-center mx-auto d-block" href="#">Phoenix Shop</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
