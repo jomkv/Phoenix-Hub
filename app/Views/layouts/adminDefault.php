@@ -17,7 +17,7 @@
     <?= $this->include('partials/adminNavbar.php'); ?>
 
     <div class="main p-3">
-      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container">
+      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 1091;">
 
       </div>
 
@@ -27,6 +27,26 @@
     </div>
   </div>
   <script>
+    function generateSuccessToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-success', 'border-0');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      const container = document.getElementById('custom-toast-container');
+      if (container) {
+        container.appendChild(toast);
+      }
+
+      const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+      toastInstance.show();
+    }
+
     function generateInfoToast(message) {
       const toast = document.createElement('div');
       toast.classList.add('toast', 'align-items-center', 'text-bg-primary', 'border-0');
@@ -44,8 +64,42 @@
       }
 
       const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
-      console.log(toastInstance);
       toastInstance.show();
+    }
+
+    function generateErrorToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-danger', 'border-0');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      const container = document.getElementById('custom-toast-container');
+      if (container) {
+        container.appendChild(toast);
+      }
+
+      const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+      toastInstance.show();
+    }
+
+    function generateErrorToasts(xhr) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.errors && response.errors instanceof Object) {
+        const errorsArr = Object.values(response.errors);
+
+        errorsArr.forEach(
+          error => {
+            generateErrorToast(error);
+          }
+        )
+      } else {
+        generateErrorToast("Error, please try again later.");
+      }
     }
   </script>
 </body>

@@ -11,7 +11,7 @@
     <h1>Products</h1>
   </div>
   <div class="col-2">
-    <a href="<?= url_to('ProductController::viewCreateProduct') ?>"><button class="btn btn-primary align-self-center">Create New Product</button></a>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#createProductModal" class="btn btn-primary align-self-center create-modal-btn">Create New Product</button>
   </div>
   <div class="col-2">
 
@@ -67,8 +67,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <?= form_open('ProductController::editProduct') ?>
-
         <div class="mb-3">
           <label for="product_name" class="col-form-label">Product Name</label>
           <input type="text" class="form-control" id="product_name">
@@ -88,8 +86,6 @@
           <label for="stock" class="col-form-label">Stock</label>
           <input type="number" id="stock" class="form-control" />
         </div>
-
-        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -120,29 +116,63 @@
   </div>
 </div>
 
-<div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="d-flex">
-    <div class="toast-body tite">
-      test
+<!-- Create Product Modal -->
+<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Product</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="product_name" class="col-form-label">Product Name</label>
+          <input type="text" class="form-control" id="product_name_create">
+        </div>
+        <div class="mb-3">
+          <label for="description" class="col-form-label">Description</label>
+          <textarea class="form-control" id="description_create"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="col-form-label">Price</label>
+          <div class="input-group">
+            <div class="input-group-text">₱</div>
+            <input type="number" id="price_create" class="form-control" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="stock" class="col-form-label">Stock</label>
+          <input type="number" id="stock_create" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label for="organization_id" class="form-label">Organization</label>
+          <select id="organization_id_create" name="organization_id" class="form-select">
+            <?php foreach ($organizations as $org) : ?>
+              <option value="<?= $org['organization_id'] ?>"><?= $org['organization_name'] ?></option>
+            <?php endforeach ?>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a>
+          <button type="button" class="btn btn-primary" id="create-product-btn">Create</button>
+        </a>
+      </div>
     </div>
-    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
 </div>
 
 <script>
   let deleteProductId;
-  let deleteProductEl;
-
   let editProductId;
 
   $(document).ready(function() {
 
-    // Event listener for delete button click
     $('.delete-modal-btn').click(function() {
       deleteProductId = $(this).data('product-id');
     });
 
-    // Event listener for edit button click
     $('.edit-modal-btn').click(function() {
       editProductId = $(this).data('product-id');
 
@@ -160,6 +190,28 @@
       })
     });
 
+    $('#create-product-btn').click(function() {
+      const data = {
+        product_name: $('#product_name_create').val(),
+        description: $('#description_create').val(),
+        price: $('#price_create').val(),
+        stock: $('#stock_create').val(),
+        organization_id: $('#organization_id_create').val(),
+      }
+
+      $.ajax({
+        url: '<?= url_to('ProductController::createProduct') ?>',
+        type: 'POST',
+        data: data,
+        success: () => {
+          window.location.reload();
+        },
+        error: (xhr, textStatus, errorThrown) => {
+          generateErrorToasts(xhr);
+        }
+      })
+    })
+
     $('#delete-product-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/product/${deleteProductId}`;
 
@@ -167,11 +219,12 @@
         url: url,
         type: 'DELETE',
         success: () => {
-          console.log($('#delete-product-btn'))
-          console.log($(`tr[data-product-id="${deleteProductId}"]`))
           $(`tr[data-product-id="${deleteProductId}"]`).remove();
           $('#deleteProductModal').modal('hide');
-          generateInfoToast('Product Deleted');
+          generateSuccessToast('Product Deleted');
+        },
+        error: () => {
+          generateErrorToast('Error Deleting Product.')
         }
       })
     })
@@ -185,6 +238,7 @@
         price: $('#price').val(),
         stock: $('#stock').val(),
       }
+
       $.ajax({
         url: url,
         type: 'PUT',
@@ -196,12 +250,12 @@
           editedRow.find('.tr-product-description').text(data.description);
           editedRow.find('.tr-product-price').text(data.price);
           editedRow.find('.tr-product-stock').text(data.stock);
-          generateInfoToast('Product Edited!');
+          generateSuccessToast('Product Edited');
 
           $('#editProductModal').modal('hide'); // Close modal
         },
-        error: (jqXHR, textStatus, errorThrown) => {
-          console.log("AJAX Error: ", textStatus, errorThrown)
+        error: (xhr, textStatus, errorThrown) => {
+          generateErrorToasts(xhr);
         }
       })
     })

@@ -89,28 +89,28 @@ class ProductController extends BaseController
       $orgModel = new OrganizationModel();
       $productModel = new ProductModel();
 
-      $data = $this->request->getPost();
+      $data = $this->request->getRawInput();
 
       // * If data does not pass validation
       if (!$productModel->validate($data)) {
-        return redirect()->to('/admin/product/new')->with('error', ['errors' => $productModel->errors()]);
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Error occurred, unable to create product', 'errors' => $productModel->errors()]);
       };
 
       // * Check if organization_id exists
       $orgExists = $orgModel->find($data['organization_id']);
 
       if (!$orgExists) {
-        return redirect()->to('/admin/product/new')->with('error', ['errors' => "Invalid organization_id, organization not found."]);
+        return $this->response->setStatusCode(400)->setJSON(['message' => "Organization not found."]);
       }
 
       // * Create new product
       $isSuccess = $productModel->insert($data, false);
 
       if (!$isSuccess) {
-        return redirect()->to('/admin/product/new')->with('error', ['errors' => 'Error occurred, unable to create new product']);
+        return $this->response->setStatusCode(400)->setJSON(['message' => 'Error occurred, unable to create new product']);
       }
 
-      return redirect()->to('/admin/product')->with('info', 'Product successfully created');
+      return $this->response->setStatusCode(201)->setJSON(['message' => 'Product successfully created']);
     } catch (\Exception $e) {
       log_message('error', 'Error creating organization: ' . $e->getMessage());
       return redirect()->to('/admin/product/new')->with('error', 'An error occurred. Please try again later.');
