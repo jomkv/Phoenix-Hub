@@ -12,6 +12,8 @@
 
 <body>
   <div class="container">
+    <?= $this->include('partials/navbar.php'); ?>
+
     <?= $this->renderSection("content") ?>
   </div>
 

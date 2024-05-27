@@ -10,6 +10,16 @@ class ProductController extends BaseController
 {
   /**
    * @desc Returns a view to create new product form
+   * @route GET /admin/product/test
+   * @access private
+   */
+  public function viewProduct(): string
+  {
+    return view('pages/product/productPage');
+  }
+
+  /**
+   * @desc Returns a view to create new product form
    * @route GET /admin/product/new
    * @access private
    */

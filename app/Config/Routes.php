@@ -18,6 +18,10 @@ $routes->post('/signup', 'UsersController::signup');
 
 $routes->get('/(:num)/products', 'OrganizationController::viewOrgProducts/$1');
 
+// * Products
+
+$routes->get('/product/test', 'ProductController::viewProduct');
+
 /**
  * ADMIN ROUTES
  */
