@@ -14,7 +14,7 @@ class OrganizationModel extends Model
   protected $returnType     = 'array';
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['organization_name', 'description', 'contact_email', 'contact_person', 'logo_url'];
+  protected $allowedFields = ['organization_name', 'description', 'contact_email', 'contact_person', 'logo_file_name'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -33,7 +33,7 @@ class OrganizationModel extends Model
     'description'       => 'required|max_length[65530]',
     'contact_email'     => 'required|max_length[254]|valid_email',
     'contact_person'    => 'required|max_length[100]',
-    'logo_url'          => 'max_length[255]'
+    'logo_file_name'    => 'required|max_length[500]'
   ];
 
   protected $validationMessages   = [
@@ -53,6 +53,10 @@ class OrganizationModel extends Model
     'contact_person' => [
       'required'    => 'Contact Person must be provided',
       'max_length'  => 'Contact Person too long',
+    ],
+    'logo_file_name' => [
+      'required'    => 'Logo was either not provided, or there was a problem processing it.',
+      'max_length'  => 'Uploaded Logo filename is too long.',
     ],
   ];
   // protected $skipValidation       = false;

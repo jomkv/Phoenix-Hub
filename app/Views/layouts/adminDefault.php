@@ -13,19 +13,6 @@
 </head>
 
 <body>
-  <div class="wrapper">
-    <?= $this->include('partials/adminNavbar.php'); ?>
-
-    <div class="main p-3">
-      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 1091;">
-
-      </div>
-
-      <?= $this->renderSection("content") ?>
-
-
-    </div>
-  </div>
   <script>
     function generateSuccessToast(message) {
       const toast = document.createElement('div');
@@ -102,6 +89,20 @@
       }
     }
   </script>
+  <div class="wrapper">
+    <?= $this->include('partials/adminNavbar.php'); ?>
+
+    <div class="main p-3">
+      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 1091;">
+
+      </div>
+
+      <?= $this->renderSection("content") ?>
+
+
+    </div>
+  </div>
+
 </body>
 
 </html>

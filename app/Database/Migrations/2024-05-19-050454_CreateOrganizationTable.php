@@ -35,10 +35,10 @@ class CreateOrganizationTable extends Migration
                 'constraint'        => '100',
                 'null'              => false,
             ],
-            'logo_url' => [
+            'logo_file_name' => [
                 'type'              => 'VARCHAR',
-                'constraint'        => '255',
-                'null'              => true,
+                'constraint'        => '500',
+                'null'              => false,
             ],
             'deleted_at' => [
                 'type'              => 'DATETIME',
