@@ -30,10 +30,11 @@ $js_info = json_encode($info); // Encode info message for JS
 </div>
 <div class="row row-cols-4 g-1 mt-4 overflow-auto">
   <?php foreach ($organizations as $org) : ?>
-    <div class="col">
-      <div class="card" style="width: 18rem;">
-        <img src="<?= base_url('organizationLogos/' . $org['logo_file_name'])  ?>" class="card-img-top" alt="...">
-        <div class="card-body">
+    <div class="col ">
+      <div class="card " style="width: 18rem;">
+        <img src="<?= base_url('organizationLogos/' . $org['logo_file_name'])  ?> " class="img-thumbnail mx-auto d-block " alt="..." style="width:250px; height: 250px;">
+
+        <div class=" card-body">
           <h5 class="card-title"><?= $org['organization_name'] ?></h5>
           <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>

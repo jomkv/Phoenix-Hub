@@ -61,11 +61,9 @@ class AdminViewController extends BaseController
 
       return view('pages/admin/organizations', ['organizations' => $orgs]);
     } catch (\Exception $e) {
-      log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
+      log_message('error', 'Error viewing admin organization menu: ' . $e->getMessage());
       return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');
     }
-
-    return view('pages/admin/organizations');
   }
 
   /**
