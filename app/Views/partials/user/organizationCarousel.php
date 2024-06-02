@@ -1,4 +1,4 @@
-<div id="organization-carousel" class="carousel carousel-dark slide text-center bg-light mx-auto d-none d-md-block" style="border: 1px solid black;">
+<div id="organization-carousel" class="carousel carousel-dark slide text-center bg-light mx-auto d-none d-md-block p-3" style="border: 1px solid black;">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#organization-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#organization-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>

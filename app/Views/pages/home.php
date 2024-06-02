@@ -6,7 +6,7 @@
 
 <style>
   body {
-    background-image: url("<?= base_url() . 'CvSU Home page.jpg' ?>");
+    background-color:#1B1B1B;
   }
 </style>
 

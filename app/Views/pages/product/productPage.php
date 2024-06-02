@@ -3,6 +3,11 @@
 <?= $this->section("title") ?>Product Menu <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
+<style>
+  body{
+    background-color:#1B1B1B;
+  }
+</style>
 <div class="card mb-3" style="margin-top:150px;">
   <div class="row g-0">
     <div class="col-md-4">
