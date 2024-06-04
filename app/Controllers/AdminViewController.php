@@ -47,7 +47,7 @@ class AdminViewController extends BaseController
    * @route GET /admin/organization
    * @access private
    */
-  public function viewOrganizations(): string
+  public function viewOrganizations()
   {
     try {
       $orgModel = new OrganizationModel();
