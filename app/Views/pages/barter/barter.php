@@ -70,13 +70,20 @@
         padding-top: 80%; /* 4:3 Aspect Ratio for smaller screens */
       }
     }
+
+    /* Back button float */
+    .back-button {
+      position: fixed;
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center">  
       <div class="col-md-8">
+        <!-- Back button float -->
+        <a href="javascript:history.back()" class="btn btn-secondary back-button">Back</a>
         <div class="card product-card">
           <div class="card-body">
             <div class="col-md-6 product-img">
@@ -102,6 +109,8 @@
     </div>
     
   </div>
+
+  
 
   <!-- Include Bootstrap JS -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
