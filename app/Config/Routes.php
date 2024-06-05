@@ -3,6 +3,17 @@
 use CodeIgniter\Router\RouteCollection;
 
 /**
+ * TEST VIEWS
+ */
+
+$routes->environment('development', static function ($routes) {
+  // Allow signup up of admin only on development environment
+  $routes->get('/test/checkoutForm', 'TestViewsController::viewCheckoutForm');
+  $routes->get('/test/orgProducts', 'TestViewsController::viewOrgProducts');
+  $routes->get('/test/checkoutConfirm', 'TestViewsController::viewCheckoutConfirm');
+});
+
+/**
  * USER ROUTES
  */
 // * Users
