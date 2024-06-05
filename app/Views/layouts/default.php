@@ -27,7 +27,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Calibri', sans-serif !important;
+            font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
             background-color: #eee;
             margin: 0;
         }
