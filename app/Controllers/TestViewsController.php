@@ -34,4 +34,24 @@ class TestViewsController extends BaseController
   {
     return view('pages/product/checkoutConfirm.php');
   }
+
+  /**
+   * @desc view barter menu
+   * @route GET /test/barterHome
+   * @access PUBLIC
+   */
+  public function viewBarter()
+  {
+    return view('pages/barter/tradingCenter.php');
+  }
+
+  /**
+   * @desc view specific barter post
+   * @route GET /test/barterItem
+   * @access PUBLIC
+   */
+  public function viewBarterPost()
+  {
+    return view('pages/barter/barter.php');
+  }
 }
