@@ -70,7 +70,7 @@
 <div class="container">
   <div class="row row-cols-1 row-cols-md-3 g-3 mt-5" style=" margin-top: 20px; border: radius 40px;">
     <div class="col">
-      <div class="card h-100">
+      <div class="card h-100" style="text-decoration: none;">
         <div class="card-header">
           <div class="profile">
             <img src="<?= base_url() . 'phoenix.png' ?>" alt="Profile Image">
@@ -85,7 +85,7 @@
         <div class="button-footer">
           <i class="bi bi-hand-thumbs-up"></i>
           <i class="bi bi-chat"></i>
-          <button class="btn btn-primary btn-sm float-right">View More</button>
+          <a href="<?= url_to("TestViewsController::viewBarterPost")  ?>" class="btn btn-primary btn-sm float-right">View More</a>
         </div>
       </div>
     </div>
