@@ -6,15 +6,21 @@
 
 <?php
 $info = session()->getFlashdata('info');
+$error = session()->getFlashdata('error');
 
-$js_info = json_encode($info); // Encode info message for JS
+$js_error = json_encode($error);
+$js_info = json_encode($info);
 ?>
 
 <script>
-  const phpInfo = JSON.parse('<?= $js_info ?>'); // Decode info message
+  const phpInfo = JSON.parse('<?= $js_info ?>');
+  const phpError = JSON.parse('<?= $js_error ?>');
 
   if (phpInfo) {
     generateSuccessToast(phpInfo);
+  }
+  if (phpError) {
+    generateErrorToast(phpError);
   }
 </script>
 
@@ -28,22 +34,61 @@ $js_info = json_encode($info); // Encode info message for JS
     </a>
   </div>
 </div>
-<div class="row row-cols-4 g-1 mt-4 overflow-auto">
-  <?php foreach ($organizations as $org) : ?>
-    <div class="col ">
-      <div class="card " style="width: 18rem;">
-        <img src="<?= base_url('organizationLogos/' . $org['logo_file_name'])  ?> " class="img-thumbnail mx-auto d-block " alt="..." style="width:250px; height: 250px;">
+<div class="row row-cols-4 g-1 mt-4 overflow-auto" id="organizations-container">
+  <?= $this->include('partials/admin/organizationCards') ?>
+</div>
 
-        <div class=" card-body">
-          <h5 class="card-title"><?= $org['organization_name'] ?></h5>
-          <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-            <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-          </div>
-        </div>
+<div class="modal fade" id="deleteOrganizationModal" tabindex="-1" aria-labelledby="deleteOrganizationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this organization?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a>
+          <button type="button" class="btn btn-danger" id="delete-organization-btn">Delete</button>
+        </a>
       </div>
     </div>
-  <?php endforeach ?>
+  </div>
 </div>
+
+<script>
+  let deleteOrganizationId;
+
+  $(document).ready(function() {
+
+    $('.delete-modal-btn').click(function() {
+      deleteOrganizationId = $(this).data('organization-id');
+      console.log(deleteOrganizationId)
+    });
+
+    $('#delete-organization-btn').click(function() {
+      let url = '<?= base_url() ?>' + `admin/organization/${deleteOrganizationId}`;
+
+      $.ajax({
+        url: url,
+        type: 'DELETE',
+        headers: {
+          'x-reload': true,
+        },
+        success: (response) => {
+          $('#organizations-container').html(response);
+          $('#deleteOrganizationModal').modal('hide');
+          generateSuccessToast('Organization Deleted');
+        },
+        error: () => {
+          generateErrorToast('Error Deleting Product.');
+          $('#deleteOrganizationModal').modal('hide');
+        }
+      })
+    })
+  })
+</script>
 
 <?= $this->endSection() ?>

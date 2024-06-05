@@ -20,6 +20,29 @@ class OrganizationController extends BaseController
   }
 
   /**
+   * @desc Returns a view to edit organization form
+   * @route GET /admin/organization/:orgId
+   * @access private
+   */
+  public function viewEditOrg($orgId)
+  {
+    try {
+      $model = new OrganizationModel();
+
+      $org = $model->find($orgId);
+
+      if (!$org) {
+        return redirect()->to('/admin/organization')->with('error', "Organization not found.");
+      }
+
+      return view('pages/admin/editOrganization', ["organization" => $org]);
+    } catch (\Exception $e) {
+      log_message('error', 'Error viewing edit organization: ' . $e->getMessage());
+      return redirect()->to('/')->with('error', 'An error occurred. Please try again later.');
+    }
+  }
+
+  /**
    * @desc Returns a view to organization's offered products
    * @route GET /:orgId/products
    * @access public
@@ -116,5 +139,66 @@ class OrganizationController extends BaseController
     //     }
     //   }
     // }
+  }
+
+  /**
+   * @desc Deletes an organization
+   * @route DELETE /admin/organization/:orgId
+   * @access private
+   */
+  public function deleteOrg($orgId)
+  {
+    try {
+      $model = new OrganizationModel();
+
+      $org = $model->find($orgId);
+
+      if (!$org) {
+        return redirect()->to('/admin/organization')->with('error', 'Organization not found.');
+      }
+
+      $model->delete($orgId);
+      $organizations = $model->findAll();
+
+      if ($this->request->hasHeader('x-reload')) {
+        return view('partials/admin/organizationCards', ["organizations" => $organizations]);
+      }
+
+      return redirect()->to('/admin/organization')->with('info', 'Organization successfully deleted.');
+    } catch (\Exception $e) {
+      log_message('error', 'Error deleting organization: ' . $e->getMessage());
+      return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
+    }
+  }
+
+  /**
+   * @desc Edits an organization
+   * @route PUT /admin/organization/:orgId
+   * @access private
+   */
+  public function editOrg($orgId)
+  {
+    try {
+      // * TODO
+      // $model = new OrganizationModel();
+
+      // $org = $model->find($orgId);
+
+      // if (!$org) {
+      //   return redirect()->to('/admin/organization')->with('error', 'Organization not found.');
+      // }
+
+      // $model->delete($orgId);
+      // $organizations = $model->findAll();
+
+      // if ($this->request->hasHeader('x-reload')) {
+      //   return view('partials/admin/organizationCards', ["organizations" => $organizations]);
+      // }
+
+      // return redirect()->to('/admin/organization')->with('info', 'Organization successfully deleted.');
+    } catch (\Exception $e) {
+      log_message('error', 'Error deleting organization: ' . $e->getMessage());
+      return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
+    }
   }
 }
