@@ -54,4 +54,14 @@ class TestViewsController extends BaseController
   {
     return view('pages/barter/barter.php');
   }
+
+  /**
+   * @desc view create barter item form
+   * @route GET /test/createBarter
+   * @access PUBLIC
+   */
+  public function viewCreateBarter()
+  {
+    return view('pages/barter/createBarterForm.php');
+  }
 }
