@@ -22,6 +22,8 @@ class Home extends BaseController
             $organizations = []; // ensure organizations array is not null
         }
 
+
+
         return $organizations;
     }
 }

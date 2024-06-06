@@ -6,7 +6,7 @@
 
 <style>
   body {
-    background-color:#1B1B1B;
+    background-color: #1B1B1B;
   }
 </style>
 
@@ -21,7 +21,7 @@
   -->
   <?= $this->include('partials/user/organizationCarousel.php'); ?>
   <div class="col-12 text-center">
-    <button class=" btn btn-primary mt-3 w-25 h-100" type="button">Barter</button>
+    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary mt-3 w-25 h-100" type="button">Barter</a>
   </div>
 </div>
 

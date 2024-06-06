@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/adminDefault") ?>
+<?= $this->extend("layouts/adminDefault2") ?>
 
 <?= $this->section("title") ?>Admin | Organizations <?= $this->endSection() ?>
 
@@ -63,7 +63,7 @@ $js_info = json_encode($info);
 
   $(document).ready(function() {
 
-    $('.delete-modal-btn').click(function() {
+    $('#organizations-container').on('click', '.delete-modal-btn', function() {
       deleteOrganizationId = $(this).data('organization-id');
       console.log(deleteOrganizationId)
     });

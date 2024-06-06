@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/adminDefault") ?>
+<?= $this->extend("layouts/adminDefault2") ?>
 
 <?= $this->section("title") ?>Admin | Reports <?= $this->endSection() ?>
 

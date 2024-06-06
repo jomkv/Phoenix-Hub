@@ -1,6 +1,6 @@
 <?php helper('form'); ?>
 
-<?= $this->extend("layouts/adminDefault") ?>
+<?= $this->extend("layouts/adminDefault2") ?>
 
 <?= $this->section("title") ?>Create Organization <?= $this->endSection() ?>
 
