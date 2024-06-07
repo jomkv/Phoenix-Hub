@@ -10,7 +10,7 @@
             <a class="btn btn-sm btn-outline-secondary w-100" href="<?= url_to("OrganizationController::viewEditOrg", $org['organization_id']) ?>"><i class="bi bi-pencil-fill"></i>Edit</a>
           </div>
           <div class="col">
-            <button data-organization-id="<?= $org['organization_id'] ?>" data-bs-toggle="modal" data-bs-target="#deleteOrganizationModal" type="button" class="btn btn-sm btn-outline-danger w-100 delete-modal-btn"><i class="bi bi-trash-fill"></i>Delete</button>
+            <button data-organization-id="<?= $org['organization_id'] ?>" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" type="button" class="btn btn-sm btn-outline-danger w-100 delete-modal-btn"><i class="bi bi-trash-fill"></i>Delete</button>
           </div>
         </div>
       </div>

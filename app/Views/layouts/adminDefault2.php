@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -15,40 +15,6 @@
 </head>
 
 <body>
-  <div class="wrapper">
-    <?= $this->include('partials/adminNavbar2.php'); ?>
-
-    <div class="main p-3">
-      <nav class="navbar navbar-expand px-3 border-bottom">
-        <button class="btn" id="sidebar-toggle" type="button">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse navbar">
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                <img src="<?= base_url() . 'phoenix.png' ?>" class="avatar img-fluid rounded" alt="">
-              </a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a href="#" class="dropdown-item">Profile</a>
-                <a href="#" class="dropdown-item">Setting</a>
-                <a href="#" class="dropdown-item">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 1091;"></div>
-
-      <?= $this->renderSection("content") ?>
-
-
-    </div>
-
-
-  </div>
-
   <script>
     function generateSuccessToast(message) {
       const toast = document.createElement('div');
@@ -126,6 +92,55 @@
     }
   </script>
 
+  <div class="wrapper">
+    <?= $this->include('partials/adminNavbar2.php'); ?>
+
+    <div class="main p-3">
+      <nav class="navbar navbar-expand px-3 border-bottom border-dark">
+        <div class="navbar-collapse navbar">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                <img src="<?= base_url() . 'phoenix.png' ?>" class="avatar img-fluid rounded" alt="">
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a href="#" class="dropdown-item">Profile</a>
+                <a href="#" class="dropdown-item">Setting</a>
+                <a href="#" class="dropdown-item">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 0;"></div>
+
+      <?= $this->renderSection("content") ?>
+
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Delete</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to perform this action?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a>
+            <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
@@ -133,6 +148,14 @@
     ::after,
     ::before {
       box-sizing: border-box;
+    }
+
+    .modal {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-backdrop {
+      display: none;
     }
 
     body {
@@ -328,40 +351,6 @@
       display: none;
     }
   </style>
-
-  <script>
-    const sidebarToggle = document.querySelector("#sidebar-toggle");
-    sidebarToggle.addEventListener("click", function() {
-      document.querySelector("#sidebar").classList.toggle("collapsed");
-    });
-
-    document.querySelector(".theme-toggle").addEventListener("click", () => {
-      toggleLocalStorage();
-      toggleRootClass();
-    });
-
-    function toggleRootClass() {
-      const current = document.documentElement.getAttribute('data-bs-theme');
-      const inverted = current == 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-bs-theme', inverted);
-    }
-
-    function toggleLocalStorage() {
-      if (isLight()) {
-        localStorage.removeItem("light");
-      } else {
-        localStorage.setItem("light", "set");
-      }
-    }
-
-    function isLight() {
-      return localStorage.getItem("light");
-    }
-
-    if (isLight()) {
-      toggleRootClass();
-    }
-  </script>
 </body>
 
 </html>

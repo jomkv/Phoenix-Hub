@@ -24,29 +24,29 @@ $js_errors = json_encode($errors ? $errors['errors'] : []);
 </script>
 
 <div class="text-center">
-  <div class="container mt-5 text-start">
+  <div class="container mt-2 text-start">
     <div class="row">
-      <div class="col-lg-5 col-md-8">
+      <div class="col-lg-5 col-md-8 ">
         <h1> Create Organization </h1>
         <?= form_open_multipart('/admin/organization/new', ['class' => 'custom_form_container p-4']) ?>
         <div class="mb-3">
           <label for="organization_name">Organization Name</label>
-          <input class="form-control" type="text" name="organization_name" id="organization_name">
+          <input class="form-control" type="text" name="organization_name" id="organization_name" style="background-color: white;">
         </div>
 
         <div class="mb-3">
           <label for="description">Description</label>
-          <textarea class="form-control" rows="3" name="description" id="description"></textarea>
+          <textarea class="form-control" rows="4" name="description" id="description" style="background-color: white; resize: none; "></textarea>
         </div>
 
         <div class="mb-3">
           <label for="contact_email">Contact Email</label>
-          <input placeholder="sample@sample.com" class="form-control" type="text" name="contact_email" id="contact_email">
+          <input placeholder="sample@sample.com" class="form-control" type="text" name="contact_email" id="contact_email" style="background-color: white  ;">
         </div>
 
         <div class="mb-3">
           <label for="contact_person">Contact Person</label>
-          <input class="form-control" type="text" name="contact_person" id="contact_person">
+          <input class="form-control" type="text" name="contact_person" id="contact_person" style="background-color: white;">
         </div>
 
         <div class="mb-3">
@@ -69,9 +69,10 @@ $js_errors = json_encode($errors ? $errors['errors'] : []);
   }
 
   .custom_form_container {
-    background-color: white;
+    background-color: #EEEEEE;
     border-radius: 5px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 10px 10px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
   }
 </style>
 

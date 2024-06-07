@@ -38,26 +38,6 @@ $js_info = json_encode($info);
   <?= $this->include('partials/admin/organizationCards') ?>
 </div>
 
-<div class="modal fade" id="deleteOrganizationModal" tabindex="-1" aria-labelledby="deleteOrganizationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Delete</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this organization?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a>
-          <button type="button" class="btn btn-danger" id="delete-organization-btn">Delete</button>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   let deleteOrganizationId;
 
@@ -68,7 +48,7 @@ $js_info = json_encode($info);
       console.log(deleteOrganizationId)
     });
 
-    $('#delete-organization-btn').click(function() {
+    $('#confirm-delete-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/organization/${deleteOrganizationId}`;
 
       $.ajax({
@@ -78,8 +58,8 @@ $js_info = json_encode($info);
           'x-reload': true,
         },
         success: (response) => {
+          $('#confirmDeleteModal').modal('hide');
           $('#organizations-container').html(response);
-          $('#deleteOrganizationModal').modal('hide');
           generateSuccessToast('Organization Deleted');
         },
         error: () => {

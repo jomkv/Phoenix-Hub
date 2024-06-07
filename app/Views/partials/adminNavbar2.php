@@ -38,9 +38,9 @@
         </a>
       </li>
       <li class="sidebar-item">
-        <a href="<?= url_to('AdminViewController::viewDashboard') ?>" class="sidebar-link">
+        <a href="<?= url_to('ProductController::viewCreateProduct') ?>" class="sidebar-link">
           <i class="bi bi-bag-plus-fill pe-2"></i>
-          Create Product
+          Add Product
         </a>
       </li>
 
