@@ -67,7 +67,7 @@
       </li>
 
       <li class="sidebar-footer justify-self-end">
-        <a href="<?= url_to('AdminController::logout') ?>" class="sidebar-link">
+        <a href="#" id="logout-link" class="sidebar-link">
           <i class="bi bi-box-arrow-left pe-2"></i>
           Logout
         </a>
@@ -75,3 +75,124 @@
     </ul>
   </div>
 </aside>
+
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to log out?</p>
+    <div class="modal-actions">
+      <button id="confirmLogout" class="btn btn-primary">Yes</button>
+      <button id="cancelLogout" class="btn btn-secondary">No</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to log out?</p>
+    <div class="modal-actions">
+      <button id="confirmLogout" class="btn btn-primary">Yes</button>
+      <button id="cancelLogout" class="btn btn-secondary">No</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  
+  :root {
+  --text: #0a090b;
+  --background: #f7f6f9;
+  --primary: #7532FA;
+  --secondary: #6366F1;
+  --accent: #ffe400;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  border: 2px solid var(--secondary);
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+  width: 300px;
+  margin: auto;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s; /* Smooth transition for color change */
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: gray;
+  color: white;
+}
+
+/* Change color when the button is hovered */
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--secondary); /* Hover color */
+}
+
+.btn-primary:active,
+.btn-primary:focus:active {
+  background-color: var(--primary); /* Active color */
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: var(--secondary);/* Hover color */
+}
+
+.btn-secondary:active,
+.btn-secondary:focus:active {
+  background-color: var(--primary); /* Active color */
+}
+
+</style>
+
+<script>
+  document.getElementById('logout-link').addEventListener('click', function(event) {
+  event.preventDefault();
+  document.getElementById('logoutModal').style.display = 'flex';
+});
+
+document.getElementById('cancelLogout').addEventListener('click', function() {
+  document.getElementById('logoutModal').style.display = 'none';
+});
+
+document.getElementById('confirmLogout').addEventListener('click', function() {
+  window.location.href = "<?= url_to('AdminController::logout') ?>";
+});
+
+</script>
