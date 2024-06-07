@@ -5,6 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $this->renderSection("title") ?></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="stylesheet" href="<?= base_url() . 'global.css' ?>">
@@ -144,10 +147,24 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+    
+  :root {
+  --text: #0a090b;
+  --background: #f7f6f9;
+  --primary: #7532FA;
+  --secondary: #6366F1;
+  --accent: #ffe400;
+  }
+
+
+
     *,
     ::after,
     ::before {
       box-sizing: border-box;
+      font-family: "Kanit", sans-serif;
+      font-weight: 400;
+      font-style: normal;
     }
 
     .modal {
@@ -159,8 +176,6 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.875rem;
       opacity: 1;
       overflow-y: scroll;
       margin: 0;
@@ -169,7 +184,6 @@
     a {
       cursor: pointer;
       text-decoration: none;
-      font-family: 'Poppins', sans-serif;
     }
 
     li {
@@ -177,9 +191,11 @@
     }
 
     h4 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.275rem;
-      color: var(--bs-emphasis-color);
+      font-family: "Kanit", sans-serif;
+      font-weight: 600;
+      font-style: normal;
+      padding: 0.5rem;
+      color: var(--secondary);
     }
 
     /* Layout for admin dashboard skeleton */
@@ -205,7 +221,7 @@
       overflow: hidden;
       transition: all 0.35s ease-in-out;
       width: 100%;
-      background: var(--bs-dark-bg-subtle);
+      background: var(--background);
     }
 
     /* Sidebar Elements Style */
@@ -219,6 +235,9 @@
       font-size: 1.15rem;
       font-weight: 600;
     }
+    .h-100{
+    background-color: #313A46;
+    }
 
     .sidebar-nav {
       list-style: none;
@@ -228,17 +247,17 @@
     }
 
     .sidebar-header {
-      color: #e9ecef;
-      font-size: .75rem;
-      padding: 1.5rem 1.5rem .375rem;
+      color: var(--accent);
+      font-size: 1.55rem;
+      padding: 1.5rem 1.575rem 1.375rem;
     }
 
     a.sidebar-link {
-      padding: .625rem 1.625rem;
-      color: #e9ecef;
+      padding: 1.525rem 2.625rem;
+      color: var(--background);
       position: relative;
       display: block;
-      font-size: 0.875rem;
+      font-size: 0.775rem;
     }
 
     .sidebar-link[data-bs-toggle="collapse"]::after {
@@ -252,6 +271,7 @@
       top: 1.4rem;
       transform: rotate(-135deg);
       transition: all .2s ease-out;
+      
     }
 
     .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
@@ -339,7 +359,6 @@
       cursor: pointer;
       padding: 10px;
       display: block;
-      font-size: 1.25rem;
       color: #FFF;
     }
 
