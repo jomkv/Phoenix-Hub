@@ -15,6 +15,43 @@
 </head>
 
 <body>
+  <?php
+  $error = session()->getFlashdata('error');
+  $message = session()->getFlashdata('message');
+  $info = session()->getFlashdata('info');
+
+  $js_info = json_encode($info ? $info : "");
+  $js_error = json_encode($error ? $error : "");
+  $js_message = json_encode($message ? $message : "");
+  ?>
+
+  <div class="wrapper">
+    <?= $this->include('partials/adminNavbar2.php'); ?>
+
+    <div class="main p-3">
+      <nav class="navbar navbar-expand px-3 border-bottom border-dark">
+        <div class="navbar-collapse navbar">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                <img src="<?= base_url() . 'phoenix.png' ?>" class="avatar img-fluid rounded" alt="">
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a href="#" class="dropdown-item">Profile</a>
+                <a href="#" class="dropdown-item">Setting</a>
+                <a href="#" class="dropdown-item">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 0;"></div>
+
+      <?= $this->renderSection("content") ?>
+    </div>
+  </div>
+
   <script>
     function generateSuccessToast(message) {
       const toast = document.createElement('div');
@@ -38,7 +75,7 @@
 
     function generateInfoToast(message) {
       const toast = document.createElement('div');
-      toast.classList.add('toast', 'align-items-center', 'text-bg-primary', 'border-0');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-secondary', 'border-0');
       toast.innerHTML = `
         <div class="d-flex">
           <div class="toast-body">
@@ -90,36 +127,21 @@
         generateErrorToast("Error, please try again later.");
       }
     }
+
+    const phpError = JSON.parse('<?= $js_error ?>');
+    const phpMessage = JSON.parse('<?= $js_message ?>');
+    const phpInfo = JSON.parse('<?= $js_info ?>');
+
+    if (phpError && phpError !== "") {
+      generateErrorToast(phpError);
+    }
+    if (phpMessage && phpMessage !== "") {
+      generateSuccessToast(phpMessage);
+    }
+    if (phpInfo && phpInfo !== "") {
+      generateInfoToast(phpInfo);
+    }
   </script>
-
-  <div class="wrapper">
-    <?= $this->include('partials/adminNavbar2.php'); ?>
-
-    <div class="main p-3">
-      <nav class="navbar navbar-expand px-3 border-bottom border-dark">
-        <div class="navbar-collapse navbar">
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                <img src="<?= base_url() . 'phoenix.png' ?>" class="avatar img-fluid rounded" alt="">
-              </a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a href="#" class="dropdown-item">Profile</a>
-                <a href="#" class="dropdown-item">Setting</a>
-                <a href="#" class="dropdown-item">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 0;"></div>
-
-      <?= $this->renderSection("content") ?>
-
-
-    </div>
-  </div>
 
   <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
