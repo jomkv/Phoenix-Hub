@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="col-6 align-self-end text-end">
-                                <img src="<?= base_url() . 'phoenix.png' ?>" class="img-fluid illustration-img" alt="">
+                                <img src="<?= base_url() . 'logo-primary.png' ?>" class="img-fluid illustration-img" alt="">
                             </div>
                         </div>
                     </div>

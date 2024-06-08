@@ -13,7 +13,7 @@
         </a>
       </li>
       <li class="sidebar-header">
-        Organization
+        ORGANIZATION
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewOrganizations') ?>" class="sidebar-link">
@@ -29,7 +29,7 @@
       </li>
 
       <li class="sidebar-header">
-        Product
+        PRODUCT
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewProducts') ?>" class="sidebar-link">
@@ -45,7 +45,7 @@
       </li>
 
       <li class="sidebar-header">
-        Others
+        OTHERS
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewPending') ?>" class="sidebar-link">
