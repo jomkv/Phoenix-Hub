@@ -37,7 +37,7 @@
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                <img src="<?= base_url() . 'phoenix.png' ?>" class="avatar img-fluid rounded" alt="">
+                <img src="<?= base_url() . 'logo-primary.png' ?>" class="avatar img-fluid rounded" alt="">
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <a href="#" class="dropdown-item">Profile</a>
@@ -258,7 +258,7 @@
       font-weight: 600;
     }
     .h-100{
-    background-color: #313A46;
+    background-color: #2A3144;
     }
 
     .sidebar-nav {
@@ -269,19 +269,19 @@
     }
 
     .sidebar-header {
-      color: var(--accent);
-      font-size: 1.55rem;
-      padding: 1.5rem 1.575rem 1.375rem;
+      color: var(--background);
+      font-size: 1.30rem;
+      padding: 1rem 2.390rem 1.1rem;
     }
 
     a.sidebar-link {
-      padding: 1.525rem 2.625rem;
+      padding: 1rem 2.625rem 1.5rem;
       color: var(--background);
       position: relative;
       display: block;
       font-size: 0.775rem;
     }
-
+     
     .sidebar-link[data-bs-toggle="collapse"]::after {
       border: solid;
       border-width: 0 .075rem .075rem 0;
