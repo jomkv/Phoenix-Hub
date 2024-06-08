@@ -54,7 +54,7 @@ $js_errors = json_encode($errors ? $errors['errors'] : []);
           <input class="form-control" type="file" name="upload" id="formFile">
         </div>
 
-        <button class="btn btn-primary w-100" type="submit">Create</button>
+        <button class="btn btn-primary w-100" type="submit" disabled>Edit</button>
         </form>
       </div>
     </div>

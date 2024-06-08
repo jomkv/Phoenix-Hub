@@ -6,14 +6,15 @@
 
 <?= $this->section("content") ?>
 
-<div class="row h-auto justify-content-between">
-  <div class="col-12">
+<div class="row h-auto justify-content-between mt-2">
+  <div class="col-3">
     <h1>Products</h1>
+    <a href="<?= url_to("ProductController::viewCreateProduct") ?>" class="btn btn-primary align-self-center create-modal-btn w-75 mb-2">Create New Product</a>
   </div>
-  <div class="col-2">
-    <button type="button" data-bs-toggle="modal" data-bs-target="#createProductModal" class="btn btn-primary align-self-center create-modal-btn">Create New Product</button>
+  <div class="col-6">
+
   </div>
-  <div class="col-2">
+  <div class="col-3">
 
     <label for="select-org" class="form-label">Filter by Organization</label>
     <select id="select-org" class="form-select">
@@ -47,50 +48,13 @@
               <td class="tr-product-price">₱<?= $product['price']; ?></td>
               <td class="tr-product-stock"><?= $product['stock']; ?></td>
               <td class="text-right">
-                <button data-product-id="<?= $product['product_id'] ?>" type="button" data-bs-toggle="modal" data-bs-target="#editProductModal" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</button>
+                <a href="#" type="button" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</a>
                 <button data-product-id="<?= $product['product_id'] ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn" style="width:80px;">DELETE</button>
               </td>
             </tr>
           <?php endforeach ?>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Product</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="product_name" class="col-form-label">Product Name</label>
-          <input type="text" class="form-control" id="product_name">
-        </div>
-        <div class="mb-3">
-          <label for="description" class="col-form-label">Description</label>
-          <textarea class="form-control" id="description"></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="price" class="col-form-label">Price</label>
-          <div class="input-group">
-            <div class="input-group-text">₱</div>
-            <input type="number" id="price" class="form-control" />
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="stock" class="col-form-label">Stock</label>
-          <input type="number" id="stock" class="form-control" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="edit-product-btn">Save changes</button>
-      </div>
     </div>
   </div>
 </div>
@@ -116,101 +80,14 @@
   </div>
 </div>
 
-<!-- Create Product Modal -->
-<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Product</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="product_name" class="col-form-label">Product Name</label>
-          <input type="text" class="form-control" id="product_name_create">
-        </div>
-        <div class="mb-3">
-          <label for="description" class="col-form-label">Description</label>
-          <textarea class="form-control" id="description_create"></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="price" class="col-form-label">Price</label>
-          <div class="input-group">
-            <div class="input-group-text">₱</div>
-            <input type="number" id="price_create" class="form-control" />
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="stock" class="col-form-label">Stock</label>
-          <input type="number" id="stock_create" class="form-control" />
-        </div>
-        <div class="mb-3">
-          <label for="organization_id" class="form-label">Organization</label>
-          <select id="organization_id_create" name="organization_id" class="form-select">
-            <?php foreach ($organizations as $org) : ?>
-              <option value="<?= $org['organization_id'] ?>"><?= $org['organization_name'] ?></option>
-            <?php endforeach ?>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a>
-          <button type="button" class="btn btn-primary" id="create-product-btn">Create</button>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   let deleteProductId;
-  let editProductId;
 
   $(document).ready(function() {
 
     $('.delete-modal-btn').click(function() {
       deleteProductId = $(this).data('product-id');
     });
-
-    $('.edit-modal-btn').click(function() {
-      editProductId = $(this).data('product-id');
-
-      let url = '<?= base_url() ?>' + `admin/product/${editProductId}`;
-
-      $.ajax({
-        url: url,
-        type: 'GET',
-        success: (product) => {
-          if (product.product_name) $('#product_name').val(product.product_name);
-          if (product.description) $('#description').val(product.description);
-          if (product.price) $('#price').val(product.price);
-          if (product.stock) $('#stock').val(product.stock);
-        }
-      })
-    });
-
-    $('#create-product-btn').click(function() {
-      const data = {
-        product_name: $('#product_name_create').val(),
-        description: $('#description_create').val(),
-        price: $('#price_create').val(),
-        stock: $('#stock_create').val(),
-        organization_id: $('#organization_id_create').val(),
-      }
-
-      $.ajax({
-        url: '<?= url_to('ProductController::createProduct') ?>',
-        type: 'POST',
-        data: data,
-        success: () => {
-          window.location.reload();
-        },
-        error: (xhr, textStatus, errorThrown) => {
-          generateErrorToasts(xhr);
-        }
-      })
-    })
 
     $('#delete-product-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/product/${deleteProductId}`;
@@ -228,38 +105,6 @@
         }
       })
     })
-
-    $('#edit-product-btn').click(function() {
-      let url = '<?= base_url() ?>' + `admin/product/${editProductId}`;
-
-      const data = {
-        product_name: $('#product_name').val(),
-        description: $('#description').val(),
-        price: $('#price').val(),
-        stock: $('#stock').val(),
-      }
-
-      $.ajax({
-        url: url,
-        type: 'PUT',
-        data: data,
-        success: () => {
-          const editedRow = $(`tr[data-product-id="${editProductId}"]`);
-
-          editedRow.find('.tr-product-name').text(data.product_name);
-          editedRow.find('.tr-product-description').text(data.description);
-          editedRow.find('.tr-product-price').text(data.price);
-          editedRow.find('.tr-product-stock').text(data.stock);
-          generateSuccessToast('Product Edited');
-
-          $('#editProductModal').modal('hide'); // Close modal
-        },
-        error: (xhr, textStatus, errorThrown) => {
-          generateErrorToasts(xhr);
-        }
-      })
-    })
-
   });
 </script>
 <?= $this->endSection() ?>

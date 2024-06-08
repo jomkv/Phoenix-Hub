@@ -14,7 +14,7 @@ class UsersController extends BaseController
    * @route GET /login
    * @access public
    */
-  public function viewLogin(): string
+  public function viewLogin()
   {
     if (auth()->loggedIn()) {
       return redirect()->to('/');
