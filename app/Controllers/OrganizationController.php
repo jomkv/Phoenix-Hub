@@ -4,10 +4,18 @@ namespace App\Controllers;
 
 use App\Models\OrganizationModel;
 use App\Models\ProductModel;
+use App\Entities\Organization;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class OrganizationController extends BaseController
 {
   protected $helpers = ['form'];
+  private OrganizationModel $model;
+
+  public function __construct()
+  {
+    $this->model = new OrganizationModel();
+  }
 
   /**
    * @desc Returns a view to create new organization form
@@ -27,9 +35,7 @@ class OrganizationController extends BaseController
   public function viewEditOrg($orgId)
   {
     try {
-      $model = new OrganizationModel();
-
-      $org = $model->find($orgId);
+      $org = $this->model->find($orgId);
 
       if (!$org) {
         return redirect()->to('/admin/organization')->with('error', "Organization not found.");
@@ -76,6 +82,16 @@ class OrganizationController extends BaseController
   public function createOrg()
   {
     try {
+      $model = new OrganizationModel();
+      $data = $this->request->getPost();
+
+      // Validate form data, excluding image
+      if (!$model->validate($data)) {
+        return redirect()->back()
+          ->with('errors', $model->errors())
+          ->withInput();
+      }
+
       $validationRule = [
         'upload' => [
           'label' => 'Image File',
@@ -90,55 +106,44 @@ class OrganizationController extends BaseController
 
       // Validate Image
       if (!$this->validateData([], $validationRule)) {
-        return redirect()->to('/admin/organization/new')->with('error', ['errors' => $this->validator->getErrors()]);
+        return redirect()->back()
+          ->with('errors', $this->validator->getErrors())
+          ->withInput();
       }
 
       $img = $this->request->getFile('upload');
 
       // Check if image has been tampered with
       if ($img->hasMoved()) {
-        return redirect()->to('/admin/organization/new')->with('error', ['errors' => 'Error occurred, unable to process image']);
+        return redirect()->back()
+          ->with('error', 'Error occurred, unable to process image')
+          ->withInput();
       }
 
       // Generate random file name, and upload image to writable/uploads/
       $imgName = $img->getRandomName();
       $img->move(ROOTPATH . 'public/organizationLogos', $imgName);
 
-      $model = new OrganizationModel();
-      $data = $this->request->getPost();
       $data['logo_file_name'] = $imgName;
 
-      // Validate all form data
-      if (!$model->validate($data)) {
-        return redirect()->to('/admin/organization/new')->with('error', ['errors' => $model->errors()]);
-      }
-
       // Validate if org name is taken
-      if ($model->where('organization_name', $data['organization_name'])->first()) {
-        return redirect()->to('/admin/organization/new')->with('error', 'Organization name already taken.');
+      if ($model->where('organization_name', $data['organization_name'])->withDeleted()->first()) {
+        return redirect()->back()
+          ->with('errors', ['Organization name already taken'])
+          ->withInput();
       }
 
-      $isSuccess = $model->insert($data, false);
+      $newOrganization = new Organization($data);
+      $isSuccess = $model->insert($newOrganization);
 
-      if (!$isSuccess) {
-        return redirect()->to('/admin/organization/new')->with('error', ['errors' => 'Error occurred, unable to create new organization']);
+      if ($isSuccess) {
+        return redirect()->to('/admin/organization')->with('message', 'Organization successfully created');
+      } else {
+        return redirect()->to('/admin/organization')->with('error', 'Server error, unable to create new organization');
       }
-
-      return redirect()->to('/admin/organization/')->with('info', 'Organization successfully created');
     } catch (\Exception $e) {
-      log_message('error', 'Error viewing organization products: ' . $e->getMessage());
-      return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
+      return redirect()->to('/admin/organization/new')->with('error', 'Server error. Please try again later');
     }
-    // if ($imageFile = $this->request->getFiles()) {
-    //   foreach ($imageFile['images'] as $img) {
-    //     if ($img->isValid() && !$img->hasMoved()) {
-    //       $imgName = $img->getRandomName();
-    //       $img->move(WRITEPATH . 'uploads', $imgName);
-    //     } else {
-    //       // handle error
-    //     }
-    //   }
-    // }
   }
 
   /**
@@ -149,24 +154,30 @@ class OrganizationController extends BaseController
   public function deleteOrg($orgId)
   {
     try {
-      $model = new OrganizationModel();
+      $org = $this->getOrganizationOrError($orgId);
 
-      $org = $model->find($orgId);
+      // Delete uploaded org image
+      unlink('organizationLogos/' . $org->logo_file_name);
 
-      if (!$org) {
-        return redirect()->to('/admin/organization')->with('error', 'Organization not found.');
-      }
-
-      $model->delete($orgId);
-      $organizations = $model->findAll();
+      $this->model->delete($org->organization_id);
 
       if ($this->request->hasHeader('x-reload')) {
-        return view('partials/admin/organizationCards', ["organizations" => $organizations]);
+        $updatedOrgList = $this->model->findAll();
+        return view('partials/admin/organizationCards', ["organizations" => $updatedOrgList]);
       }
 
-      return redirect()->to('/admin/organization')->with('info', 'Organization successfully deleted.');
+      return redirect()->to('/admin/organization')->with('message', 'Organization successfully deleted.');
+    } catch (\LogicException $e) {
+      if ($this->request->hasHeader('x-reload')) {
+        return $this->response->setStatusCode(400);
+      }
+
+      return redirect()->back()->with('error', $e->getMessage());
     } catch (\Exception $e) {
-      log_message('error', 'Error deleting organization: ' . $e->getMessage());
+      if ($this->request->hasHeader('x-reload')) {
+        return $this->response->setStatusCode(500);
+      }
+
       return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
     }
   }
@@ -200,5 +211,16 @@ class OrganizationController extends BaseController
       log_message('error', 'Error deleting organization: ' . $e->getMessage());
       return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
     }
+  }
+
+  private function getOrganizationOrError($id)
+  {
+    $organization = $this->model->find($id);
+
+    if ($organization === null) {
+      throw new \LogicException("Organization not found");
+    }
+
+    return $organization;
   }
 }

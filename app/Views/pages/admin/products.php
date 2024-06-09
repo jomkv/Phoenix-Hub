@@ -20,7 +20,7 @@
     <select id="select-org" class="form-select">
       <option>None</option>
       <?php foreach ($organizations as $org) : ?>
-        <option value="<?= $org['organization_id'] ?>"><?= $org['organization_name'] ?></option>
+        <option value="<?= $org->organization_id ?>"><?= $org->organization_name ?></option>
       <?php endforeach ?>
     </select>
   </div>

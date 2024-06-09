@@ -11,7 +11,7 @@ class OrganizationModel extends Model
 
   protected $useAutoIncrement = true;
 
-  protected $returnType     = 'array';
+  protected $returnType     = \App\Entities\Organization::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
   protected $allowedFields = ['organization_name', 'description', 'contact_email', 'contact_person', 'logo_file_name'];

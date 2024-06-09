@@ -54,11 +54,6 @@ class AdminViewController extends BaseController
 
       $orgs = $orgModel->findAll();
 
-      // If no orgs found
-      if (empty($orgs)) {
-        $orgs = [];
-      }
-
       return view('pages/admin/organizations', ['organizations' => $orgs]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing admin organization menu: ' . $e->getMessage());

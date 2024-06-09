@@ -151,7 +151,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Delete</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="delete-modal-btn-close"></button>
         </div>
         <div class="modal-body">
           Are you sure you want to perform this action?
@@ -169,14 +169,14 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-    
-  :root {
-  --text: #0a090b;
-  --background: #f7f6f9;
-  --primary: #7532FA;
-  --secondary: #6366F1;
-  --accent: #ffe400;
-  }
+
+    :root {
+      --text: #0a090b;
+      --background: #f7f6f9;
+      --primary: #7532FA;
+      --secondary: #6366F1;
+      --accent: #ffe400;
+    }
 
 
 
@@ -257,8 +257,9 @@
       font-size: 1.15rem;
       font-weight: 600;
     }
-    .h-100{
-    background-color: #2A3144;
+
+    .h-100 {
+      background-color: #2A3144;
     }
 
     .sidebar-nav {
@@ -281,7 +282,7 @@
       display: block;
       font-size: 0.775rem;
     }
-     
+
     .sidebar-link[data-bs-toggle="collapse"]::after {
       border: solid;
       border-width: 0 .075rem .075rem 0;
@@ -293,7 +294,7 @@
       top: 1.4rem;
       transform: rotate(-135deg);
       transition: all .2s ease-out;
-      
+
     }
 
     .sidebar-link[data-bs-toggle="collapse"].collapsed::after {

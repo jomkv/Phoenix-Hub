@@ -11,17 +11,23 @@
 </style>
 
 <div class="row">
-  <!-- 
-    Carousel Mobile File Path: app/Views/partials/user/organizationCarouselMobile.php
-  -->
-  <?= $this->include('partials/user/organizationCarouselMobile.php'); ?>
+  <div class="col-12 text-center shadow-lg p-5">
+    <h1>Explore Organizations</h1>
+    <div class="d-flex flex-row flex-nowrap overflow-auto">
+      <?php foreach ($organizations as $organization) : ?>
+        <div class="card m-2" style="min-height: 200px; min-width: 250px; margin-right: 5px;">
+          <img src="<?= base_url('organizationLogos/' . $organization->logo_file_name)  ?>" class="img-thumbnail mx-auto d-block rounded-circle" alt="..." style="width:175px; height: 175px;">
+          <div class="card-body">
+            <h5 class="card-title"><?= esc($organization->organization_name) ?></h5>
+            <a href="#" class="btn btn-primary">View Products</a>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
 
-  <!-- 
-    Carousel File Path: app/Views/partials/user/organizationCarousel.php
-  -->
-  <?= $this->include('partials/user/organizationCarousel.php'); ?>
   <div class="col-12 text-center">
-    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary mt-3 w-25 h-100" type="button">Barter</a>
+    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary mt-5 w-25 h-50" type="button">Barter</a>
   </div>
 </div>
 

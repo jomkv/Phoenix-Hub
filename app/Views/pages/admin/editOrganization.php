@@ -31,22 +31,22 @@ $js_errors = json_encode($errors ? $errors['errors'] : []);
         <?= form_open_multipart('/admin/organization/new', ['class' => 'custom_form_container p-4']) ?>
         <div class="mb-3">
           <label for="organization_name">Organization Name</label>
-          <input value="<?= $organization['organization_name'] ?>" class="form-control" type="text" name="organization_name" id="organization_name">
+          <input value="<?= $organization->organization_name ?>" class="form-control" type="text" name="organization_name" id="organization_name">
         </div>
 
         <div class="mb-3">
           <label for="description">Description</label>
-          <textarea class="form-control" rows="3" name="description" id="description"><?= $organization['description'] ?></textarea>
+          <textarea class="form-control" rows="3" name="description" id="description"><?= $organization->description ?></textarea>
         </div>
 
         <div class="mb-3">
           <label for="contact_email">Contact Email</label>
-          <input value="<?= $organization['contact_email'] ?>" placeholder="sample@sample.com" class="form-control" type="text" name="contact_email" id="contact_email">
+          <input value="<?= $organization->contact_email ?>" placeholder="sample@sample.com" class="form-control" type="text" name="contact_email" id="contact_email">
         </div>
 
         <div class="mb-3">
           <label for="contact_person">Contact Person</label>
-          <input value="<?= $organization['contact_person'] ?>" class="form-control" type="text" name="contact_person" id="contact_person">
+          <input value="<?= $organization->contact_person ?>" class="form-control" type="text" name="contact_person" id="contact_person">
         </div>
 
         <div class="mb-3">
