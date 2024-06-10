@@ -64,7 +64,10 @@ $routes->environment('development', static function ($routes) {
 
 $routes->get('/admin/organization/new', 'OrganizationController::viewCreateOrg');
 $routes->post('/admin/organization/new', 'OrganizationController::createOrg');
+
 $routes->get('/admin/organization/(:num)', 'OrganizationController::viewEditOrg/$1');
+$routes->post('/admin/organization/(:num)', 'OrganizationController::editOrg/$1');
+
 $routes->delete('/admin/organization/(:num)', 'OrganizationController::deleteOrg/$1');
 
 // * Admin Products

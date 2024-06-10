@@ -14,7 +14,7 @@ class OrganizationModel extends Model
   protected $returnType     = \App\Entities\Organization::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['organization_name', 'description', 'contact_email', 'contact_person', 'logo_file_name'];
+  protected $allowedFields = ['organization_id', 'name', 'full_name', 'contact_email', 'contact_person', 'logo'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -29,21 +29,23 @@ class OrganizationModel extends Model
   // * Validation
 
   protected $validationRules      = [
-    'organization_name' => 'required|max_length[255]',
-    'description'       => 'required|max_length[65530]',
-    'contact_email'     => 'required|max_length[254]|valid_email',
-    'contact_person'    => 'required|max_length[100]',
-    'logo_file_name'    => 'required|max_length[500]'
+    'organization_id'      => 'permit_empty',
+    'name'                 => 'required|max_length[255]|is_unique[organizations.name, organization_id, {organization_id}]',
+    'full_name'            => 'required|max_length[65530]',
+    'contact_email'        => 'required|max_length[254]|valid_email',
+    'contact_person'       => 'required|max_length[100]',
+    'logo'                 => 'required|max_length[500]'
   ];
 
   protected $validationMessages   = [
-    'organization_name' => [
+    'name' => [
       'required'    => 'Organization Name must be provided',
-      'max_length'  => 'Organization Name too long'
+      'max_length'  => 'Organization Name too long',
+      'is_unique'   => 'Organization Name already taken',
     ],
-    'description' => [
-      'required'    => 'Description must be provided',
-      'max_length'  => 'Description too long'
+    'full_name' => [
+      'required'    => 'Organization Full Name must be provided',
+      'max_length'  => 'Organization Full Name too long'
     ],
     'contact_email' => [
       'required'    => 'Contact Email must be provided',
@@ -54,9 +56,9 @@ class OrganizationModel extends Model
       'required'    => 'Contact Person must be provided',
       'max_length'  => 'Contact Person too long',
     ],
-    'logo_file_name' => [
-      'required'    => 'Logo was either not provided, or there was a problem processing it.',
-      'max_length'  => 'Uploaded Logo filename is too long.',
+    'logo' => [
+      'required'    => 'Logo was either not provided, or there was a problem processing it',
+      'max_length'  => 'Uploaded Logo filename is too long',
     ],
   ];
   // protected $skipValidation       = false;

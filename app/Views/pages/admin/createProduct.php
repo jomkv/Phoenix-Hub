@@ -16,7 +16,7 @@
           <label for="organization_id">Organization</label>
           <select name="organization_id" id="organization_id" class="form-select" style="background-color: white;">
             <?php foreach ($organizations as $org) : ?>
-              <option value="<?= $org->organization_id; ?>"><?= $org->organization_name; ?></option>
+              <option value="<?= $org->organization_id; ?>"><?= $org->name; ?></option>
             <?php endforeach ?>
           </select>
         </div>

@@ -29,6 +29,7 @@
 
     $('#confirm-delete-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/organization/${deleteOrganizationId}`;
+      $(this).attr("disabled", true); // disable button
 
       $.ajax({
         url: url,
@@ -40,10 +41,12 @@
           $('#delete-modal-btn-close').click();
           $('#organizations-container').html(response);
           generateSuccessToast('Organization Deleted');
+          $(this).attr("disabled", false); // disable button
         },
         error: () => {
           $('#delete-modal-btn-close').click();
           generateErrorToast('Error Deleting Product.');
+          $(this).attr("disabled", false); // disable button
         }
       })
     })

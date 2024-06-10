@@ -15,13 +15,12 @@ class CreateOrganizationTable extends Migration
                 'auto_increment'    => true,
                 'null'              => false
             ],
-            'organization_name' => [
+            'name' => [
                 'type'              => 'VARCHAR',
                 'constraint'        => '255',
                 'null'              => false,
-                'unique'            => true,
             ],
-            'description' => [
+            'full_name' => [
                 'type'              => 'TEXT',
                 'null'              => false,
             ],
@@ -35,7 +34,7 @@ class CreateOrganizationTable extends Migration
                 'constraint'        => '100',
                 'null'              => false,
             ],
-            'logo_file_name' => [
+            'logo' => [
                 'type'              => 'VARCHAR',
                 'constraint'        => '500',
                 'null'              => false,

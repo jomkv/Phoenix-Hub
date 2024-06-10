@@ -9,7 +9,8 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 
 class OrganizationController extends BaseController
 {
-  protected $helpers = ['form'];
+  protected $helpers = ['form', 'upload'];
+
   private OrganizationModel $model;
 
   public function __construct()
@@ -82,13 +83,12 @@ class OrganizationController extends BaseController
   public function createOrg()
   {
     try {
-      $model = new OrganizationModel();
       $data = $this->request->getPost();
 
       // Validate form data, excluding image
-      if (!$model->validate($data)) {
+      if (!$this->model->validate($data)) {
         return redirect()->back()
-          ->with('errors', $model->errors())
+          ->with('errors', $this->model->errors())
           ->withInput();
       }
 
@@ -99,7 +99,7 @@ class OrganizationController extends BaseController
             'uploaded[upload]',
             'is_image[upload]',
             'mime_in[upload, image/jpg,image/jpeg,image/png,image/webp]',
-            'max_size[upload,51200]', // 50 mb limit, converted to kb
+            'max_size[upload,10200]', // 10 mb limit, converted to kb
           ],
         ],
       ];
@@ -121,20 +121,16 @@ class OrganizationController extends BaseController
       }
 
       // Generate random file name, and upload image to writable/uploads/
-      $imgName = $img->getRandomName();
-      $img->move(ROOTPATH . 'public/organizationLogos', $imgName);
+      $imgName = $img->getFilename();
+      $img->move(ROOTPATH . 'writable\\uploads\\', $imgName);
 
-      $data['logo_file_name'] = $imgName;
+      $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName);
 
-      // Validate if org name is taken
-      if ($model->where('organization_name', $data['organization_name'])->withDeleted()->first()) {
-        return redirect()->back()
-          ->with('errors', ['Organization name already taken'])
-          ->withInput();
-      }
+      // Delete uploaded org image
+      unlink(ROOTPATH . 'writable\\uploads\\' . $imgName);
 
       $newOrganization = new Organization($data);
-      $isSuccess = $model->insert($newOrganization);
+      $isSuccess = $this->model->insert($newOrganization);
 
       if ($isSuccess) {
         return redirect()->to('/admin/organization')->with('message', 'Organization successfully created');
@@ -142,7 +138,7 @@ class OrganizationController extends BaseController
         return redirect()->to('/admin/organization')->with('error', 'Server error, unable to create new organization');
       }
     } catch (\Exception $e) {
-      return redirect()->to('/admin/organization/new')->with('error', 'Server error. Please try again later');
+      return redirect()->to('/admin/organization/new')->with('error', 'Server error. Please try again later')->with('stack', $e);
     }
   }
 
@@ -157,7 +153,7 @@ class OrganizationController extends BaseController
       $org = $this->getOrganizationOrError($orgId);
 
       // Delete uploaded org image
-      unlink('organizationLogos/' . $org->logo_file_name);
+      delete_image(json_decode($org->logo)->public_id);
 
       $this->model->delete($org->organization_id);
 
@@ -190,23 +186,66 @@ class OrganizationController extends BaseController
   public function editOrg($orgId)
   {
     try {
-      // * TODO
-      // $model = new OrganizationModel();
+      $org = $this->getOrganizationOrError($orgId);
+      $data = $this->request->getPost();
+      $data["organization_id"] = $orgId;
 
-      // $org = $model->find($orgId);
+      // Validate form data, excluding image
+      if (!$this->model->validate($data)) {
+        return redirect()->back()
+          ->with('errors', $this->model->errors())
+          ->withInput();
+      }
 
-      // if (!$org) {
-      //   return redirect()->to('/admin/organization')->with('error', 'Organization not found.');
-      // }
+      $validationRule = [
+        'upload' => [
+          'label' => 'Image File',
+          'rules' => [
+            'uploaded[upload]',
+            'is_image[upload]',
+            'mime_in[upload, image/jpg,image/jpeg,image/png,image/webp]',
+            'max_size[upload,10200]', // 10 mb limit, converted to kb
+          ],
+        ],
+      ];
 
-      // $model->delete($orgId);
-      // $organizations = $model->findAll();
+      // Validate Image
+      if (!$this->validateData([], $validationRule)) {
+        return redirect()->back()
+          ->with('errors', $this->validator->getErrors())
+          ->withInput();
+      }
 
-      // if ($this->request->hasHeader('x-reload')) {
-      //   return view('partials/admin/organizationCards', ["organizations" => $organizations]);
-      // }
+      $img = $this->request->getFile('upload');
 
-      // return redirect()->to('/admin/organization')->with('info', 'Organization successfully deleted.');
+      // Check if image has been tampered with
+      if ($img->hasMoved()) {
+        return redirect()->back()
+          ->with('error', 'Error occurred, unable to process image')
+          ->withInput();
+      }
+
+      // Delete uploaded org image
+      delete_image(json_decode($org->logo)->public_id);
+
+      // Generate random file name, and upload image to writable/uploads/
+      $imgName = $img->getFilename();
+      $img->move(ROOTPATH . 'writable\\uploads\\', $imgName);
+
+      $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName);
+
+      // Delete uploaded org image
+      unlink(ROOTPATH . 'writable\\uploads\\' . $imgName);
+
+      $isSuccess = $this->model->update($orgId, $data);
+
+      if ($isSuccess) {
+        return redirect()->to('/admin/organization')->with('message', 'Organization successfully edited');
+      } else {
+        return redirect()->to('/admin/organization')->with('error', 'Server error, unable to edit new organization');
+      }
+    } catch (\LogicException $e) {
+      return redirect()->back()->with('error', $e->getMessage());
     } catch (\Exception $e) {
       log_message('error', 'Error deleting organization: ' . $e->getMessage());
       return redirect()->to('/admin/organization/new')->with('error', 'An error occurred. Please try again later.');
