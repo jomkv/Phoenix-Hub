@@ -14,12 +14,12 @@
         <?= form_open_multipart('/admin/organization/new', ['class' => 'custom_form_container p-4 shadow-lg']) ?>
         <div class="mb-3">
           <label for="organization_name">Organization Name</label>
-          <input class="form-control" type="text" name="organization_name" id="organization_name" style="background-color: white;" value="<?= esc(old('organization_name')) ?>">
+          <input placeholder="CSG" class="form-control" type="text" name="name" id="name" style="background-color: white;" value="<?= esc(old('name')) ?>">
         </div>
 
         <div class="mb-3">
-          <label for="description">Description</label>
-          <textarea class="form-control" rows="4" name="description" id="description" style="background-color: white; resize: none; "><?= esc(old('description')) ?></textarea>
+          <label for="description">Organization Full Name</label>
+          <textarea placeholder="Central Student Government" class="form-control" rows="4" name="full_name" id="full_name" style="background-color: white; resize: none; "><?= esc(old('full_name')) ?></textarea>
         </div>
 
         <div class="mb-3">
@@ -37,7 +37,7 @@
           <input class="form-control" type="file" name="upload" id="formFile">
         </div>
 
-        <button class="btn btn-primary w-100 mb-3" type="submit">Create</button>
+        <button class="btn btn-primary w-100 mb-3" type="submit" id="submit-create-btn" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Create</button>
 
         <?php if (session()->has("errors")) : ?>
           <div class="bg-danger-subtle text-dark border-danger border-start border-4 rounded" style="padding: 10px; padding-left: 15px;">
@@ -55,6 +55,11 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  document.getElementById('submit-create-btn').addEventListener("click", () => {
+    document.getElementById("submit-create-btn").disabled = true;
+  })
+</script>
 
 <style>
   .container .row .col-lg-5 {

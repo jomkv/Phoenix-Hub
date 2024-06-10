@@ -2,8 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Models\StudentModel;
+use App\Entities\Student;
+
 class UsersController extends BaseController
 {
+  private $model;
+
+  public function __construct()
+  {
+    $this->model = new StudentModel();
+  }
+
   public function index(): string
   {
     return view('welcome_message');
@@ -17,7 +27,7 @@ class UsersController extends BaseController
   public function viewLogin()
   {
     if (auth()->loggedIn()) {
-      return redirect()->to('/');
+      return redirect()->to('/')->with("info", "User already logged in");
     }
 
     return view('pages/user/login');
@@ -28,8 +38,12 @@ class UsersController extends BaseController
    * @route GET /signup
    * @access public
    */
-  public function viewSignup(): string
+  public function viewSignup()
   {
+    if (auth()->loggedIn()) {
+      return redirect()->to('/')->with("info", "User already logged in");
+    }
+
     return view('pages/user/signup');
   }
 

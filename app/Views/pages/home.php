@@ -16,9 +16,10 @@
     <div class="d-flex flex-row flex-nowrap overflow-auto">
       <?php foreach ($organizations as $organization) : ?>
         <div class="card m-2" style="min-height: 200px; min-width: 250px; margin-right: 5px;">
-          <img src="<?= base_url('organizationLogos/' . $organization->logo_file_name)  ?>" class="img-thumbnail mx-auto d-block rounded-circle" alt="..." style="width:175px; height: 175px;">
+          <img src="<?= json_decode($organization->logo)->url ?>" class="img-thumbnail mx-auto d-block rounded-circle" alt="..." style="width:175px; height: 175px;">
           <div class="card-body">
-            <h5 class="card-title"><?= esc($organization->organization_name) ?></h5>
+            <h5 class="card-title"><?= esc($organization->name) ?></h5>
+            <p><?= esc($organization->full_name) ?></p>
             <a href="#" class="btn btn-primary">View Products</a>
           </div>
         </div>

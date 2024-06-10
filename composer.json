@@ -11,6 +11,7 @@
   },
   "require": {
     "php": "^8.1",
+    "cloudinary/cloudinary_php": "^2.14",
     "codeigniter4/framework": "^4.0",
     "codeigniter4/shield": "^1.0",
     "twbs/bootstrap": "5.3.3",
