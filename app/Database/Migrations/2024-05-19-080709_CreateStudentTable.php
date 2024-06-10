@@ -29,23 +29,27 @@ class CreateStudentTable extends Migration
             ],
             'student_number' => [
                 'type'              => 'VARCHAR',
-                'constraint'        => '10',
+                'constraint'        => '255',
                 'null'              => false,
                 'unique'            => true,
             ],
-            'first_name' => [
-                'type'              => 'VARCHAR',
-                'constraint'        => '50',
-                'null'              => false,
-            ],
-            'last_name' => [
-                'type'              => 'VARCHAR',
-                'constraint'        => '50',
-                'null'              => false,
-            ],
-            'pfp_url' => [
+            'full_name' => [
                 'type'              => 'VARCHAR',
                 'constraint'        => '255',
+                'null'              => false,
+            ],
+            'phone_number' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '255',
+                'null'              => false,
+            ],
+            'pfp' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '500',
+                'null'              => true,
+            ],
+            'deleted_at' => [
+                'type'              => 'DATETIME',
                 'null'              => true,
             ]
         ];
