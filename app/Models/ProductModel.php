@@ -11,10 +11,10 @@ class ProductModel extends Model
 
   protected $useAutoIncrement = true;
 
-  protected $returnType     = 'array';
+  protected $returnType     = \App\Entities\Product::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['product_name', 'description', 'price', 'stock', 'organization_id', 'image_urls'];
+  protected $allowedFields = ['product_name', 'description', 'price', 'stock', 'organization_id', 'images'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -34,7 +34,7 @@ class ProductModel extends Model
     'price'             => 'required|numeric|greater_than[0]',
     'stock'             => 'required|numeric',
     'organization_id'   => 'required',
-    'image_urls'        => 'max_length[65530]'
+    'images'            => 'required',
   ];
 
   protected $validationMessages   = [
@@ -58,8 +58,8 @@ class ProductModel extends Model
     'organization_id' => [
       'required'    => 'Organization ID must be provided',
     ],
-    'image_urls' => [
-      'max_length'  => 'Image URLs exceeded limit.',
+    'images' => [
+      'required'  => 'Product Image(s) must be provided',
     ],
   ];
   // protected $skipValidation       = false;

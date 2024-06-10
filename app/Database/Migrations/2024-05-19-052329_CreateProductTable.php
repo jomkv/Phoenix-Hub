@@ -29,7 +29,7 @@ class CreateProductTable extends Migration
                 'constraint'            => '10,2',
                 'null'                  => false,
             ],
-            'image_urls' => [ // Store comma-separated image URLs here
+            'images' => [ // Store stringified JSON of cloudinary images here
                 'type'                  => 'TEXT',
                 'null'                  => true,
             ],
