@@ -147,7 +147,7 @@
               <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" class="img-fluid mb-3" alt="Product Image">
             </div>
             <div class="col-md-6 product-details">
-              <h1 class="card-title text-center">TOYOTA SUPRA MK4</h1>
+              <h1 class="card-title text-center">Product Title</h1>
               <p><strong>Product Details / Specs:</strong></p>
               <ul>
                 <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
