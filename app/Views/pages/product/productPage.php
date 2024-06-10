@@ -3,61 +3,53 @@
 <?= $this->section("title") ?>Product Menu <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Detail Page</title>
-  <!-- Include Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    /* Custom CSS for minimalist design */
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Noto Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-    .product-card {
-      margin-top: 50px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      max-width: 900px; /* Increase the max-width for a larger card */
-      margin: auto; /* Center the card horizontally */
-    }
-    .product-img {
-      text-align: center;
-      position: relative;
-    }
-    .product-img img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      object-position: center;
-    }
-    .small-images {
-      display: flex;
-      justify-content: center;
-      gap: 50px; /* Add some space between images */
-    }
-    .small-images img {
-      width: 20%; /* Set width to 20% of the container */
-      max-width: 100px; /* Limit max-width for smaller screens */
-      height: auto;
-      object-fit: cover;
-      border: 1px solid #ddd; /* Optional: Add a border to the images */
-      cursor: pointer; /* Change cursor to pointer */
-    }
-    .product-details {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 20px;
-    }
-    .product-details p {
-      margin-bottom: 10px;
-    }
-    .back-button {
+<style>
+ .custom-card-size {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding:15px;
+}
+
+.main-image-container {
+  height: 300px; /* Set a fixed height for the main image container */
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-images-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.small-img {
+  max-height: 80px; /* Set a max height for the small images */
+  width: auto;
+  border: 1px solid #ddd;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0 5px;
+}
+
+.card-body {
+  padding: 1rem;
+}
+.back-button {
       position: fixed;
       top: 105px;
       left: 10px;
@@ -74,90 +66,118 @@
       font-size: 24px;
       text-decoration: none;
     }
-    .large-image-popup {
-      display: none; /* Hidden by default */
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1050;
-      padding: 10px; /* Smaller padding */
-      border-radius: 5px; /* Smaller border radius */
-    }
-    .large-image-popup img {
-      max-width: 300px; /* Smaller max-width */
-      max-height: 300px; /* Smaller max-height */
-      object-fit: cover;
-    }
-    @media (max-width: 767px) {
-      .back-button {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-      }
-      .product-card .card-body {
-        flex-direction: column;
-      }
-      .small-images img {
-        width: 30%; /* Adjust width for smaller screens */
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container-fluid">
-    <!-- Back button float -->
-    <a href="javascript:history.back()" class="back-button"><i class="bi bi-arrow-left"></i></a>
-    <div class="card product-card">
-      <div class="card-body d-flex">
-        <div class="col-md-6">
-          <div class="product-img">
-            <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" class="img-fluid mb-3" alt="Product Image">
+    .back-button-container {
+  position: absolute;
+  top: 20px; /* Adjust as needed */
+  left: 20px; /* Adjust as needed */
+}
+
+@media (max-width: 767px) {
+  .row.no-gutters {
+    flex-direction: column;
+  }
+  .small-images-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .small-img {
+    width: 100%;
+    margin: 5px;
+  }
+  .btn-group-vertical .btn {
+    width: 100%;
+  }
+  .back-button-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 20px;
+  }
+}
+
+</style>
+<!-- Back button float -->
+<div class="back-button-container">
+  <a href="javascript:history.back()" class="back-button"><i class="bi bi-arrow-left"></i></a>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card custom-card-size">
+        <div class="row no-gutters">
+          <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+            <div class="main-image-container">
+              <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" class="img-fluid main-image mb-2" alt="Main Image">
+            </div>
+            <div class="row small-images-row">
+              <div class="col-4 p-1">
+                <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid small-img" alt="Small Image 1">
+              </div>
+              <div class="col-4 p-1">
+                <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid small-img" alt="Small Image 2">
+              </div>
+              <div class="col-4 p-1">
+                <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid small-img" alt="Small Image 3">
+              </div>
+            </div>
           </div>
-          <!-- Small images under the main image -->
-          <div class="small-images">
-            <img src="<?= base_url() . 'phoenix.png' ?>" alt="Small Image 1" onmouseover="showLargeImage(this)" onmouseout="hideLargeImage()">
-            <img src="<?= base_url() . 'CVSU_LOGO.png' ?>" alt="Small Image 2" onmouseover="showLargeImage(this)" onmouseout="hideLargeImage()">
-            <img src="<?= base_url() . 'CvSU Home page.jpg' ?>" alt="Small Image 3" onmouseover="showLargeImage(this)" onmouseout="hideLargeImage()">
-          </div>
-        </div>
-        <div class="col-md-6 product-details">
-          <h1 class="card-title text-center">Product Title</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum, dolor Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus facilis distinctio beatae deserunt consectetur? Nobis soluta quod id magni delectus corporis nulla molestias, ipsum expedita repellat modi dolorum porro quo!</p>
-          <div class="d-flex justify-content-between mt-3">
-            <button class="btn btn-primary btn-lg">Button 1</button>
-            <button class="btn btn-secondary btn-lg">Button 2</button>
-            <button class="btn btn-success btn-lg">Button 3</button>
-          </div>
+          <div class="col-md-8 d-flex flex-column justify-content-center">
+  <div class="card-body">
+    <h1 class="card-title text-center">Product Title</h1>
+    <p class="card-text text-center fs-3">20 PESOS</p>
+    <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda consectetur modi ea consequuntur dolores similique tempore numquam minus, aspernatur fugit, laboriosam pariatur nulla. Quas deserunt, nesciunt neque vero placeat ullam?.</p>
+    <div class="input-group mb-3 align-items-center">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="button" id="minusBtn">-</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" id="quantityInput" value="1" readonly>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="plusBtn">+</button>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary">Add to Cart</button>
+      <button class="btn btn-primary">Check Out</button>
+    </div>
+  </div>
+</div>
+
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Large Image Popup -->
-  <div class="large-image-popup" id="largeImagePopup">
-    <img id="largeImage" src="" alt="Large Image">
-  </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- Include Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('.small-img').hover(function() {
+    // Get the source of the hovered small image
+    var imgSrc = $(this).attr('src');
+    // Set the main image source to the hovered small image source
+    $('.main-image').attr('src', imgSrc);
+  }, function() {
+    // Restore the main image to its original source when not hovered
+    var originalImgSrc = '<?= base_url() . 'toyota-supra-mk4.png' ?>'; // Change to the original image source
+    $('.main-image').attr('src', originalImgSrc);
+  });
+});
+$(document).ready(function() {
+    // Increase quantity
+    $('#plusBtn').click(function() {
+      var quantity = parseInt($('#quantityInput').val());
+      $('#quantityInput').val(quantity + 1);
+    });
 
-  <script>
-    function showLargeImage(img) {
-      var popup = document.getElementById('largeImagePopup');
-      var largeImage = document.getElementById('largeImage');
-      largeImage.src = img.src;
-      popup.style.display = 'block';
-    }
-
-    function hideLargeImage() {
-      var popup = document.getElementById('largeImagePopup');
-      popup.style.display = 'none';
-    }
-  </script>
-</body>
-</html>
-
+    // Decrease quantity
+    $('#minusBtn').click(function() {
+      var quantity = parseInt($('#quantityInput').val());
+      if (quantity > 1) {
+        $('#quantityInput').val(quantity - 1);
+      }
+    });
+  });
+</script>
 <?= $this->endSection() ?>
