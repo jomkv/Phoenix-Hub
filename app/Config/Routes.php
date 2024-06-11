@@ -14,6 +14,10 @@ $routes->environment('development', static function ($routes) {
   $routes->get('/test/barterHome', 'TestViewsController::viewBarter');
   $routes->get('/test/barterItem', 'TestViewsController::viewBarterPost');
   $routes->get('/test/createBarter', 'TestViewsController::viewCreateBarter');
+  $routes->get('/test/checkout', 'OrderController::pay');
+  $routes->get('/test/checkout/confirm', 'OrderController::success');
+  $routes->get('/test/checkout/cancel', 'OrderController::cancel');
+  $routes->get('/test/cart', 'TestViewsController::viewCart');
 });
 
 /**
