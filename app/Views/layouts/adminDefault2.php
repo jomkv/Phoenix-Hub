@@ -49,7 +49,7 @@
         </div>
       </nav>
 
-      <div class="toast-container bottom-0 end-0 p-3" id="custom-toast-container" style="z-index: 0;"></div>
+      <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
       <?= $this->renderSection("content") ?>
     </div>

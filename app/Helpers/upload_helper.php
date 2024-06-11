@@ -1,18 +1,6 @@
 <?php
 
-// Use the Configuration class 
-use Cloudinary\Configuration\Configuration;
-
-// Upload API
-use Cloudinary\Api\Upload\UploadApi;
-
-// Use the Resize transformation group and the ImageTag class
-use Cloudinary\Transformation\Resize;
-use Cloudinary\Transformation\Background;
-use Cloudinary\Tag\ImageTag;
-
-// Configure an instance of your Cloudinary cloud
-Configuration::instance(getenv('cloudinary.env'));
+use Cloudinary\Cloudinary;
 
 /**
  * Upload Image to Cloudinary 
@@ -23,9 +11,20 @@ Configuration::instance(getenv('cloudinary.env'));
  *   public_id: "<public_id>"
  * }
  */
-function upload_image($imagePath)
+function upload_image($imagePath, $encode)
 {
-  $upload = new UploadApi();
+  $cloudinary = new Cloudinary([
+    'cloud' => [
+      'cloud_name' => getenv('cloudinary.name'),
+      'api_key'    => getenv('cloudinary.key'),
+      'api_secret' => getenv('cloudinary.secret'),
+      'url'        => [
+        'secure'   => true
+      ]
+    ]
+  ]);
+
+  $upload = $cloudinary->uploadApi();
 
   $res = $upload->upload(
     $imagePath,
@@ -34,17 +33,28 @@ function upload_image($imagePath)
     ]
   )->getArrayCopy();
 
-  $clean_res = json_encode([
+  $clean_res = [
     "url" => $res["url"],
     "public_id" => $res["public_id"]
-  ]);
+  ];
 
-  return $clean_res;
+  return $encode ? json_encode($clean_res) : $clean_res;
 }
 
 function delete_image($publicId)
 {
-  $upload = new UploadApi();
+  $cloudinary = new Cloudinary([
+    'cloud' => [
+      'cloud_name' => getenv('cloudinary.name'),
+      'api_key'    => getenv('cloudinary.key'),
+      'api_secret' => getenv('cloudinary.secret'),
+      'url'        => [
+        'secure'   => true
+      ]
+    ]
+  ]);
+
+  $upload = $cloudinary->uploadApi();
 
   $upload->destroy($publicId);
 }

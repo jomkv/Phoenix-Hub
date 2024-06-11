@@ -34,7 +34,7 @@ class OrganizationModel extends Model
     'full_name'            => 'required|max_length[65530]',
     'contact_email'        => 'required|max_length[254]|valid_email',
     'contact_person'       => 'required|max_length[100]',
-    'logo'                 => 'required|max_length[500]'
+    'logo'                 => 'required_without[organization_id]|max_length[500]'
   ];
 
   protected $validationMessages   = [
@@ -57,8 +57,8 @@ class OrganizationModel extends Model
       'max_length'  => 'Contact Person too long',
     ],
     'logo' => [
-      'required'    => 'Logo was either not provided, or there was a problem processing it',
-      'max_length'  => 'Uploaded Logo filename is too long',
+      'required_without'    => 'Logo was either not provided, or there was a problem processing it',
+      'max_length'          => 'Uploaded Logo filename is too long',
     ],
   ];
   // protected $skipValidation       = false;
