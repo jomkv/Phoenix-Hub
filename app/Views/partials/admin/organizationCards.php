@@ -1,7 +1,7 @@
 <?php foreach ($organizations as $org) : ?>
   <?php $logo_url = json_decode($org->logo)->url; ?>
-  <div class="col ">
-    <div class="card " style="width: 16rem;">
+  <div class="col">
+    <div class="card pt-2 w-100">
       <img src="<?= $logo_url ?> " class="img-thumbnail mx-auto d-block " alt="..." style="width:250px; height: 250px;">
       <div class=" card-body">
         <h5 class="card-title"><?= esc($org->name) ?></h5>

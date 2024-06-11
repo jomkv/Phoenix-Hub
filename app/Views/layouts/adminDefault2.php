@@ -33,6 +33,9 @@
 
     <div class="main p-3">
       <nav class="navbar navbar-expand px-3 border-bottom border-dark">
+        <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="navbar-collapse navbar">
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
@@ -51,11 +54,18 @@
 
       <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
-      <?= $this->renderSection("content") ?>
+      <div id="content-custom-container">
+        <?= $this->renderSection("content") ?>
+      </div>
     </div>
   </div>
 
   <script>
+    const sidebarToggle = document.querySelector("#sidebar-toggle");
+    sidebarToggle.addEventListener("click",function(){
+        document.querySelector("#sidebar").classList.toggle("collapsed");
+    });
+
     function generateSuccessToast(message) {
       const toast = document.createElement('div');
       toast.classList.add('toast', 'align-items-center', 'text-bg-success', 'border-0');
@@ -231,9 +241,15 @@
     #sidebar {
       max-width: 264px;
       min-width: 264px;
+      /* width: 264px;
+      position: fixed; */
       background: var(--bs-dark);
       transition: all 0.35s ease-in-out;
     }
+
+    /* #content-custom-container {
+      margin-left: 264px;
+    } */
 
     .main {
       display: flex;

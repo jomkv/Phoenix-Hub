@@ -52,7 +52,7 @@ class ProductController extends BaseController
 
   /**
    * @desc Returns a view to edit product form
-   * @route GET /admin/product/new
+   * @route GET /admin/product/:productId
    * @access private
    */
   public function viewEditProduct($productId)
