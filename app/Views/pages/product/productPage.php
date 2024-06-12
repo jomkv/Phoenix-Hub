@@ -213,7 +213,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend d-flex align-items-center justify-content-center" style="width: 50%">
                   <button class="btn btn-outline-secondary" type="button" id="minusBtn">-</button>
-               
+            
                 <input type="text" class="form-control quantity-input" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" id="quantityInput" value="1" readonly>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" type="button" id="plusBtn">+</button>
@@ -231,10 +231,7 @@
     </div>
   </div>
 
-  <!-- Large Image Popup -->
-  <div class="large-image-popup" id="largeImagePopup">
-    <img id="largeImage" src="" alt="Large Image">
-  </div>
+
 
   <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
