@@ -3,6 +3,16 @@
 <?= $this->section("title") ?>Barter Item<?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail Page</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     /* Custom CSS for minimalist design */
     body {
@@ -122,6 +132,9 @@
       }
     }
   </style>
+</head>
+
+<body>
 
   <div class="container">
     <!-- Back button float -->
@@ -155,5 +168,8 @@
 
   <!-- Include Bootstrap JS -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
 
 <?= $this->endSection() ?>

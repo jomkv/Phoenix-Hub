@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="col-6 align-self-end text-end">
-                                <img src="<?= base_url() . 'logo-primary.png' ?>" class="img-fluid illustration-img" alt="">
+                                <img src="<?= base_url() . 'circular-logo-purple(4).png' ?>" class="img-fluid illustration-img" alt="">
                             </div>
                         </div>
                     </div>
