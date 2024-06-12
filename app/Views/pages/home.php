@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/default2") ?>
+<?= $this->extend("layouts/defaultHome") ?>
 
 <?= $this->section("title") ?>Home <?= $this->endSection() ?>
 
@@ -26,7 +26,8 @@
       <?php endforeach; ?>
     </div>
   </div>
-
+</div>
+<div class="row mt-5">
   <div class="col-12 text-center">
     <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary mt-5 w-25 h-50" type="button">Barter</a>
   </div>
