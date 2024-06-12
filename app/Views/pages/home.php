@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/default") ?>
+<?= $this->extend("layouts/default2") ?>
 
 <?= $this->section("title") ?>Home <?= $this->endSection() ?>
 
@@ -31,5 +31,7 @@
     <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary mt-5 w-25 h-50" type="button">Barter</a>
   </div>
 </div>
+
+<?= $this->include('pages/organization/productsOffered.php') ?>
 
 <?= $this->endSection() ?>

@@ -1,10 +1,4 @@
-<?php helper('form'); ?>
 
-<?= $this->extend("layouts/default2") ?>
-
-<?= $this->section("title") ?>Organization Products<?= $this->endSection() ?>
-
-<?= $this->section("content") ?>
 <style>
   .dropdown {
     position: absolute;
@@ -138,7 +132,7 @@
       <a href="<?= url_to("ProductController::viewProduct", $product->product_id) ?>" class="col-md-3">
         <div class="card text-bg-dark">
           <img src="<?= json_decode($product->images)[0]->url ?>" class="card-img" alt="...">
-          <div class="badge text-bg-primary">Primary</div>
+          <div class="badge text-bg-primary">₱ <?= $product->price ?></div>
           <div class="product-info">
             <?= $product->product_name ?>
           </div>
@@ -162,4 +156,3 @@
       });
     });
   </script>
-  <?= $this->endSection() ?>
