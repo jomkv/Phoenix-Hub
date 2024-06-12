@@ -85,10 +85,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link active fs-5" aria-current="page" href="#">About</a>
+                        <a class="nav-link active fs-5" aria-current="page" href="#">Organizations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-5" href="<?= url_to("ProductController::viewAllProducts") ?>">Products</a>
+                        <a class="nav-link fs-5" href="#productsSection">Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-5" href="<?= url_to("UsersController::viewLogin") ?>">Login</a>

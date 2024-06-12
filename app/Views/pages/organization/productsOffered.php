@@ -1,4 +1,3 @@
-
 <style>
   .dropdown {
     position: absolute;
@@ -7,7 +6,7 @@
     margin-top: 90px;
   }
 
-  .card {
+  .card-prod {
     height: 300px;
     /* Set a fixed height for all cards */
     position: relative;
@@ -22,7 +21,7 @@
     transition: transform 0.3s;
   }
 
-  .card-img {
+  .card-img-prod {
     height: 100%;
     object-fit: cover;
     /* Ensure the image covers the entire card */
@@ -45,19 +44,15 @@
     transition: opacity 0.3s ease;
   }
 
-  .card:hover .card-img-overlay {
+  .card-prod:hover .card-img-overlay {
     opacity: 1;
   }
 
-  .card.show {
+  .card-prod.show {
     opacity: 1;
     /* Show card */
     transform: translateY(0);
     /* Slide up */
-  }
-
-  .container {
-    margin-top: 200px;
   }
 
   .badge {
@@ -100,52 +95,37 @@
     border-radius: 5px;
   }
 
-  .card:hover {
+  .card-prod:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
-
-  @media (max-width: 768px) {
-    .dropdown {
-      right: 10px;
-      top: 10px;
-    }
-
-    .card {
-      margin: 10px;
-    }
-  }
 </style>
-<div class="container">
-  <div class="dropdown">
-    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-      Organizations
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+<div class="row pb-5 gy-5 mt-0" id="productsSection">
+  <div class="col-12 d-flex justify-content-end">
+    <select class="form-select form-select-lg w-25" aria-label="Large select example">
+      <option><a class="dropdown-item" href="#">None</a></option>
+      <?php foreach ($organizations as $organization) : ?>
+        <option><a class="dropdown-item" href="#"><?= $organization->name ?></a></option>
+      <?php endforeach; ?>
+    </select>
   </div>
-  <div class="row pb-5 gy-5">
-    <?php foreach ($products as $product) : ?>
-      <a href="<?= url_to("ProductController::viewProduct", $product->product_id) ?>" class="col-md-3">
-        <div class="card text-bg-dark">
-          <img src="<?= json_decode($product->images)[0]->url ?>" class="card-img" alt="...">
-          <div class="badge text-bg-primary">₱ <?= $product->price ?></div>
-          <div class="product-info">
-            <?= $product->product_name ?>
-          </div>
-          <div class="stock-info">
-            Stock: <?= $product->stock ?>
-          </div>
-          <div class="card-img-overlay">
-            <p class="card-text"><?= $product->description ?></p>
-          </div>
+  <?php foreach ($products as $product) : ?>
+    <a href="<?= url_to("ProductController::viewProduct", $product->product_id) ?>" class="col-md-3">
+      <div class="card text-bg-dark card-prod">
+        <img src="<?= json_decode($product->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
+        <div class="badge text-bg-primary">₱ <?= $product->price ?></div>
+        <div class="product-info">
+          <?= $product->product_name ?>
         </div>
-      </a>
-    <?php endforeach ?>
-  </div>
+        <div class="stock-info">
+          Stock: <?= $product->stock ?>
+        </div>
+        <div class="card-img-overlay">
+          <p class="card-text"><?= $product->description ?></p>
+        </div>
+      </div>
+    </a>
+  <?php endforeach ?>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const cards = document.querySelectorAll('.card');

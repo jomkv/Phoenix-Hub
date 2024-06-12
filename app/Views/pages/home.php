@@ -32,6 +32,5 @@
   </div>
 </div>
 
-<?= $this->include('pages/organization/productsOffered.php') ?>
 
 <?= $this->endSection() ?>
