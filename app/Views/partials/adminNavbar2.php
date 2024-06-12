@@ -107,6 +107,12 @@
   --primary: #7532FA;
   --secondary: #6366F1;
   --accent: #ffe400;
+  --lightgray: #edf5f1;
+  --gray: #4d4c52;
+  --black: #000000;
+  --purple: #4f089a;
+  --lightpurple: #6a5ac1;
+  --yellow: #fbbd32;
 }
 
 .modal {
