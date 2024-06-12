@@ -64,7 +64,7 @@
   }
 
   .fancy-button {
-    background-color: #ff6f61;
+    background-color: #7532FA;
     color: white;
     border: none;
     border-radius: 50px;
@@ -77,7 +77,7 @@
   }
 
   .fancy-button:hover {
-    background-color: #ff3b30;
+    background-color: #7532FA;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
 
@@ -215,7 +215,7 @@
             <?php if (count($images) > 1) : ?>
               <div class="row">
                 <?php for ($i = 1; $i < count($images); $i++) : ?>
-                  <div class="col-4 p-1">
+                  <div class="col-auto p-1">
                     <img src="<?= $images[$i]->url ?>" class="img-fluid small-img" alt="Small Image 1">
                   </div>
                 <?php endfor; ?>
@@ -253,7 +253,6 @@
   <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
     $(document).ready(function() {
