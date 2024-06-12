@@ -17,13 +17,32 @@ class ProductController extends BaseController
   }
 
   /**
-   * @desc Returns a view to create new product form
-   * @route GET /admin/product/test
+   * @desc Returns a view to all products
+   * @route GET /product
    * @access private
    */
-  public function viewProduct(): string
+  public function viewAllProducts()
   {
-    return view('pages/product/productPage');
+    $products = $this->model->findAll();
+
+    return view('pages/organization/productsOffered.php', ["products" => $products]);
+  }
+
+  /**
+   * @desc Returns a view to dedicated product page
+   * @route GET /product/:productId
+   * @access private
+   */
+  public function viewProduct($productId)
+  {
+    try {
+      $product = $this->getProductOrError($productId);
+
+      return view('pages/product/productPage', ["product" => $product]);
+    } catch (\LogicException $e) {
+      return redirect()->to('/product')->with('error', 'Product not found');
+    } catch (\Exception $e) {
+    }
   }
 
   /**
@@ -70,6 +89,8 @@ class ProductController extends BaseController
       }
 
       return view('pages/admin/editProduct', ['organizations' => $orgs, 'product' => $product]);
+    } catch (\LogicException $e) {
+      return redirect()->to('/admin/product')->with('error', 'Product not found');
     } catch (\Exception $e) {
       return redirect()->to('/admin/product')->with('error', 'An error occurred. Please try again later.');
     }

@@ -14,7 +14,7 @@ class StudentModel extends Model
   protected $returnType     = \App\Entities\Student::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['username', 'email', 'student_number', 'full_name', 'phone_number', 'pfp_file_name'];
+  protected $allowedFields = ['username', 'email', 'student_number', 'full_name', 'phone_number', 'pfp'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;

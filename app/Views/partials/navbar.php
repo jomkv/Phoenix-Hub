@@ -29,20 +29,24 @@
         }
 
         .logo {
-            height: 0.5rem; /* Adjusted height for logo */
+            height: 0.5rem;
+            /* Adjusted height for logo */
             margin-right: 1.5rem;
-            vertical-align: middle; /* Center the logo vertically */
+            vertical-align: middle;
+            /* Center the logo vertically */
         }
 
         .navbar-brand {
             display: flex;
             align-items: center;
-            color: var(--accent); /* Ensure text is visible on the dark background */
+            color: var(--accent);
+            /* Ensure text is visible on the dark background */
         }
 
         .nav-link {
             margin: 10px;
-            color: var(--accent) !important; /* Ensure links are visible on the dark background */
+            color: var(--accent) !important;
+            /* Ensure links are visible on the dark background */
         }
 
         .navbar-toggler-icon {
@@ -54,13 +58,15 @@
 
         @media (min-width: 768px) {
             .logo {
-                height: 1rem; /* Adjusted for larger screens */
+                height: 1rem;
+                /* Adjusted for larger screens */
             }
         }
 
         @media (min-width: 1200px) {
             .logo {
-                height: 1.5rem; /* Further adjusted for extra-large screens */
+                height: 1.5rem;
+                /* Further adjusted for extra-large screens */
             }
         }
     </style>
@@ -69,7 +75,7 @@
 <body>
     <nav class="navbar fixed-top navbar-expand-lg p-3" style="background-color: var(--primary);">
         <div class="container-fluid">
-            <a class="navbar-brand fs-5 fw-bold" href="#">
+            <a class="navbar-brand fs-5 fw-bold" href="<?= url_to("/") ?>">
                 <img class="logo" src="<?= base_url() . 'typographyLogo-white.png' ?>" alt="Phoenix Hub Logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +88,7 @@
                         <a class="nav-link active fs-5" aria-current="page" href="#">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-5" href="#">Products</a>
+                        <a class="nav-link fs-5" href="<?= url_to("ProductController::viewAllProducts") ?>">Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-5" href="<?= url_to("UsersController::viewLogin") ?>">Login</a>
