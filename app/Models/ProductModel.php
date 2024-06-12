@@ -14,7 +14,7 @@ class ProductModel extends Model
   protected $returnType     = \App\Entities\Product::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['product_name', 'description', 'price', 'stock', 'organization_id', 'images'];
+  protected $allowedFields = ['product_id', 'product_name', 'description', 'price', 'stock', 'organization_id', 'images'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -29,12 +29,13 @@ class ProductModel extends Model
   // * Validation
 
   protected $validationRules      = [
+    'product_id'        => 'permit_empty',
     'product_name'      => 'required|max_length[255]',
     'description'       => 'required|max_length[65530]',
     'price'             => 'required|numeric|greater_than[0]',
     'stock'             => 'required|numeric',
     'organization_id'   => 'required',
-    'images'            => 'required',
+    'images'            => 'required_without[product_id]',
   ];
 
   protected $validationMessages   = [
@@ -59,7 +60,7 @@ class ProductModel extends Model
       'required'    => 'Organization ID must be provided',
     ],
     'images' => [
-      'required'  => 'Product Image(s) must be provided',
+      'required_without'  => 'Product Image(s) must be provided',
     ],
   ];
   // protected $skipValidation       = false;

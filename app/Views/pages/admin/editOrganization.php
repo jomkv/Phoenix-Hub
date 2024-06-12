@@ -51,7 +51,7 @@ $js_errors = json_encode($errors ? $errors['errors'] : []);
 
         <div class="mb-3">
           <label for="formFileMultiple" class="form-label">Organization Logo</label>
-          <input class="form-control" type="file" name="upload" id="formFile">
+          <input class="form-control" type="file" name="upload" id="formFile" accept="image/*">
         </div>
 
         <button class="btn btn-primary w-100 mb-3" type="submit" id="submit-create-btn" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Edit</button>

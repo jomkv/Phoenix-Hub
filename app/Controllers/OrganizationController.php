@@ -124,7 +124,7 @@ class OrganizationController extends BaseController
       $imgName = $img->getFilename();
       $img->move(ROOTPATH . 'writable\\uploads\\', $imgName);
 
-      $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName);
+      $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName, true);
 
       // Delete uploaded org image
       unlink(ROOTPATH . 'writable\\uploads\\' . $imgName);
@@ -189,6 +189,7 @@ class OrganizationController extends BaseController
       $org = $this->getOrganizationOrError($orgId);
       $data = $this->request->getPost();
       $data["organization_id"] = $orgId;
+      $img = $this->request->getFile('upload');
 
       // Validate form data, excluding image
       if (!$this->model->validate($data)) {
@@ -197,45 +198,52 @@ class OrganizationController extends BaseController
           ->withInput();
       }
 
-      $validationRule = [
-        'upload' => [
-          'label' => 'Image File',
-          'rules' => [
-            'uploaded[upload]',
-            'is_image[upload]',
-            'mime_in[upload, image/jpg,image/jpeg,image/png,image/webp]',
-            'max_size[upload,10200]', // 10 mb limit, converted to kb
+      if ($img->isValid()) {
+        $validationRule = [
+          'upload' => [
+            'label' => 'Image File',
+            'rules' => [
+              'uploaded[upload]',
+              'is_image[upload]',
+              'mime_in[upload, image/jpg,image/jpeg,image/png,image/webp]',
+              'max_size[upload,10200]', // 10 mb limit, converted to kb
+            ],
           ],
-        ],
-      ];
+        ];
 
-      // Validate Image
-      if (!$this->validateData([], $validationRule)) {
-        return redirect()->back()
-          ->with('errors', $this->validator->getErrors())
-          ->withInput();
+        // Validate Image
+        if (!$this->validateData([], $validationRule)) {
+          return redirect()->back()
+            ->with('errors', $this->validator->getErrors())
+            ->withInput();
+        }
+
+        // Check if image has been tampered with
+        if ($img->hasMoved()) {
+          return redirect()->back()
+            ->with('error', 'Error occurred, unable to process image')
+            ->withInput();
+        }
+
+        // Check image size
+        if ($img->getSizeByUnit('mb') >= 10) {
+          return redirect()->back()
+            ->with("errors", ["Image size must be below 10mb"])
+            ->withInput();
+        }
+
+        // Delete uploaded org image
+        delete_image(json_decode($org->logo)->public_id);
+
+        // Generate random file name, and upload image to writable/uploads/
+        $imgName = $img->getFilename();
+        $img->move(ROOTPATH . 'writable\\uploads\\', $imgName);
+
+        $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName, true);
+
+        // Delete uploaded org image
+        unlink(ROOTPATH . 'writable\\uploads\\' . $imgName);
       }
-
-      $img = $this->request->getFile('upload');
-
-      // Check if image has been tampered with
-      if ($img->hasMoved()) {
-        return redirect()->back()
-          ->with('error', 'Error occurred, unable to process image')
-          ->withInput();
-      }
-
-      // Delete uploaded org image
-      delete_image(json_decode($org->logo)->public_id);
-
-      // Generate random file name, and upload image to writable/uploads/
-      $imgName = $img->getFilename();
-      $img->move(ROOTPATH . 'writable\\uploads\\', $imgName);
-
-      $data['logo'] = upload_image(ROOTPATH . 'writable\\uploads\\' . $imgName);
-
-      // Delete uploaded org image
-      unlink(ROOTPATH . 'writable\\uploads\\' . $imgName);
 
       $isSuccess = $this->model->update($orgId, $data);
 

@@ -18,7 +18,7 @@
 
     <label for="select-org" class="form-label">Filter by Organization</label>
     <select id="select-org" class="form-select">
-      <option>None</option>
+      <option value="none">None</option>
       <?php foreach ($organizations as $org) : ?>
         <option value="<?= $org->organization_id ?>"><?= $org->name ?></option>
       <?php endforeach ?>
@@ -42,14 +42,14 @@
         </thead>
         <tbody id="products-container">
           <?php foreach ($products as $product) : ?>
-            <tr data-product-id="<?= $product['product_id'] ?>">
-              <td class="tr-product-id"># <?= $product['product_id']; ?></td>
-              <td class="tr-product-name"><?= $product['product_name']; ?></td>
-              <td class="tr-product-price">₱<?= $product['price']; ?></td>
-              <td class="tr-product-stock"><?= $product['stock']; ?></td>
+            <tr data-product-id="<?= $product->product_id ?>">
+              <td class="tr-product-id"># <?= $product->product_id ?></td>
+              <td class="tr-product-name"><?= $product->product_name ?></td>
+              <td class="tr-product-price">₱<?= $product->price ?></td>
+              <td class="tr-product-stock"><?= $product->stock ?></td>
               <td class="text-right">
-                <a href="#" type="button" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</a>
-                <button data-product-id="<?= $product['product_id'] ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn" style="width:80px;">DELETE</button>
+                <a href="<?= url_to("ProductController::viewEditProduct", $product->product_id) ?>" type="button" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</a>
+                <a href="<?= url_to("ProductController::deleteProduct", $product->product_id) ?>" data-product-id="<?= $product->product_id ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn" style="width:80px;">DELETE</a>
               </td>
             </tr>
           <?php endforeach ?>
@@ -65,7 +65,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Delete</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="delete-modal-btn-close"></button>
       </div>
       <div class="modal-body">
         Are you sure you want to delete this product?
@@ -91,17 +91,22 @@
 
     $('#delete-product-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/product/${deleteProductId}`;
+      $(this).attr("disabled", true); // disable button
 
       $.ajax({
         url: url,
         type: 'DELETE',
         success: () => {
           $(`tr[data-product-id="${deleteProductId}"]`).remove();
-          $('#deleteProductModal').modal('hide');
+          $('#delete-modal-btn-close').click();
           generateSuccessToast('Product Deleted');
+          $(this).attr("disabled", false); // disable button
         },
-        error: () => {
-          generateErrorToast('Error Deleting Product.')
+        error: (err) => {
+          console.log(err);
+          generateErrorToast('Error Deleting Product.');
+          $('#delete-modal-btn-close').click();
+          $(this).attr("disabled", false); // disable button
         }
       })
     })
