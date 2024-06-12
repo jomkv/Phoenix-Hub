@@ -191,6 +191,10 @@ body {
   border: none;
   cursor: pointer;
 }
+
+.form-label, .form-control, #email, #password {
+  background: transparent;
+}
 .login .links {
   display: flex;
   justify-content: space-between;
