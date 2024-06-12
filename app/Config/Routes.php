@@ -38,7 +38,9 @@ $routes->get('/(:num)/products', 'OrganizationController::viewOrgProducts/$1');
 
 // * Products
 
-$routes->get('/product/test', 'ProductController::viewProduct');
+$routes->get('/product', 'ProductController::viewAllProducts');
+$routes->get('/product/(:num)', 'ProductController::viewProduct/$1');
+//$routes->get('/product/test', 'ProductController::viewProduct');
 
 /**
  * ADMIN ROUTES
