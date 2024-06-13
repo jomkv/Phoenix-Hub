@@ -31,9 +31,9 @@ class StudentModel extends Model
   protected $validationRules      = [
     'username'           => 'required|max_length[255]|is_unique[students.username]',
     'email'              => 'required|max_length[65530]|valid_email|cvsu_email|is_unique[students.email]',
-    'student_number'     => 'required|exact_length[9]|is_unique[students.student_number]',
+    'student_number'     => 'required|exact_length[9]|numeric|is_unique[students.student_number]',
     'full_name'          => 'required|max_length[100]',
-    'phone_number'       => 'required|exact_length[11]',
+    'phone_number'       => 'required|exact_length[11]|numeric',
     'pfp'                => 'max_length[500]'
   ];
 

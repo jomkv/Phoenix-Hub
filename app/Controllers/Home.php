@@ -9,7 +9,6 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        // $this->sendEmail();
         $products = $this->getProducts();
         $orgs = $this->getOrgs();
 
@@ -45,16 +44,6 @@ class Home extends BaseController
     private function sendEmail()
     {
         $email = \Config\Services::email();
-
-        // $config = array();
-        // $config['protocol'] = 'smtp';
-        // $config['smtp_host'] = 'mail.phoenixhub.linkpc.net';
-        // $config['smtp_user'] = 'phoenixh@phoenixhub.linkpc.net';
-        // $config['smtp_pass'] = '"6*rE56z9a9^';
-        // $config['smtp_port'] = 587;
-        // $config["smtp_crypto"] = "tsl";
-
-        // $email->initialize($config);
 
         $email->setTo("jomkarlov@gmail.com");
         $email->setSubject("Test email");
