@@ -6,7 +6,6 @@
 
 <?= $this->section("content") ?>
 <!--ring div starts here-->
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <div class="container">
   <div class="form-container">
     <div class="login">
@@ -60,14 +59,7 @@
   --yellow: #fbbd32;
   --navgray: #2A3144;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Kanit", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+
 body {
   display: flex;
   justify-content: center;
