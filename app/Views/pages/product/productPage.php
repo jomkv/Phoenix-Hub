@@ -136,7 +136,7 @@
   }
 
   .small-img {
-    max-height: 60px;
+    max-height: 70px;
   }
 }
 
@@ -271,10 +271,6 @@
     </div>
   </div>
 </div>
-
-
-
-
 
   <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
