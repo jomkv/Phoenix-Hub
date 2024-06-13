@@ -7,12 +7,11 @@
 <?= $this->section("content") ?>
 
 <!--ring div starts here-->
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <div class="container">
   <div class="form-container">
     <div class="login">
       <?= form_open('/signup/admin') ?>
-        <h2>Sign Up</h2>
+        <h2>Admin Sign Up</h2>
         <div class="inputBx">
           <label for="username">Username</label>
           <input type="text" name="username" id="username">
@@ -52,6 +51,7 @@
   :root {
   --text: #0a090b;
   --background: #f7f6f9;
+  --darkbg: #00012E;
   --primary: #7532FA;
   --secondary: #6366F1;
   --accent: #ffe400;
@@ -59,24 +59,17 @@
   --gray: #4d4c52;
   --black: #000000;
   --purple: #4f089a;
-  --lightpurple: #6a5ac1;
+  --lightpurple: #D292FF;
   --yellow: #fbbd32;
   --navgray: #2A3144;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Kanit", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: var(--navgray);
+  background: var(--darkbg);
   width: 100%;
   overflow: hidden;
 }
@@ -175,7 +168,7 @@ body {
 .login h2 {
   font-size: 2.5em;
   font-style: italic;
-  color: #fff;
+  color: var(--lightpurple);
 }
 .login .inputBx {
   width: 100%;
@@ -194,6 +187,10 @@ body {
   background: #7532FA;
   border: none;
   cursor: pointer;
+}
+
+.form-label, .form-control, #email, #password {
+  background: transparent;
 }
 .login .links {
   display: flex;
