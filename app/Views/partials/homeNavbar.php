@@ -133,9 +133,18 @@
           <li class="nav-item">
             <a class="nav-link fs-5" href="#productsSection">Products</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link fs-5" href="<?= url_to("UsersController::viewLogin") ?>">Login</a>
-          </li>
+          <?php if (!auth()->loggedIn()) : ?>
+            <li class="nav-item">
+              <a class="nav-link fs-5" href="<?= base_url() . 'login' ?>">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5" href="<?= base_url() . 'register' ?>">Signup</a>
+            </li>
+          <?php else : ?>
+            <li class="nav-item">
+              <a class="nav-link fs-5" href="<?= base_url() . 'logout' ?>">Logout</a>
+            </li>
+          <?php endif; ?>
         </ul>
       </div>
     </div>

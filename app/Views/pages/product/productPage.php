@@ -224,7 +224,7 @@
 <div class="container">
   <!-- Back button float -->
   <div class="back-button-container">
-    <a href="<?= url_to("TestViewsController::viewOrgProducts") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
+    <a href="<?= base_url() . '#productsSection' ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
   </div>
   <div class="row justify-content-center">
     <div class="col-md-12">

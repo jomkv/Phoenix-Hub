@@ -23,14 +23,15 @@ $routes->environment('development', static function ($routes) {
 /**
  * USER ROUTES
  */
-// * Users
+// * Students
 
 $routes->get('/', 'Home::index');
-$routes->get('/login', 'UsersController::viewLogin');
-$routes->get('/signup', 'UsersController::viewSignup');
+// $routes->get('/login', 'StudentController::viewLogin');
+// $routes->get('/signup', 'StudentController::viewSignup');
 
-$routes->post('/login', 'UsersController::login');
-$routes->post('/signup', 'UsersController::signup');
+// $routes->post('/login', 'StudentController::login');
+// $routes->post('/signup', 'StudentController::signup');
+// $routes->get('/logout', 'StudentController::logout');
 
 // * Organization
 

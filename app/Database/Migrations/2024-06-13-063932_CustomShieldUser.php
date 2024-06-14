@@ -9,7 +9,7 @@ use CodeIgniter\Database\Migration;
  * REFERENCE: https://shield.codeigniter.com/customization/adding_attributes_to_users/
  */
 
-class AddUserIdRefToUsersShield extends Migration
+class CustomShieldUser extends Migration
 {
     /**
      * @var string[]
@@ -28,9 +28,24 @@ class AddUserIdRefToUsersShield extends Migration
     public function up()
     {
         $fields = [
-            'student_id' => [
-                'type'              => 'INT',
-                'unsigned'          => true,
+            'student_number' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '255',
+                'null'              => false,
+            ],
+            'full_name' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '255',
+                'null'              => false,
+            ],
+            'phone_number' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '255',
+                'null'              => false,
+            ],
+            'pfp' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '500',
                 'null'              => true,
             ],
         ];
@@ -44,7 +59,10 @@ class AddUserIdRefToUsersShield extends Migration
     public function down()
     {
         $fields = [
-            'student_id',
+            'student_number',
+            'full_name',
+            'phone_number',
+            'pfp'
         ];
         $this->forge->dropColumn($this->tables['users'], $fields);
     }

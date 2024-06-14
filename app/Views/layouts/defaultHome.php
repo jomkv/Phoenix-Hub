@@ -15,28 +15,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body style="height: 100vh; max-width: 100vw;">
+<body>
   <?= $this->include('partials/homeNavbar.php'); ?>
 
-  <div class="container w-100 h-75" style="margin-top: 200px;">
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center flex-column">
     <?= $this->renderSection("content") ?>
   </div>
 
-  <div class="container-fluid w-100 mt-4 h-25 d-flex align-items-center" style="background-color:pink;">
-    <div class="row h-100 w-100 ">
-      <div class="col-12 h-100 text-center">
-        <h1>Products</h1>
-      </div>
-    </div>
+  <div class="w-100 bg-primary text-center" style="height: 150px;">
+    <h1>products</h1>
   </div>
 
-  <div class="container w-100">
+  <div class="container w-100 min-vh-100">
     <?= $this->include('pages/organization/productsOffered.php') ?>
   </div>
 
-  <style>
-   
+  <div class="w-100 bg-primary text-center" style="height: 150px;">
+    <h1>footer</h1>
+  </div>
 
+  <style>
     body {
       /* display: flex; */
       /* justify-content: center;
