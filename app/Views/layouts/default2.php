@@ -16,7 +16,7 @@
 </head>
 
 <body style="height: 100vh">
-  <?= $this->include('partials/navbar.php'); ?>
+  <?= $this->include('partials/homeNavbar.php'); ?>
 
   <div class="container">
 
