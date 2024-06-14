@@ -7,7 +7,6 @@
 <?= $this->section("content") ?>
 
 <!--ring div starts here-->
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <div class="container">
   <div class="form-container">
     <div class="login">
@@ -64,50 +63,6 @@
 </div>
 <!--ring div ends here-->
 
-<!-- <?= form_open('/signup') ?>
-<div class="row mx-auto row-cols-1 w-50 shadow-lg p-5" style="background-color: white;">
-  <div class="col">
-    <h1 class="mb-4">Signup</h1>
-  </div>
-  <div class="col">
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="text" class="form-control" name="email" id="email">
-    </div>
-    <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" name="username" id="username">
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" name="password" id="password">
-    </div>
-    <div class="mb-4">
-      <label for="confirm-password" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" name="confirm-password" id="confirm-password">
-    </div>
-  </div>
-  <div class="col-12 text-center">
-    <button type="submit" class="btn btn-primary w-50 h-100">Signup</button>
-  </div>
-  <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img src="..." class="rounded me-2" alt="...">
-      <strong class="me-auto">Bootstrap</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-  </div>
-</div>
-</div>
-</form> -->
-
 <style>
   :root {
   --text: #0a090b;
@@ -123,14 +78,7 @@
   --yellow: #fbbd32;
   --navgray: #2A3144;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Kanit", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+
 body {
   display: flex;
   justify-content: center;
@@ -167,7 +115,7 @@ body {
 .ring i {
   position: absolute;
   inset: 0;
-  border: 4px solid var(--lightpurple);
+  border: 4px solid var(--primary);
   transition: 0.5s;
 }
 .ring i:nth-child(2) {

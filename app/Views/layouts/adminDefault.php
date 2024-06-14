@@ -106,3 +106,8 @@
 </body>
 
 </html>
+<style>
+  *{
+        font-family: 'Poppins', sans-serif;
+        }
+</style>

@@ -5,202 +5,226 @@
 <?= $this->section("content") ?>
 
 <style>
-  .container {
-    margin-top: 50px;
-    width: 100%;
-    max-width: 1800px;
-    /* Adjust as needed */
-    padding: 0 15px;
-  }
+ .container {
+  margin-top: 50px;
+  width: 100%;
+  max-width: 1800px;
+  padding: 0 15px;
+}
 
+.custom-card-size {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  position: relative; /* To enable positioning of buttons */
+}
+
+.main-image-container {
+  height: 300px;
+  overflow: hidden;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-images-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.small-img {
+  max-height: 80px;
+  width: auto;
+  border: 1px solid #ddd;
+  transition: transform 0.3s ease-in-out;
+}
+
+.small-img:hover {
+  transform: scale(1.1);
+}
+
+.btn-group {
+  display: flex;
+}
+
+.btn {
+  margin: 0 5px;
+}
+
+.fancy-button {
+  background-color: #7532FA;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.fancy-button:hover {
+  background-color: #7532FA;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.back-button {
+  position: fixed;
+  top: 105px;
+  left: 10px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-group .btn {
+  height: 38px;
+}
+
+.input-group .quantity-input {
+  width: 70px;
+  text-align: center;
+}
+
+.fixed-bottom-right {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+.btn-group .btn {
+  width: auto;
+  padding: 0.375rem 0.75rem;
+}
+
+@media (max-width: 1200px) {
   .custom-card-size {
-    width: 100%;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    overflow: hidden;
-    padding: 15px;
+    padding: 10px;
   }
 
   .main-image-container {
-    height: 300px;
-    overflow: hidden;
-    /* Hide overflow to prevent small images from appearing outside */
+    height: 250px;
   }
 
-  .main-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .small-img {
+    max-height: 70px;
+  }
+}
+
+@media (max-width: 992px) {
+  .custom-card-size {
+    padding: 10px;
+  }
+
+  .main-image-container {
+    height: 200px;
+  }
+
+  .small-img {
+    max-height: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .row.no-gutters {
+    flex-direction: column;
   }
 
   .small-images-row {
-    width: 100%;
-    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
   }
 
   .small-img {
-    max-height: 80px;
-    width: auto;
-    border: 1px solid #ddd;
-    transition: transform 0.3s ease-in-out;
-    /* Add smooth transition for scaling */
+    max-height: 60px;
   }
 
-  .small-img:hover {
-    transform: scale(1.1);
-    /* Scale up on hover */
-  }
-
-  .btn-group {
-    display: flex;
-    justify-content: center;
-  }
-
-  .btn {
-    margin: 0 5px;
-  }
-
-  .fancy-button {
-    background-color: #7532FA;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 8px 16px;
-    /* Adjust padding to make the button smaller */
-    font-size: 1rem;
-    /* Adjust font size */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-
-  .fancy-button:hover {
-    background-color: #7532FA;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .card-body {
-    padding: 1rem;
-  }
-
-  .back-button {
-    position: fixed;
-    top: 105px;
-    left: 10px;
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    text-decoration: none;
+  .btn-group-vertical .btn {
+    width: 30%;
   }
 
   .back-button-container {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    position: relative;
+    top: auto;
+    left: auto;
   }
 
-  .input-group {
+  .container {
+    margin-top: 100px;
+  }
+
+  .custom-card-size {
+    padding: 10px;
+  }
+
+  .main-image-container {
+    height: 180px;
+  }
+
+  .small-img {
+    max-height: 50px;
+  }
+
+  .fixed-bottom-right {
+    position: static;
     display: flex;
-    align-items: center;
     justify-content: center;
+    margin-top: 10px;
   }
 
-  .input-group .btn {
-    height: 38px;
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 15px;
   }
 
-  .input-group .quantity-input {
-    width: 70px;
-    text-align: center;
+  .btn-group .btn {
+    margin: 5px 0;
+    width: 90%;
   }
-
-  @media (max-width: 1200px) {
-    .custom-card-size {
-      padding: 10px;
-    }
-
-    .main-image-container {
-      height: 250px;
-    }
-
-    .small-img {
-      max-height: 70px;
-    }
+  .me-2, .ms-2{
+    font-size: 12px;
   }
+  
+}
 
-  @media (max-width: 992px) {
-    .custom-card-size {
-      padding: 10px;
-    }
-
-    .main-image-container {
-      height: 200px;
-    }
-
-    .small-img {
-      max-height: 60px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .row.no-gutters {
-      flex-direction: column;
-    }
-
-    .small-images-row {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .small-img {
-      width: 100%;
-      margin: 5px;
-    }
-
-    .btn-group-vertical .btn {
-      width: 30%;
-    }
-
-    .back-button-container {
-      position: relative;
-      top: auto;
-      left: auto;
-    }
-
-    .container {
-      margin-top: 20px;
-    }
-
-    .custom-card-size {
-      padding: 10px;
-    }
-
-    .main-image-container {
-      height: 180px;
-    }
-
-    .small-img {
-      max-height: 80%;
-    }
-  }
 </style>
 
 
 <div class="container">
   <!-- Back button float -->
   <div class="back-button-container">
-    <a href="<?= url_to("Home::index") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
+    <a href="<?= url_to("TestViewsController::viewOrgProducts") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
   </div>
   <div class="row justify-content-center">
     <div class="col-md-12">
@@ -222,33 +246,31 @@
               </div>
             <?php endif; ?>
           </div>
-          <div class="col-md-8 d-flex flex-column justify-content-center">
+          <div class="col-md-8 d-flex flex-column justify-content-center position-relative">
             <div class="card-body">
-              <h1 class="card-title text-center">Product Title</h1>
-              <p class="card-text text-center fs-3">20 PESOS</p>
-              <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda consectetur modi ea consequuntur dolores similique tempore numquam minus, aspernatur fugit, laboriosam pariatur nulla. Quas deserunt, nesciunt neque vero placeat ullam?.</p>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend d-flex align-items-center justify-content-center" style="width: 50%">
+              <h1 class="card-title text-start">Product Title</h1>
+              <p class="card-text text-start fs-3">20 PESOS</p>
+              <p class="card-text text-start">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit dolorum consectetur pariatur? Animi quis eligendi harum, quae maxime impedit provident? Maiores repudiandae perferendis fugit dolor impedit soluta iure odit possimus!</p>
+              <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend d-flex align-items-center">
+                  <h5 class="me-2">Quantity:</h5>
                   <button class="btn btn-outline-secondary" type="button" id="minusBtn">-</button>
-
-                  <input type="text" class="form-control quantity-input" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" id="quantityInput" value="1" readonly>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="plusBtn">+</button>
-                  </div>
+                  <input type="text" class="form-control quantity-input mx-2" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" id="quantityInput" value="1" readonly>
+                  <button class="btn btn-outline-secondary" type="button" id="plusBtn">+</button>
+                  <span class="ms-2">available stocks</span>
                 </div>
               </div>
-              <div class="btn-group">
-                <button class="btn fancy-button"><i class="bi bi-cart-plus"></i> Add to Cart</button>
-                <button class="btn fancy-button"><i class="bi bi-cash-stack"></i> Check Out</button>
-              </div>
+            </div>
+            <div class="btn-group fixed-bottom-right">
+              <button class="btn fancy-button"><i class="bi bi-cart-plus"></i> Add to Cart</button>
+              <button class="btn fancy-button"><i class="bi bi-cash-stack"></i> Check Out</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
+</div>
 
   <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

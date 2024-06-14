@@ -14,6 +14,7 @@
     "cloudinary/cloudinary_php": "^2.14",
     "codeigniter4/framework": "^4.0",
     "codeigniter4/shield": "^1.0",
+    "paymongo/paymongo-php": "^0.0.0",
     "twbs/bootstrap-icons": "*"
   },
   "require-dev": {
