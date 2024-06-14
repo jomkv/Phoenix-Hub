@@ -43,7 +43,7 @@
       height: 1.1rem;
       margin-right: 1.5rem;
       vertical-align: middle;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s, filter 0.3s;
     }
 
     .navbar-brand {
@@ -54,7 +54,7 @@
 
     .navbar-brand:hover .logo {
       transform: scale(1.1);
-      box-shadow: 0 0 40px var(--link-hover-color);
+      filter: drop-shadow(0 0 10px var(--link-hover-color)) drop-shadow(0 0 20px var(--link-hover-color));
     }
 
     .nav-link {

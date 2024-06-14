@@ -27,7 +27,7 @@
     ?>
 
     <div class="wrapper h-100 d-flex align-items-center justify-content-center">
-        <?= $this->include('partials/navbar.php'); ?>
+        <?= $this->include('partials/homeNavbar.php'); ?>
 
         <div class="w-100">
             <?= $this->renderSection("content") ?>
