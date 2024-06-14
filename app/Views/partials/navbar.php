@@ -95,7 +95,7 @@
                             <a class="nav-link fs-5" href="<?= base_url() . 'login' ?>">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-5" href="<?= base_url() . 'signup' ?>">Signup</a>
+                            <a class="nav-link fs-5" href="<?= base_url() . 'register' ?>">Signup</a>
                         </li>
                     <?php else : ?>
                         <li class="nav-item">

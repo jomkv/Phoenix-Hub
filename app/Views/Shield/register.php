@@ -2,7 +2,7 @@
 
 <?= $this->extend("layouts/defaultDev") ?>
 
-<?= $this->section("title") ?>Login<?= $this->endSection() ?>
+<?= $this->section("title") ?>Register<?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
 
@@ -10,20 +10,6 @@
 <div class="container">
     <div class="form-container">
         <div class="login">
-            <?php if (session('error') !== null) : ?>
-                <div class="alert alert-danger" role="alert"><?= session('error') ?></div>
-            <?php elseif (session('errors') !== null) : ?>
-                <div class="alert alert-danger" role="alert">
-                    <?php if (is_array(session('errors'))) : ?>
-                        <?php foreach (session('errors') as $error) : ?>
-                            <?= $error ?>
-                            <br>
-                        <?php endforeach ?>
-                    <?php else : ?>
-                        <?= session('errors') ?>
-                    <?php endif ?>
-                </div>
-            <?php endif ?>
 
             <form action="<?= url_to('register') ?>" method="post">
                 <?= csrf_field() ?>
@@ -31,49 +17,69 @@
 
                 <!-- Email -->
                 <div class="inputBx">
-                    <input type="email" class="form-control" id="floatingEmailInput" name="email" inputmode="email" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>" required>
                     <label for="floatingEmailInput">CvSU Email</label>
+                    <input type="email" class="form-control" id="floatingEmailInput" name="email" inputmode="email" placeholder="sample@cvsu.edu.ph" value="<?= old('email') ?>" required>
                 </div>
 
                 <!-- Username -->
                 <div class="inputBx">
-                    <input type="text" class="form-control" id="floatingUsernameInput" name="username" inputmode="text" placeholder="<?= lang('Auth.username') ?>" value="<?= esc(old('username')) ?>" required>
                     <label for="floatingUsernameInput">Username</label>
+                    <input type="text" class="form-control" id="floatingUsernameInput" name="username" inputmode="text" value="<?= esc(old('username')) ?>" required>
                 </div>
 
                 <!-- Full Name -->
                 <div class="inputBx">
-                    <input type="text" class="form-control" id="floatingPasswordConfirmInput" name="full_name" inputmode="text" placeholder="<?= lang('Auth.passwordConfirm') ?>" value="<?= esc(old('full_name')) ?>" required>
                     <label for="floatingPasswordConfirmInput">Full Name</label>
+                    <input type="text" class="form-control" id="floatingPasswordConfirmInput" name="full_name" inputmode="text" value="<?= esc(old('full_name')) ?>" required>
                 </div>
 
                 <!-- Student Number -->
                 <div class="inputBx">
-                    <input type="text" class="form-control" id="floatingPasswordConfirmInput" name="student_number" inputmode="text" placeholder="<?= lang('Auth.passwordConfirm') ?>" value="<?= esc(old('student_number')) ?>" value="<?= esc(old('student_number')) ?>" required>
                     <label for="floatingPasswordConfirmInput">Student Number</label>
+                    <input type="text" class="form-control" id="floatingPasswordConfirmInput" name="student_number" placeholder="202212345" inputmode="text" value="<?= esc(old('student_number')) ?>" value="<?= esc(old('student_number')) ?>" required>
                 </div>
 
                 <!-- Phone Number -->
                 <div class="inputBx">
-                    <input type="text" class="form-control" id="phone_number" name="phone_number" inputmode="text" placeholder="<?= lang('Auth.passwordConfirm') ?>" value="<?= esc(old('phone_number')) ?>" required>
                     <label for="floatingPasswordConfirmInput">Phone Number</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" inputmode="text" placeholder="09123456789" value="<?= esc(old('phone_number')) ?>" required>
                 </div>
 
                 <!-- Password -->
                 <div class="inputBx">
-                    <input type="password" class="form-control" id="floatingPasswordInput" name="password" inputmode="text" autocomplete="new-password" placeholder="<?= lang('Auth.password') ?>" required>
                     <label for="floatingPasswordInput">Password</label>
+                    <input type="password" class="form-control" id="floatingPasswordInput" name="password" inputmode="text" autocomplete="new-password" required>
                 </div>
 
                 <!-- Password (Again) -->
                 <div class="inputBx">
-                    <input type="password" class="form-control" id="floatingPasswordConfirmInput" name="password_confirm" inputmode="text" autocomplete="new-password" placeholder="<?= lang('Auth.passwordConfirm') ?>" required>
                     <label for="floatingPasswordConfirmInput">Confirm Password</label>
+                    <input type="password" class="form-control" id="floatingPasswordConfirmInput" name="password_confirm" inputmode="text" autocomplete="new-password" required>
                 </div>
+
+                <?php if (session('error') !== null) : ?>
+                    <div class="custom-error-container">
+                        <ul>
+                            <li><?= session('error') ?></li>
+                        </ul>
+                    </div>
+                <?php elseif (session('errors') !== null) : ?>
+                    <div class="custom-error-container">
+                        <ul>
+                            <?php if (is_array(session('errors'))) : ?>
+                                <?php foreach (session('errors') as $error) : ?>
+                                    <li><?= $error ?></li>
+                                <?php endforeach ?>
+                            <?php else : ?>
+                                <li><?= session('errors') ?>/li>
+                                <?php endif ?>
+                        </ul>
+                    </div>
+                <?php endif ?>
 
 
                 <div class="d-grid col-12 col-md-8 mx-auto m-3">
-                    <button type="submit" class="btn btn-primary btn-block"><?= lang('Auth.register') ?></button>
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%;">Register</button>
                 </div>
 
                 <p class="text-center"><?= lang('Auth.haveAccount') ?> <a href="<?= url_to('login') ?>"><?= lang('Auth.login') ?></a></p>
@@ -127,7 +133,8 @@
         min-height: 100vh;
         background: var(--lightgray);
         width: 100%;
-        overflow: hidden;
+        overflow: auto;
+        color: black;
     }
 
     .custom-error-container {
@@ -135,7 +142,7 @@
         border-radius: 5px;
         margin-bottom: 10px;
         margin-top: 10px;
-        padding: 5px;
+        padding: 10px;
         padding-left: 25px;
         border-left: 5px solid red;
     }
@@ -266,7 +273,7 @@
         border: 2px solid var(--black);
         border-radius: 10px;
         font-size: 1.2em;
-        color: #fff;
+        color: black;
         outline: none;
     }
 

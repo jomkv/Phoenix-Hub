@@ -97,7 +97,7 @@ class Validation extends BaseConfig
             'rules' => 'required|matches[password]',
             'errors' => [
                 'required'   => 'Confirm Password required',
-                'matches'    => 'Passwords do not match too long',
+                'matches'    => 'Passwords do not match',
             ]
         ],
         'student_number' => [
