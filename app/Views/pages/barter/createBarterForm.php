@@ -3,8 +3,10 @@
 <?= $this->section("title") ?>Create Barter Post <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
+
 <body>
-    <div class="container">
+    <div class="container mt-4">
+        <a href="<?= url_to("TestViewsController::viewBarter") ?>" class="back-button mt-3"><i class="bi bi-arrow-left"></i></a>
         <h1>CREATE POST</h1>
         <form action="http://phoenixshop.localhost/test/createBarter" method="POST" enctype="multipart/form-data">
             <div class="form-group">
@@ -39,7 +41,7 @@
                 <label for="file">Upload File</label>
                 <input type="file" id="file" name="file" required>
             </div>
-            <button type="submit">Post</button>
+            <button class="custom_btn" type="submit">Post</button>
         </form>
     </div>
 </body>
@@ -120,7 +122,7 @@
         padding: 3px;
     }
 
-    button {
+    .custom_btn {
         width: 100%;
         padding: 10px;
         background-color: var(--secondary);
@@ -178,6 +180,25 @@
             padding: 6px;
             font-size: 12px;
         }
+    }
+
+    /* Back button style */
+    .back-button {
+        position: fixed;
+        top: 100px;
+        left: 10px;
+        z-index: 1000;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        text-decoration: none;
     }
 </style>
 <?= $this->endSection() ?>

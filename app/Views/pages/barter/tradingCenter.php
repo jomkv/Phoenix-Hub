@@ -6,7 +6,8 @@
 
 <style>
   body {
-    background-color: #f0f2f5; /* Light gray background similar to Facebook */
+    background-color: #f0f2f5;
+    /* Light gray background similar to Facebook */
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -16,12 +17,14 @@
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the start (left side) */
-    padding-left: 20px; /* Add left padding to align content away from left edge */
+    align-items: flex-start;
+    /* Align items to the start (left side) */
+    /* Add left padding to align content away from left edge */
   }
 
   .pictures {
-    height: 300px; /* Decreased the height to make posts shorter */
+    height: 300px;
+    /* Decreased the height to make posts shorter */
   }
 
   .card {
@@ -32,7 +35,8 @@
     margin-bottom: 20px;
     padding: 15px;
     width: 100%;
-    min-height: 500px; /* Ensured a minimum height for each post */
+    min-height: 500px;
+    /* Ensured a minimum height for each post */
   }
 
   .card:hover {
@@ -79,14 +83,16 @@
 
   .button-footer .action-icons {
     display: flex;
-    align-items: center; /* Align icons vertically in the center */
+    align-items: center;
+    /* Align icons vertically in the center */
   }
 
   .button-footer .action-icons i {
     font-size: 18px;
     cursor: pointer;
     padding: 10px;
-    border-radius: 50%; /* Circle shape */
+    border-radius: 50%;
+    /* Circle shape */
     background-color: #ddd;
     margin-right: 10px;
     transition: background-color 0.3s, transform 0.3s;
@@ -108,16 +114,19 @@
   }
 
   .btn-primary {
-    background-color: #4267B2;
-    border: none;
+    background-color: #0079D3;
+    border: 1px solid #0079D3;
     color: white;
-    padding: 12px 24px; /* Adjust padding to make button bigger */
-    font-size: 18px; /* Increase font size */
-    border-radius: 8px; /* Rounded corners */
+    padding: 10px 16px;
+    font-size: 14px;
+    /* Changed to oval shape */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
 
   .btn-primary:hover {
-    background-color: #365899;
+    background-color: #005EA6;
+    border-color: #005EA6;
   }
 
   /* Modal styles */
@@ -141,7 +150,8 @@
     width: 80%;
     max-width: 600px;
     border-radius: 8px;
-    position: relative; /* Added relative positioning */
+    position: relative;
+    /* Added relative positioning */
   }
 
   .close {
@@ -157,8 +167,10 @@
   /* Enlarged text area */
   .modal-content textarea {
     width: 100%;
-    min-height: 150px; /* Adjusted minimum height */
-    resize: vertical; /* Allow vertical resizing */
+    min-height: 150px;
+    /* Adjusted minimum height */
+    resize: vertical;
+    /* Allow vertical resizing */
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
@@ -204,11 +216,10 @@
   }
 </style>
 
-<div class="container">
-  <button id="openModalBtn" class="btn btn-primary bi bi-window-plus mt-1" style="margin-bottom: -50px;">Create Post</button>
-
-  <div class="row row-cols-1 row-cols-md-3 g-3 mt-5">
-    <?php for ($i = 0; $i < 8; $i++): ?>
+<div class="container w-100">
+  <a id="openModalBtn" class="btn btn-primary bi bi-window-plus mt-1" style="margin-bottom: -50px;" href="<?= url_to("TestViewsController::viewCreateBarter") ?>">Create Post</a>
+  <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 g-3 mt-5">
+    <?php for ($i = 0; $i < 8; $i++) : ?>
       <div class="col">
         <div class="card h-100" style="text-decoration: none; padding: 10px; background-color: frost; width: 350px;">
           <div class="card-header">
@@ -224,27 +235,14 @@
           </div>
           <div class="button-footer">
             <div class="action-icons" style="width:50px;">
-              <i class="bi bi-hand-thumbs-up"></i>
-              <i class="bi bi-chat"></i>
+              <i class="bi bi-hand-thumbs-up" style="border-radius:30px; padding:5px 20px 5px 20px"></i>
+              <i class="bi bi-chat" style="border-radius:30px; padding:5px 20px 5px 20px"></i>
             </div>
             <a href="<?= url_to("TestViewsController::viewBarterPost") ?>" class="btn btn-primary btn-sm float-right">View More</a>
           </div>
         </div>
       </div>
     <?php endfor; ?>
-  </div>
-</div>
-
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Post your trade Product</h3>
-    <textarea class="form-control mb-3" placeholder="What's on your mind?..." rows="5"></textarea>
-    <div class="add-photo">
-      <label for="photos"><i class="bi bi-camera"></i></label>
-      <input type="file" id="photos" style="display:none;">
-    </div>
-    <div class="btn btn-primary post-button">Post</div>
   </div>
 </div>
 
