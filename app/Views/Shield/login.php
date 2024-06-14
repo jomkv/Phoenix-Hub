@@ -76,7 +76,7 @@
             </form>
         </div>
     </div>
-    <div class="logo-container">
+    <div class="logo-container my-class" id="magtago-ka">
         <div class="ring">
             <div class="logo-wrapper">
                 <img src="<?= base_url() . 'circular-logo-purple(4).png' ?>" alt="Logo" class="logo">
@@ -132,6 +132,7 @@
         padding: 5px;
         padding-left: 25px;
         border-left: 5px solid red;
+        width: 100%;
     }
 
     .container {
@@ -148,7 +149,6 @@
     .form-container,
     .logo-container {
         width: 45%;
-        display: flex;
         justify-content: center;
         align-items: center;
     }
@@ -305,6 +305,7 @@
         .logo-container {
             width: 50%;
             height: 50%;
+            display: none;
         }
 
         .ring {
