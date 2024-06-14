@@ -9,8 +9,15 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        $products = $this->getProducts();
+        $model = new ProductModel();
+
+        $products = [];
         $orgs = $this->getOrgs();
+
+        foreach ($orgs as $org) {
+            $currProducts = $model->where('organization_id', $org->organization_id)->findAll();
+            $products = [...$products, ...$currProducts];
+        }
 
         return view('pages/home', ['organizations' => $orgs, 'products' => $products]);
     }
