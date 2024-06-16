@@ -6,7 +6,7 @@
 <style>
     body {
         background-color: #f2f2f2;
-        font-family: 'Arial', sans-serif;
+        overflow:hidden;
     }
     .container {
         margin-top: 2rem;
@@ -129,20 +129,31 @@
         background-color: #0056b3;
     }
     @media (max-width: 767px) {
+        .header {
+            padding: 1rem 0; /* Reduce padding for smaller screens */
+        }
+        .search-bar {
+            max-width: 200px; /* Adjust width for smaller screens */
+        }
         .table-container {
             margin-top: 1rem;
             overflow-x: auto;
         }
-        .header {
-            padding-top: 1rem;
-        }
         .card-checkout {
             flex-direction: column;
             text-align: center;
+            padding: 0.5rem; /* Reduce padding for smaller screens */
+        }
+        .card-checkout .container {
+            flex-direction: column; /* Stack items vertically */
+        }
+        .card-checkout p {
+            margin-bottom: 10px; /* Add spacing below text */
         }
         .btn-primary, .btn-danger {
             width: 100%;
             margin-top: 10px;
+            font-size: 0.9rem; /* Adjust font size for smaller screens */
         }
     }
 </style>
