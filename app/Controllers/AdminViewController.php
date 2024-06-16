@@ -75,6 +75,8 @@ class AdminViewController extends BaseController
       $orgs = $orgModel->findAll();
       $products = $productModel->findAll();
 
+      //dd($products);
+
       // If no orgs found
       if (empty($orgs)) {
         $products = [];

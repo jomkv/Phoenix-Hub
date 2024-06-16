@@ -57,7 +57,6 @@ class CreateOrderTable extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addPrimaryKey('order_id');
-        $this->forge->addForeignKey('organization_id', 'organizations', 'organization_id', 'CASCADE', 'CASCADE', 'fk_order_org');
         $this->forge->addForeignKey('student_id', 'users', 'id', 'CASCADE', 'CASCADE', 'fk_order_student');
         $this->forge->createTable('orders');
     }

@@ -54,8 +54,6 @@ class CreateOrderItemsTable extends Migration
 
     public function down()
     {
-        $this->forge->dropForeignKey('order_items', 'order_id');
-        $this->forge->dropForeignKey('order_items', 'product_id');
         $this->forge->dropTable('order_items');
     }
 }

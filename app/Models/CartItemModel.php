@@ -12,7 +12,7 @@ class CartItemModel extends Model
   protected $useAutoIncrement = true;
 
   protected $returnType     = \App\Entities\CartItem::class;
-  protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
+  //protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
   protected $allowedFields = ['student_id', 'product_id', 'quantity'];
   // protected bool $updateOnlyChanged = true;
@@ -22,9 +22,9 @@ class CartItemModel extends Model
   // * Dates
   protected $useTimestamps = false;
   protected $dateFormat = 'datetime';
-  protected $createdField  = 'created_at';
-  protected $updatedField  = 'updated_at';
-  protected $deletedField  = 'deleted_at';
+  // protected $createdField  = 'created_at';
+  // protected $updatedField  = 'updated_at';
+  // protected $deletedField  = 'deleted_at';
 
   // * Validation
 

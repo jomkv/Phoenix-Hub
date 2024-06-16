@@ -26,6 +26,7 @@ $routes->environment('development', static function ($routes) {
 // * Students
 
 $routes->get('/', 'Home::index');
+$routes->get('/cart', 'CartController::viewCart', ['filter' => 'isLoggedIn']);
 // $routes->get('/login', 'StudentController::viewLogin');
 // $routes->get('/signup', 'StudentController::viewSignup');
 
@@ -42,6 +43,14 @@ $routes->get('/(:num)/products', 'OrganizationController::viewOrgProducts/$1');
 $routes->get('/product', 'ProductController::viewAllProducts');
 $routes->get('/product/(:num)', 'ProductController::viewProduct/$1');
 //$routes->get('/product/test', 'ProductController::viewProduct');
+
+// * Cart
+$routes->get('/cart/add/(:num)/(:num)', 'CartController::addToCart/$1/$2', ['filter' => 'isLoggedIn']);
+
+$routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filter' => 'isLoggedIn']);
+
+// * Orders and Payments
+$routes->get('/payment/webhook', 'PaymentController::webhook');
 
 /**
  * ADMIN ROUTES

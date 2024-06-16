@@ -142,6 +142,9 @@
             </li>
           <?php else : ?>
             <li class="nav-item">
+              <a class="nav-link fs-5" href="<?= base_url() . 'cart' ?>">Cart</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link fs-5" href="<?= base_url() . 'logout' ?>">Logout</a>
             </li>
           <?php endif; ?>

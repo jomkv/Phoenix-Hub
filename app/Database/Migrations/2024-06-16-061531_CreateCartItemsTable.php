@@ -29,18 +29,6 @@ class CreateCartItemsTable extends Migration
                 'type'                  => 'INT',
                 'null'                  => false,
             ],
-            'created_at'    => [
-                'type'                  => 'DATETIME',
-                'null'                  => true
-            ],
-            'updated_at'    => [
-                'type'                  => 'DATETIME',
-                'null'                  => true
-            ],
-            'deleted_at'    => [
-                'type'                  => 'DATETIME',
-                'null'                  => true
-            ],
         ]);
 
         $this->forge->addKey('cart_item_id', TRUE);

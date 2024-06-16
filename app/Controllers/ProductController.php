@@ -38,6 +38,8 @@ class ProductController extends BaseController
     try {
       $product = $this->getProductOrError($productId);
 
+      // dd($product);
+
       return view('pages/product/productPage', ["product" => $product]);
     } catch (\LogicException $e) {
       return redirect()->to('/product')->with('error', 'Product not found');
