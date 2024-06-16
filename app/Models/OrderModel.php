@@ -14,7 +14,7 @@ class OrderModel extends Model
   protected $returnType     = \App\Entities\Order::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['student_id', 'organization_id', 'status', 'total', 'payment_method', 'payment_reference', 'is_paid', 'pickup_date'];
+  protected $allowedFields = ['student_id', 'status', 'total', 'payment_method', 'payment_reference', 'is_paid', 'pickup_date'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -22,17 +22,16 @@ class OrderModel extends Model
   // * Dates
   protected $useTimestamps = false;
   protected $dateFormat = 'datetime';
-  protected $createdField  = 'created_at';
-  protected $updatedField  = 'updated_at';
+  // protected $createdField  = 'created_at';
+  // protected $updatedField  = 'updated_at';
   protected $deletedField  = 'deleted_at';
 
   // * Validation
 
   protected $validationRules      = [
     'student_id'                      => 'required',
-    'organization_id'                 => 'required',
     'status'                          => '',
-    'total'                           => '',
+    'total'                           => 'required',
     'payment_method'                  => 'required',
     'payment_reference'               => '',
     'is_paid'                         => '',
@@ -43,8 +42,8 @@ class OrderModel extends Model
     'student_id' => [
       'required'    => 'student_id must be provided',
     ],
-    'organization_id' => [
-      'required'    => 'organization_id must be provided',
+    'total' => [
+      'required'    => 'total must be provided',
     ],
     'payment_method' => [
       'required'    => 'payment_method must be provided',

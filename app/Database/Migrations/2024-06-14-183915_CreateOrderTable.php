@@ -20,11 +20,6 @@ class CreateOrderTable extends Migration
                 'unsigned'              => true,
                 'null'                  => false,
             ],
-            'organization_id' => [
-                'type'                  => 'INT',
-                'unsigned'              => true,
-                'null'                  => false,
-            ],
             'status' => [              // pending, processing, completed, cancelled
                 'type'                  => 'VARCHAR',
                 'constraint'            => '255',
@@ -33,8 +28,7 @@ class CreateOrderTable extends Migration
             ],
             'total' => [
                 'type'                  => 'INT',
-                'null'                  => true,
-                'default'               => 0,
+                'null'                  => false,
             ],
             'payment_method' => [      // COD, Online
                 'type'                  => 'VARCHAR',
