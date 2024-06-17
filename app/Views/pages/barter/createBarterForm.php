@@ -6,40 +6,39 @@
 
 <body>
     <div class="container mt-4">
+        <?php if (session()->has("errors")): ?>
+            <ul>
+                <?php foreach(session("errors") as $error): ?>
+                    <li><?= $error ?></li>
+                <?php endforeach; ?>
+                </ul>
+        <?php endif; ?>
         <a href="<?= url_to("TestViewsController::viewBarter") ?>" class="back-button mt-3"><i class="bi bi-arrow-left"></i></a>
         <h1>CREATE POST</h1>
-        <form action="http://phoenixshop.localhost/test/createBarter" method="POST" enctype="multipart/form-data">
+        <form action="http://phoenixshop.localhost/test/barterHome" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Post Title</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title">
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description"></textarea>
             </div>
             <div class="form-group">
                 <label for="category">Category</label>
-                <select id="category" name="category" required>
+                <select id="category" name="category">
                     <option value="">Select a category</option>
-                    <option value="textbooks">Textbooks</option>
-                    <option value="study-materials">Study Materials</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="furniture">Furniture</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="sports-equipment">Sports Equipment</option>
-                    <option value="musical-instruments">Musical Instruments</option>
-                    <option value="bicycles">Bicycles</option>
-                    <option value="appliances">Appliances</option>
-                    <option value="others">Others</option>
+                    <option value="swap">Swap</option>
+                    <option value="for_sale">For Sale</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="price">Price (PHP)</label>
-                <input type="text" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="e.g., 1000.00" required>
+                <input type="number" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="e.g., 1000.00">
             </div>
             <div class="form-group">
                 <label for="file">Upload File</label>
-                <input type="file" id="file" name="file" required>
+                <input type="file" name="fileuploads[]" class="form-control" accept="image/*" multiple>
             </div>
             <button class="custom_btn" type="submit">Post</button>
         </form>

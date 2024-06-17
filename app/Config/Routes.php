@@ -90,4 +90,6 @@ $routes->post('/admin/product/(:num)', 'ProductController::editProduct/$1');
 
 $routes->delete('/admin/product/(:num)', 'ProductController::deleteProduct/$1', ['as' => 'delete_product']);
 
+$routes->post('/test/barterHome', 'BarterController::submit_barter');
+
 service('auth')->routes($routes);
