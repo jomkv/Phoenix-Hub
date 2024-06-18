@@ -129,11 +129,27 @@ class OrderController extends BaseController
     $email = \Config\Services::email();
 
     $email->setTo($student->getEmail());
-    $email->setSubject("Phoenix Hub Order Confirmed");
-    $email->setMessage("" .
-      "<h3>Hello " . $student->full_name . ", this is to notify you that your Phoenix Hub Order has been confirmed.</h3>" .
-      "<h4>Please prepare your payment of ₱" . $order->total . " to be given once picked up at CvSU Silang's Gymnasium at the date and time of " . $order->pickup_date . " " . $order->pickup_time  . "</h4>" .
-      "");
+    $email->setSubject("Your Phoenix Hub Order Confirmed - [Order ID: " . $orderId . "]");
+    $email->setMessage(<<<EOT
+<p>Hi {$student->full_name},</p>
+<p>Great news! Your order from Phoenix Hub has been confirmed and is now being processed for pick-up.</p>
+<br>
+<h4>Order Details:</h4>
+<ul>
+  <li>Order ID: {$orderId}</li>
+  <li>Pick-Up Location: CvSU SIlang Gymnasium</li>
+  <li>Pick-Up Date and Time: {$order->pickup_date} {$order->pickup_time}</li>
+  <li>Order Total Amount: ₱{$order->total}</li>
+</ul>
+<br>
+<h4>Next Steps:</h4>
+<p>Please prepare the exact amount of ₱{$order->total} for your order upon pick-up at the designated time and place.</p>
+<p>We look forward to seeing you!</p>
+<br>
+<br>
+<p>Sincerely,</p>
+<p>The Phoenix Hub Team</p>
+EOT);
 
     $email->send();
   }
@@ -146,11 +162,39 @@ class OrderController extends BaseController
     $email = \Config\Services::email();
 
     $email->setTo($student->getEmail());
-    $email->setSubject("Phoenix Hub Order Cancelled");
-    $email->setMessage("" .
-      "<h3>Hello " . $student->full_name . ", this is to notify you that your Phoenix Hub Order has been cancelled.</h3>" .
-      "<h4>If you have any concerns or inquiry please send us an email at phoenixhubsilang@gmail.com</h4>" .
-      "");
+    $email->setSubject("Phoenix Hub Order Update - [Order ID: " . $orderId . "]");
+    $email->setMessage(<<<EOT
+<p>Hi {$student->full_name},</p>
+<p>We're writing to inform you that your order from Phoenix Hub (Order ID: {$orderId}) has been cancelled.</p>
+<p>We apologize for any inconvenience this may cause.</p>
+<br>
+<p>**If you have any questions regarding the cancellation, please don't hesitate to contact us.**</p>
+<p>Sincerely,</p>
+<p>The Phoenix Hub Team</p>
+EOT);
+
+    $email->send();
+  }
+
+  private function orderPickupEmail($studentId, $orderId)
+  {
+    $order =  $order = $this->orderModel->find($orderId);
+    $student = $this->studentModel->findById($studentId);
+
+    $email = \Config\Services::email();
+
+    $email->setTo($student->getEmail());
+    $email->setSubject("Your Phoenix Hub Order Picked Up - [Order ID: " . $orderId . "]");
+    $email->setMessage(<<<EOT
+<p>Hi {$student->full_name},</p>
+<p>This email confirms that your Phoenix Hub order (Order ID: {$order->id}) has been picked up.</p>
+<p>We hope you enjoy your order!</p>
+<br>
+<p>**If you have any questions or concerns, please don't hesitate to contact us.**</p>
+<p>Thank you for choosing Phoenix Hub!</p>
+<p>Sincerely,</p>
+<p>The Phoenix Hub Team</p>
+EOT);
 
     $email->send();
   }

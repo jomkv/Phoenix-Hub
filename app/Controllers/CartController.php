@@ -253,6 +253,8 @@ class CartController extends BaseController
 
         return redirect()->to($res["url"]);
       } else {
+        $this->orderSentEmail($order->student_id, $orderId);
+
         // * Complete Transaction
         $this->db->transComplete();
 
@@ -384,5 +386,38 @@ class CartController extends BaseController
       "id"        => $sessionId,
       "url"       => $checkoutUrl
     ];
+  }
+
+  private function orderSentEmail($studentId, $orderId)
+  {
+    $order =  $order = $this->orderModel->find($orderId);
+    $student = $this->studentModel->findById($studentId);
+
+    $email = \Config\Services::email();
+
+    $email->setTo($student->getEmail());
+    $email->setSubject("Your Order From Phoenix Hub - [Order ID: " . $orderId . "]");
+    $email->setMessage(<<<EOT
+<p>Hi {$student->full_name},</p>
+<p>Thank you for your order from Phoenix Hub! We've received your order details and it's currently under review.</p>
+<br>
+<h4>Order Details:</h4>
+<ul>
+  <li>Order ID: {$orderId}</li>
+  <li>Pick-Up Location: CvSU SIlang Gymnasium</li>
+  <li>Pick-Up Date and Time: {$order->pickup_date} {$order->pickup_time}</li>
+  <li>Order Total Amount: ₱{$order->total}</li>
+</ul>
+<br>
+<h4>Next Steps:</h4>
+<p>Our team will review your order for availability and processing. You will receive a separate email notification confirming your order or notifying you of any cancellations.</p>
+<p>Please don't hesitate to contact us if you have any questions.</p>
+<br>
+<br>
+<p>Sincerely,</p>
+<p>The Phoenix Hub Team</p>
+EOT);
+
+    $email->send();
   }
 }

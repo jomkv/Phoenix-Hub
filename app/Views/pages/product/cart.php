@@ -271,7 +271,7 @@
             <p>Total Price: $<span id="total-price"><?= $total ?></span></p>
             <p>Total Items: <span id="total-items"><?= count($cartItems) ?></span></p>
         </div>
-        <button type="button" class="btn btn-checkout">Check Out</button>
+        <a href="<?= url_to("CartController::viewCheckoutCart") ?>" type="button" class="btn btn-checkout">Check Out</a>
     </div>
 </div>
 

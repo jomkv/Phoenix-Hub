@@ -20,7 +20,7 @@ class CreateOrderTable extends Migration
                 'unsigned'              => true,
                 'null'                  => false,
             ],
-            'status' => [              // pending, processing, completed, cancelled
+            'status' => [              // pending, confirmed, completed, cancelled
                 'type'                  => 'VARCHAR',
                 'constraint'            => '255',
                 'null'                  => true,
@@ -46,7 +46,11 @@ class CreateOrderTable extends Migration
                 'default'               => false
             ],
             'pickup_date' => [
-                'type'                  => 'DATETIME',
+                'type'                  => 'DATE',
+                'null'                  => false,
+            ],
+            'pickup_time' => [
+                'type'                  => 'TIME',
                 'null'                  => false,
             ],
             'deleted_at' => [

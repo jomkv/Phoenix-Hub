@@ -14,7 +14,7 @@ class OrderModel extends Model
   protected $returnType     = \App\Entities\Order::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['student_id', 'status', 'total', 'payment_method', 'payment_reference', 'is_paid', 'pickup_date'];
+  protected $allowedFields = ['student_id', 'status', 'total', 'payment_method', 'payment_reference', 'is_paid', 'pickup_date', 'pickup_time'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -30,27 +30,28 @@ class OrderModel extends Model
 
   protected $validationRules      = [
     'student_id'                      => 'required',
-    'status'                          => '',
     'total'                           => 'required',
     'payment_method'                  => 'required',
-    'payment_reference'               => '',
-    'is_paid'                         => '',
-    'pickup_date'                     => 'required'
+    'pickup_date'                     => 'required',
+    'pickup_time'                     => 'required',
   ];
 
   protected $validationMessages   = [
     'student_id' => [
-      'required'    => 'student_id must be provided',
+      'required'    => 'Student ID not found, kindly login and try again.',
     ],
     'total' => [
-      'required'    => 'total must be provided',
+      'required'    => 'Total must be provided',
     ],
     'payment_method' => [
-      'required'    => 'payment_method must be provided',
+      'required'    => 'Payment Method must be provided',
     ],
     'pickup_date' => [
-      'required'    => 'pickup_date must be provided',
+      'required'    => 'Pickup Date must be provided',
     ],
+    'pickup_time' => [
+      'required'    => 'Pickup Time must be provided',
+    ]
   ];
   // protected $skipValidation       = false;
   // protected $cleanValidationRules = true;

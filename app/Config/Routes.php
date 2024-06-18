@@ -14,7 +14,7 @@ $routes->environment('development', static function ($routes) {
   $routes->get('/test/barterHome', 'TestViewsController::viewBarter');
   $routes->get('/test/barterItem', 'TestViewsController::viewBarterPost');
   $routes->get('/test/createBarter', 'TestViewsController::viewCreateBarter');
-  $routes->get('/test/checkout', 'OrderController::pay');
+  $routes->get('/test/checkout', 'PaymentController::webhook');
   $routes->get('/test/checkout/confirm', 'OrderController::success');
   $routes->get('/test/checkout/cancel', 'OrderController::cancel');
   $routes->get('/test/cart', 'TestViewsController::viewCart');
@@ -46,11 +46,13 @@ $routes->get('/product/(:num)', 'ProductController::viewProduct/$1');
 
 // * Cart
 $routes->get('/cart/add/(:num)/(:num)', 'CartController::addToCart/$1/$2', ['filter' => 'isLoggedIn']);
+$routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => 'isLoggedIn']);
+$routes->post('/cart/checkout', 'CartController::checkoutCart', ['filter' => 'isLoggedIn']);
 
 $routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filter' => 'isLoggedIn']);
 
 // * Orders and Payments
-$routes->get('/payment/webhook', 'PaymentController::webhook');
+$routes->post('/payment/webhook', 'PaymentController::webhook');
 
 /**
  * ADMIN ROUTES
@@ -98,5 +100,9 @@ $routes->get('/admin/product/(:num)', 'ProductController::viewEditProduct/$1');
 $routes->post('/admin/product/(:num)', 'ProductController::editProduct/$1');
 
 $routes->delete('/admin/product/(:num)', 'ProductController::deleteProduct/$1', ['as' => 'delete_product']);
+
+// * Admin Orders
+
+$routes->post('/admin/order/confirm/(:num)', 'OrderController::confirmOrder/$1');
 
 service('auth')->routes($routes);
