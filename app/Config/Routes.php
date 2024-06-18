@@ -104,5 +104,6 @@ $routes->delete('/admin/product/(:num)', 'ProductController::deleteProduct/$1', 
 // * Admin Orders
 
 $routes->post('/admin/order/confirm/(:num)', 'OrderController::confirmOrder/$1');
+$routes->post('/test/barterHome', 'BarterController::submit_barter');
 
 service('auth')->routes($routes);
