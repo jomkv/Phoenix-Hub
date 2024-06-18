@@ -59,10 +59,9 @@
   <h4>Pickup and Payment Details</h4>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Payment Method</label>
-    <select name="payment_method" class="form-select">
-      <option value="">Choose Here</option>
-      <option value="cod">Pay Cash on Pickup</option>
-      <option value="online">Pay Online in Advance</option>
+    <select id="payment_method" name="payment_method" class="form-select">
+      <option value="cod" selected>Pay Cash on Pickup</option>
+      <option value="online" <?= $total < 20 ? "disabled" : "" ?>>Pay Online in Advance</option>
     </select>
   </div>
   <div class="mb-3">
@@ -74,10 +73,17 @@
     <input name="pickup_time" class="form-control bg-white" id="pickup_time" placeholder="HH:MM" value="<?= old("pickup_time") ?>">
   </div>
   <h4 class="mb-3">Terms and Conditions</h4>
-  <ul class="mb-3">
+
+  <ul class="mb-3" id="cod_payment_terms">
+    <li>Upon submission of your order, you will receive an acknowledgment email. However, please note that this does not guarantee order confirmation. Our team will review your order and confirm its availability and processing. You will be notified via email if your order is confirmed or canceled.</li>
     <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
     <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
-    <li>Upon submission of your order, you will receive an acknowledgment email. However, please note that this does not guarantee order confirmation. Our team will review your order and confirm its availability and processing. You will be notified via email if your order is confirmed or canceled.</li>
+  </ul>
+  <ul class="mb-3" id="online_payment_terms">
+    <li>Order will automatically be confirmed upon successful payment processing.</li>
+    <li>If the online payment fails, your order will be automatically cancelled, and you will be notified via email</li>
+    <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
+    <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
   </ul>
 
   <div class="mb-3 ml-2 form-check">
@@ -139,6 +145,26 @@
     // Update button state on checkbox change
     termsCheckbox.change(function() {
       submitButton.prop('disabled', !$(this).is(':checked'));
+    });
+
+    const onlineTerms = $('#online_payment_terms');
+    const codTerms = $('#cod_payment_terms');
+    const paymentMethodSelect = $('#payment_method');
+
+    // Initially hide both online and COD specific terms
+    onlineTerms.hide();
+
+    // Show terms based on selected payment method
+    paymentMethodSelect.change(function() {
+      const selectedMethod = $(this).val();
+
+      if (selectedMethod === 'online') {
+        onlineTerms.show();
+        codTerms.hide();
+      } else if (selectedMethod === 'cod') {
+        onlineTerms.hide();
+        codTerms.show();
+      }
     });
   });
 </script>

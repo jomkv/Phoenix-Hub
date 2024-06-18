@@ -6,7 +6,7 @@
 
 <?= $this->section("content") ?>
 
-<div class="row h-auto justify-content-between mt-2">
+<div class="row h-auto justify-content-between mt-2 w-100">
   <div class="col-3">
     <h1>Products</h1>
     <a href="<?= url_to("ProductController::viewCreateProduct") ?>" class="btn btn-primary align-self-center create-modal-btn w-75 mb-2">Create New Product</a>
@@ -26,8 +26,7 @@
   </div>
 
 </div>
-<div class="row h-100">
-
+<div class="row w-100">
   <div class="col-12">
     <div class="table-responsive">
       <table class="table table-dark table-hover table-bordered table-striped text-center">
@@ -48,8 +47,8 @@
               <td class="tr-product-price">₱<?= $product->price ?></td>
               <td class="tr-product-stock"><?= $product->stock ?></td>
               <td class="text-right">
-                <a href="<?= url_to("ProductController::viewEditProduct", $product->product_id) ?>" type="button" class="btn btn-primary badge-pill edit-modal-btn" style="width:80px;">EDIT</a>
-                <a href="<?= url_to("ProductController::deleteProduct", $product->product_id) ?>" data-product-id="<?= $product->product_id ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn" style="width:80px;">DELETE</a>
+                <a href="<?= url_to("ProductController::viewEditProduct", $product->product_id) ?>" type="button" class="btn btn-primary badge-pill edit-modal-btn">EDIT</a>
+                <a href="<?= url_to("ProductController::deleteProduct", $product->product_id) ?>" data-product-id="<?= $product->product_id ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn">DELETE</a>
               </td>
             </tr>
           <?php endforeach ?>

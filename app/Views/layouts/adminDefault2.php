@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body style="overflow: hidden;">
   <?php
   $error = session()->getFlashdata('error');
   $message = session()->getFlashdata('message');
@@ -37,7 +37,7 @@
     <div class="main p-3">
       <nav class="navbar navbar-expand px-3 border-bottom border-dark">
         <button class="btn" id="sidebar-toggle" type="button">
-            <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse navbar">
           <ul class="navbar-nav">
@@ -57,7 +57,7 @@
 
       <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
-      <div id="content-custom-container">
+      <div class="overflow-auto" id="content-custom-container" style="max-height: 100vh;">
         <?= $this->renderSection("content") ?>
       </div>
     </div>
@@ -65,8 +65,8 @@
 
   <script>
     const sidebarToggle = document.querySelector("#sidebar-toggle");
-    sidebarToggle.addEventListener("click",function(){
-        document.querySelector("#sidebar").classList.toggle("collapsed");
+    sidebarToggle.addEventListener("click", function() {
+      document.querySelector("#sidebar").classList.toggle("collapsed");
     });
 
     function generateSuccessToast(message) {
@@ -180,9 +180,9 @@
   </div>
 
   <style>
-   *{
-        font-family: 'Poppins', sans-serif;
-        }
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
 
 
     :root {

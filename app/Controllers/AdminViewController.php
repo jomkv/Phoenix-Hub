@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrganizationModel;
+use App\Models\OrderModel;
 use App\Models\ProductModel;
 use CodeIgniter\Shield\Entities\User;
 
@@ -90,13 +91,38 @@ class AdminViewController extends BaseController
   }
 
   /**
-   * @desc Admin pending purchases menu
-   * @route GET /admin/pending
+   * @desc Admin orders menu
+   * @route GET /admin/orders
    * @access private
    */
   public function viewPending(): string
   {
-    return view('pages/admin/pendingPurchases');
+    $model = new OrderModel();
+
+    $pending = $model->where("status", "pending")->findAll();
+    $confirmed = $model->where("status", "confirmed")->findAll();
+    $all = [...$pending, ...$confirmed];
+    $filter = "none";
+
+    $orders = [];
+
+    if ($this->request->getMethod() === "POST") {
+      $data = $this->request->getPost();
+
+      if ($data["filter"] === "pending") {
+        $filter = "pending";
+        $orders = $pending;
+      } else if ($data["filter"] === "confirmed") {
+        $filter = "confirmed";
+        $orders = $confirmed;
+      } else {
+        $orders = $all;
+      }
+    } else {
+      $orders = $all;
+    }
+
+    return view('pages/admin/pendingPurchases', ["orders" => $orders, "filter" => $filter]);
   }
 
   /**

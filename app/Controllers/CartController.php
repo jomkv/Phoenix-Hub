@@ -261,11 +261,11 @@ class CartController extends BaseController
         return redirect()->to("/")->with("message", "Order Submitted");
       }
     } catch (\LogicException $e) {
-      return redirect()->to("/")->with('error', $e->getMessage());
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with('devErr', $e->getMessage());
     } catch (\Exception $e) {
-      return redirect()->to("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with('devErr', $e->getMessage());
     } catch (DatabaseException $e) {
-      return redirect()->to("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with('devErr', $e->getMessage());
     }
   }
 
@@ -340,8 +340,8 @@ class CartController extends BaseController
             'gcash',
             'grab_pay',
           ],
-          'success_url' => url_to('OrderController::success'),
-          'cancel_url' => url_to('OrderController::cancel'),
+          'success_url' => url_to('PaymentController::success'),
+          'cancel_url' => url_to('PaymentController::fail'),
           'description' => 'Payment for Test Product'
         ],
       ]
@@ -367,7 +367,7 @@ class CartController extends BaseController
     if ($curlError = curl_error($curl)) {
       curl_close($curl);
       log_message('error', 'Payment error: ' . $curlError);
-      return throw new \LogicException("Error, unable to create checkout session.");
+      return throw new \LogicException($curlError);
     }
 
     curl_close($curl);
@@ -378,10 +378,10 @@ class CartController extends BaseController
 
     // * If session id and checkout url created
     if (!$sessionId || !$checkoutUrl) {
-      dd($responseData);
-      throw new \LogicException("Error, unable to create checkout session.");
+      return throw new \LogicException("Error, unable to create checkout session.");
     }
 
+    session()->set('session_id', $responseData->data->id);
     return [
       "id"        => $sessionId,
       "url"       => $checkoutUrl

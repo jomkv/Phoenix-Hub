@@ -54,6 +54,9 @@ $routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filt
 // * Orders and Payments
 $routes->post('/payment/webhook', 'PaymentController::webhook');
 
+$routes->get('/payment/success', 'PaymentController::success');
+$routes->get('/payment/fail', 'PaymentController::fail');
+
 /**
  * ADMIN ROUTES
  */
@@ -63,7 +66,7 @@ $routes->get('/login/admin', 'AdminViewController::viewLogin'); // login
 $routes->get('/admin', 'AdminViewController::viewDashboard'); // dashboard
 $routes->get('/admin/organization', 'AdminViewController::viewOrganizations'); // organizations
 $routes->get('/admin/product', 'AdminViewController::viewProducts'); // products
-$routes->get('/admin/pending', 'AdminViewController::viewPending'); // pending purchases
+$routes->get('/admin/orders', 'AdminViewController::viewPending'); // pending purchases
 $routes->get('/admin/reports', 'AdminViewController::viewReports'); // reports
 $routes->get('/admin/history', 'AdminViewController::viewHistory'); // pending purchases
 
@@ -102,6 +105,8 @@ $routes->post('/admin/product/(:num)', 'ProductController::editProduct/$1');
 $routes->delete('/admin/product/(:num)', 'ProductController::deleteProduct/$1', ['as' => 'delete_product']);
 
 // * Admin Orders
+
+$routes->post('/orders', 'AdminViewController::viewPending');
 
 $routes->post('/admin/order/confirm/(:num)', 'OrderController::confirmOrder/$1');
 $routes->post('/test/barterHome', 'BarterController::submit_barter');

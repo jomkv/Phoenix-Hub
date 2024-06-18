@@ -4,7 +4,7 @@
 
 <?= $this->section("content") ?>
 
-<div class="row h-auto mt-4">
+<div class="row h-auto mt-4 w-100">
   <div class="col-6">
     <h1>Organizations</h1>
   </div>
