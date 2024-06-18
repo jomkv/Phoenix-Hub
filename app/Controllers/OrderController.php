@@ -2,126 +2,156 @@
 
 namespace App\Controllers;
 
-//use App\Models\OrganizationModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
+use App\Models\OrderItemModel;
+use App\Models\OrderModel;
+use App\Models\CartItemModel;
+use App\Models\ProductModel;
+
+use App\Entities\Order;
+use App\Entities\OrderItem;
+use App\Entities\CartItem;
+use App\Entities\Product;
 
 class OrderController extends BaseController
 {
+  private OrderItemModel $orderItemModel;
+  private OrderModel $orderModel;
+  private CartItemModel $cartItemModel;
+  private ProductModel $productModel;
+  private $studentModel;
+  private $db;
 
-  public function pay()
+  public function __construct()
   {
+    $this->orderItemModel = new OrderItemModel();
+    $this->orderModel = new OrderModel();
+    $this->cartItemModel = new CartItemModel();
+    $this->productModel = new ProductModel();
+    $this->studentModel = auth()->getProvider();
+    $this->db = \Config\Database::connect();
+  }
 
-    $apiKey = getenv('paymongo.secret');
+  public function createOrder($studentId)
+  {
+    try {
+      //$student = $this->getStudentOrError($studentId);
 
-    if (!$apiKey) {
-      log_message('error', 'Payment error: API key not set.');
-      session()->setFlashdata('error', 'Payment error: API key not set.');
-      return redirect()->to(site_url('error'));
+      // Get all student's cart items
+      //$cartItems = $this->cartItemModel->where("student_id", $studentId)->findAll();
+
+      // create order 
+      // create order items 
+
+      // delete all student's cart items
+
+    } catch (\LogicException $e) {
+      return redirect()->to("/")->with('error', $e->getMessage());
+    } catch (\Exception $e) {
+      return redirect()->to("/")->with('error', "Error, please try again later.");
     }
+  }
 
-    $data = [
-      'data' => [
-        'attributes' => [
-          'line_items' => [
-            [
-              'currency'      => 'PHP',
-              'amount'        => 10000,
-              'description'   => 'Test Product',
-              'name'          => 'Test Product',
-              'quantity'      => 1,
-            ]
-          ],
-          'payment_method_types' => [
-            'card',
-            'paymaya',
-            'gcash',
-            'grab_pay',
-          ],
-          'success_url' => url_to('OrderController::success'),
-          'cancel_url' => url_to('OrderController::cancel'),
-          'description' => 'Payment for Test Product'
-        ],
-      ]
-    ];
+  /**
+   * @desc confirm order
+   * @route POST /admin/order/confirm/:id
+   * @access private
+   */
+  public function confirmOrder($orderId)
+  {
+    try {
+      $order = $this->getOrderOrError($orderId);
 
+      // * Get items associated with the order
+      $orderItems = $this->orderItemModel->where("order_id", $orderId)->findAll();
 
-    $curl = curl_init();
+      // * Start Transaction
+      $this->db->transException(true)->transStart();
 
-    curl_setopt_array($curl, [
-      CURLOPT_URL => 'https://api.paymongo.com/v1/checkout_sessions',
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => json_encode($data),
-      CURLOPT_HTTPHEADER => [
-        'Content-Type: application/json',
-        'Authorization: Basic ' . base64_encode($apiKey)
-      ]
-    ]);
+      // * Update product stock
+      foreach ($orderItems as $item) {
+        $product = $this->getProductOrError($item->product_id);
 
-    $response = curl_exec($curl);
-
-
-    if ($curlError = curl_error($curl)) {
-      curl_close($curl);
-      log_message('error', 'cURL error: ' . $curlError);
-      session()->setFlashdata('error', 'Payment error: ' . $curlError);
-      return redirect()->to(site_url('error'));
-    }
-
-
-    curl_close($curl);
-
-
-    $responseData = json_decode($response);
-
-
-    if (isset($responseData->data->id)) {
-
-      session()->set('session_id', $responseData->data->id);
-
-
-      $checkoutUrl = $responseData->data->attributes->checkout_url ?? null;
-      if ($checkoutUrl) {
-        return redirect()->to($checkoutUrl);
-      } else {
-
-        session()->setFlashdata('error', 'Payment error: Checkout URL not available.');
-        return redirect()->to(site_url('error'));
+        // * Subtract order item quantity from product stock count
+        $newStock = $product->stock - $item->quantity;
+        $product->stock = $newStock;
+        $this->productModel->save($product);
       }
-    } else {
 
-      $errorMessage = isset($responseData->errors) ? json_encode($responseData->errors) : 'Unknown error';
-      log_message('error', 'Payment error: ' . $errorMessage);
-      session()->setFlashdata('error', 'Payment error: ' . $errorMessage);
-      return redirect()->to(site_url('error'));
+      // * Update order status
+      $order->status = "confirmed";
+      $this->orderModel->save($order);
+
+      // * Complete Transaction
+      $this->db->transComplete();
+
+      // * Notify student
+      $this->orderConfirmEmail($order->student_id, $orderId);
+
+      return redirect()->back()->with("message", "Order confirmed.");
+    } catch (\LogicException $e) {
+      return redirect()->back()->with('error', $e->getMessage());
+    } catch (\Exception $e) {
+      return redirect()->back()->with('error', "Error, please try again later.");
+    } catch (DatabaseException $e) {
+      return redirect()->back()->with('error', "Error, please try again later.");
     }
   }
 
-  public function success()
+  private function getOrderOrError($orderId)
   {
-    $sessionId = session()->get('session_id');
+    $order = $this->orderModel->find($orderId);
 
-    if ($sessionId) {
-      $curl = curl_init();
-      curl_setopt_array($curl, [
-        CURLOPT_URL => 'https://api.paymongo.com/v1/checkout_sessions/' . $sessionId,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => [
-          'Authorization: Basic ' . base64_encode(getenv('paymongo.secret'))
-        ]
-      ]);
-      $response = curl_exec($curl);
-      curl_close($curl);
-      $responseData = json_decode($response);
-      dd($responseData);
-    } else {
-      session()->setFlashdata('error', 'Session ID not found.');
-      return redirect()->to(site_url('error'));
+    if ($order === null) {
+      throw new \LogicException("Order not found");
     }
+
+    return $order;
   }
 
-  public function cancel()
+  private function getProductOrError($productId)
   {
-    dd("cancel");
+    $product = $this->productModel->withDeleted()->find($productId);
+
+    if ($product === null) {
+      throw new \LogicException("Product not found");
+    }
+
+    return $product;
+  }
+
+  private function orderConfirmEmail($studentId, $orderId)
+  {
+    $order =  $order = $this->orderModel->find($orderId);
+    $student = $this->studentModel->findById($studentId);
+
+    $email = \Config\Services::email();
+
+    $email->setTo($student->getEmail());
+    $email->setSubject("Phoenix Hub Order Confirmed");
+    $email->setMessage("" .
+      "<h3>Hello " . $student->full_name . ", this is to notify you that your Phoenix Hub Order has been confirmed.</h3>" .
+      "<h4>Please prepare your payment of ₱" . $order->total . " to be given once picked up at CvSU Silang's Gymnasium at the date and time of " . $order->pickup_date . " " . $order->pickup_time  . "</h4>" .
+      "");
+
+    $email->send();
+  }
+
+  private function orderCancelEmail($studentId, $orderId)
+  {
+    $order =  $order = $this->orderModel->find($orderId);
+    $student = $this->studentModel->findById($studentId);
+
+    $email = \Config\Services::email();
+
+    $email->setTo($student->getEmail());
+    $email->setSubject("Phoenix Hub Order Cancelled");
+    $email->setMessage("" .
+      "<h3>Hello " . $student->full_name . ", this is to notify you that your Phoenix Hub Order has been cancelled.</h3>" .
+      "<h4>If you have any concerns or inquiry please send us an email at phoenixhubsilang@gmail.com</h4>" .
+      "");
+
+    $email->send();
   }
 }
