@@ -38,16 +38,16 @@
                         <th scope="row"><?= $order->order_id ?></th>
                         <td>₱<?= $order->total ?></td>
                         <td><?= $order->payment_method ?></td>
-                        <td><?= $order->is_paid ?></td>
+                        <td><?= $order->is_paid === "0" ? "Not Paid" : "Paid" ?></td>
                         <td><?= $order->status ?></td>
                         <td><?= $order->pickup_date ?></td>
                         <td>
-                            <button class="btn btn-primary">Inspect</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Inspect</button>
                             <?php if ($order->status === "pending") : ?>
-                                <button class="btn btn-primary">Confirm</button>
+                                <button class="btn btn-success">Confirm</button>
                                 <button class="btn btn-danger">Cancel</button>
                             <?php elseif ($order->status === "confirmed") : ?>
-                                <button class="btn btn-primary">Received</button>
+                                <button class="btn btn-success">Received</button>
                             <?php endif; ?>
 
                         </td>
@@ -55,6 +55,25 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
     </div>
 </div>
 

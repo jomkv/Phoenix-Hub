@@ -195,25 +195,26 @@ $current_url = current_url(); // This gets the current URL
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-        var currentUrl = document.getElementById('sidebar').getAttribute('data-current-url');
-        var links = document.querySelectorAll('.sidebar-link');
+    var currentUrl = document.getElementById('sidebar').getAttribute('data-current-url');
+    var links = document.querySelectorAll('.sidebar-link');
 
-        links.forEach(function(link) {
-          if (link.href === currentUrl) {
-            link.classList.add('active');
-          }
-        });
+    links.forEach(function(link) {
+      if (link.href === currentUrl) {
+        link.classList.add('active');
+      }
+    });
 
-        document.getElementById('logout-link').addEventListener('click', function(event) {
-          event.preventDefault();
-          document.getElementById('logoutModal').style.display = 'flex';
-        });
+    document.getElementById('logout-link').addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('logoutModal').style.display = 'flex';
+    });
 
-        document.getElementById('cancelLogout').addEventListener('click', function() {
-          document.getElementById('logoutModal').style.display = 'none';
-        });
+    document.getElementById('cancelLogout').addEventListener('click', function() {
+      document.getElementById('logoutModal').style.display = 'none';
+    });
 
-        document.getElementById('confirmLogout').addEventListener('click', function() {
-          window.location.href = "<?= url_to('AdminController::logout') ?>";
-        });
+    document.getElementById('confirmLogout').addEventListener('click', function() {
+      window.location.href = "<?= url_to('AdminController::logout') ?>";
+    });
+  })
 </script>
