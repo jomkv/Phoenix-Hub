@@ -100,7 +100,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 </style>
-<div class="row pb-5 gy-5 mt-0" id="productsSection">
+<div class="row pt-4 gy-5" id="productsSection">
   <div class="col-12 d-flex justify-content-end">
     <select class="form-select form-select-lg w-25" aria-label="Large select example">
       <option><a class="dropdown-item" href="#">None</a></option>

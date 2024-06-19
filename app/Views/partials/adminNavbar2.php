@@ -53,14 +53,14 @@ $current_url = current_url(); // This gets the current URL
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewBarter') ?>" class="sidebar-link">
-        <i class="bi bi-clipboard-data-fill"></i>
+          <i class="bi bi-clipboard-data-fill"></i>
           Manage Barter
         </a>
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewPending') ?>" class="sidebar-link">
           <i class="bi bi-receipt pe-2"></i>
-          Pending Purchases
+          Orders
         </a>
       </li>
       <li class="sidebar-item">
@@ -87,16 +87,15 @@ $current_url = current_url(); // This gets the current URL
 </aside>
 
 <!-- Logout Confirmation Modal -->
-<div id="logoutModal" class="modal">
-  <div class="modal-content">
+<div id="logoutModal" class="logout-modal">
+  <div class="logout-modal-content">
     <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
+    <div class="logout-modal-actions">
       <button id="confirmLogout" class="btn btn-primary">Yes</button>
       <button id="cancelLogout" class="btn btn-secondary">No</button>
     </div>
   </div>
 </div>
-
 
 <style>
   :root {
@@ -113,7 +112,7 @@ $current_url = current_url(); // This gets the current URL
     --yellow: #fbbd32;
   }
 
-  .modal {
+  .logout-modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -127,7 +126,7 @@ $current_url = current_url(); // This gets the current URL
     align-items: center;
   }
 
-  .modal-content {
+  .logout-modal-content {
     background-color: white;
     border: 2px solid var(--secondary);
     padding: 20px;
@@ -137,7 +136,7 @@ $current_url = current_url(); // This gets the current URL
     margin: auto;
   }
 
-  .modal-actions {
+  .logout-modal-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
@@ -149,7 +148,8 @@ $current_url = current_url(); // This gets the current URL
     border: none;
     cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.2s; /* Smooth transition for color change */
+    transition: background-color 0.2s;
+    /* Smooth transition for color change */
   }
 
   .btn-primary {
@@ -164,22 +164,26 @@ $current_url = current_url(); // This gets the current URL
 
   .btn-primary:hover,
   .btn-primary:focus {
-    background-color: var(--secondary); /* Hover color */
+    background-color: var(--secondary);
+    /* Hover color */
   }
 
   .btn-primary:active,
   .btn-primary:focus:active {
-    background-color: var(--primary); /* Active color */
+    background-color: var(--primary);
+    /* Active color */
   }
 
   .btn-secondary:hover,
   .btn-secondary:focus {
-    background-color: var(--secondary); /* Hover color */
+    background-color: var(--secondary);
+    /* Hover color */
   }
 
   .btn-secondary:active,
   .btn-secondary:focus:active {
-    background-color: var(--primary); /* Active color */
+    background-color: var(--primary);
+    /* Active color */
   }
 
   .sidebar-link.active {
@@ -212,5 +216,5 @@ $current_url = current_url(); // This gets the current URL
     document.getElementById('confirmLogout').addEventListener('click', function() {
       window.location.href = "<?= url_to('AdminController::logout') ?>";
     });
-  });
+  })
 </script>
