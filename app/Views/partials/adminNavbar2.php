@@ -1,4 +1,8 @@
-<aside id="sidebar" class="js-sidebar">
+<?php
+$current_url = current_url(); // This gets the current URL
+?>
+
+<aside id="sidebar" class="js-sidebar" data-current-url="<?= $current_url ?>">
   <!-- Content For Sidebar -->
   <div class="h-100">
     <div class="sidebar-logo">
@@ -46,6 +50,12 @@
 
       <li class="sidebar-header">
         OTHERS
+      </li>
+      <li class="sidebar-item">
+        <a href="<?= url_to('AdminViewController::viewBarter') ?>" class="sidebar-link">
+          <i class="bi bi-clipboard-data-fill"></i>
+          Manage Barter
+        </a>
       </li>
       <li class="sidebar-item">
         <a href="<?= url_to('AdminViewController::viewPending') ?>" class="sidebar-link">
@@ -152,7 +162,6 @@
     color: white;
   }
 
-  /* Change color when the button is hovered */
   .btn-primary:hover,
   .btn-primary:focus {
     background-color: var(--secondary);
@@ -176,19 +185,35 @@
     background-color: var(--primary);
     /* Active color */
   }
+
+  .sidebar-link.active {
+    background-color: var(--primary);
+    color: white;
+  }
 </style>
 
+
 <script>
-  document.getElementById('logout-link').addEventListener('click', function(event) {
-    event.preventDefault();
-    document.getElementById('logoutModal').style.display = 'flex';
-  });
+  document.addEventListener('DOMContentLoaded', function() {
+        var currentUrl = document.getElementById('sidebar').getAttribute('data-current-url');
+        var links = document.querySelectorAll('.sidebar-link');
 
-  document.getElementById('cancelLogout').addEventListener('click', function() {
-    document.getElementById('logoutModal').style.display = 'none';
-  });
+        links.forEach(function(link) {
+          if (link.href === currentUrl) {
+            link.classList.add('active');
+          }
+        });
 
-  document.getElementById('confirmLogout').addEventListener('click', function() {
-    window.location.href = "<?= url_to('AdminController::logout') ?>";
-  });
+        document.getElementById('logout-link').addEventListener('click', function(event) {
+          event.preventDefault();
+          document.getElementById('logoutModal').style.display = 'flex';
+        });
+
+        document.getElementById('cancelLogout').addEventListener('click', function() {
+          document.getElementById('logoutModal').style.display = 'none';
+        });
+
+        document.getElementById('confirmLogout').addEventListener('click', function() {
+          window.location.href = "<?= url_to('AdminController::logout') ?>";
+        });
 </script>

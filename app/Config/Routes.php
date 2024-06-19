@@ -69,6 +69,8 @@ $routes->get('/admin/product', 'AdminViewController::viewProducts'); // products
 $routes->get('/admin/orders', 'AdminViewController::viewPending'); // pending purchases
 $routes->get('/admin/reports', 'AdminViewController::viewReports'); // reports
 $routes->get('/admin/history', 'AdminViewController::viewHistory'); // pending purchases
+$routes->get('/admin/barter', 'AdminViewController::viewBarter'); // Manage Barter
+
 
 // * Admin User
 $routes->post('/login/admin', 'AdminController::login');
