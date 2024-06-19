@@ -77,22 +77,10 @@
 </aside>
 
 <!-- Logout Confirmation Modal -->
-<div id="logoutModal" class="modal">
-  <div class="modal-content">
+<div id="logoutModal" class="logout-modal">
+  <div class="logout-modal-content">
     <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
-      <button id="confirmLogout" class="btn btn-primary">Yes</button>
-      <button id="cancelLogout" class="btn btn-secondary">No</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- Logout Confirmation Modal -->
-<div id="logoutModal" class="modal">
-  <div class="modal-content">
-    <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
+    <div class="logout-modal-actions">
       <button id="confirmLogout" class="btn btn-primary">Yes</button>
       <button id="cancelLogout" class="btn btn-secondary">No</button>
     </div>
@@ -114,7 +102,7 @@
     --yellow: #fbbd32;
   }
 
-  .modal {
+  .logout-modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -128,7 +116,7 @@
     align-items: center;
   }
 
-  .modal-content {
+  .logout-modal-content {
     background-color: white;
     border: 2px solid var(--secondary);
     padding: 20px;
@@ -138,7 +126,7 @@
     margin: auto;
   }
 
-  .modal-actions {
+  .logout-modal-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
