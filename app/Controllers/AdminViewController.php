@@ -116,4 +116,8 @@ class AdminViewController extends BaseController
   {
     return view('pages/admin/history');
   }
+  public function viewBarter(): string
+  {
+    return view('pages/admin/barterManage');
+  }
 }
