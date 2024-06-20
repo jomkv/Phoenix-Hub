@@ -1,4 +1,4 @@
-<?= $this->extend("layouts/default") ?>
+<?= $this->extend("layouts/default2") ?>
 
 <?= $this->section("title") ?>Product Menu <?= $this->endSection() ?>
 
@@ -24,10 +24,9 @@
     border-radius: 10px;
     /* Increased border radius for a smoother look */
     padding: 15px;
+    padding-bottom: 0px;
     position: relative;
     /* To enable positioning of buttons */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow for depth */
   }
 
   /* Main image container styling */
@@ -46,7 +45,7 @@
   .main-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     /* Ensure the image covers the container without stretching */
   }
 
@@ -105,11 +104,6 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
 
-  /* Card body styling */
-  .card-body {
-    padding: 1rem;
-  }
-
   /* Back button styling */
   .back-button {
     position: fixed;
@@ -160,10 +154,19 @@
     left: 15px;
   }
 
+  #margin-top-moto {
+    margin-top: 100px;
+  }
+
+  #card-custom-class {
+    min-height: 500px;
+  }
+
   /* Responsive styling */
   @media (max-width: 1200px) {
     .custom-card-size {
       padding: 10px;
+      padding-bottom: 0px;
     }
 
     .main-image-container {
@@ -192,6 +195,18 @@
   }
 
   @media (max-width: 767px) {
+    #margin-top-moto {
+      margin-top: 0px;
+    }
+
+    #organization-description {
+      display: none;
+    }
+
+    #card-custom-class {
+      min-height: 0px;
+    }
+
     .row.no-gutters {
       flex-direction: column;
     }
@@ -264,10 +279,10 @@
   <div class="back-button-container">
     <a href="<?= base_url() . '#productsSection' ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
   </div>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center gy-5">
     <div class="col-md-12">
-      <div class="card custom-card-size">
-        <div class="row no-gutters">
+      <div class="card custom-card-size shadow-lg" id="margin-top-moto">
+        <div class="row no-gutters pt-2">
           <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
             <?php $images = json_decode($product->images) ?>
             <div class="main-image-container">
@@ -282,24 +297,70 @@
             <?php endif; ?>
           </div>
           <div class="col-md-8 d-flex flex-column justify-content-center position-relative">
-            <div class="card-body">
-              <h1 class="card-title text-start">Product Title</h1>
-              <p class="card-text text-start fs-3">Price:<span> ₱**.**</span></p>
-              <p class="card-text text-start">Product Descriotion</p>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend d-flex align-items-center">
-                  <h5 class="me-2">Quantity:</h5>
-                  <div class="item-quantity">
-                    <input type="number" class="form-control quantity-input" value="1" min="1">
+            <div class="card-body" id="card-custom-class" style="padding-top: 0px; padding-bottom: 0px;">
+              <div class="row pl-2 h-100">
+                <div class="col-12">
+                  <h1 class="card-text mb-0 pb-0"><?= esc($product->product_name) ?></h1>
+                  <p style="color: #ee4d42;" class="card-text fs-3">₱<?= esc($product->price) ?></p>
+                </div>
+                <div class="col-12 mb-2">
+                  <p class="card-text text-start"><?= esc($product->description) ?></p>
+                </div>
+                <div class="col-12"></div>
+                <div class="col-12 pb-3">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="input-group-prepend d-flex align-items-center mb-2">
+                        <h5 class="me-2 mb-0">Variation:</h5>
+                        <input type="radio" class="btn-check" name="options-base" id="option5" autocomplete="off" checked style="border-color: #7532fa;">
+                        <label class="btn" for="option5">Checked</label>
+
+                        <input type="radio" class="btn-check" name="options-base" id="option6" autocomplete="off" style="border-color: #7532fa;">
+                        <label class="btn" for="option6">Radio</label>
+
+                        <input type="radio" class="btn-check" name="options-base" id="option8" autocomplete="off" style="border-color: #7532fa;">
+                        <label class="btn" for="option8">Radio</label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="input-group-prepend d-flex align-items-center">
+                        <h5 class="me-2 mb-0">Quantity:</h5>
+                        <div class="item-quantity pl-2">
+                          <input type="number" class="form-control quantity-input" value="1" min="1" style="width: 120px;">
+                        </div>
+                        <p class="card-text ml-1"><?= esc($product->stock) ?> available stock(s)</p>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2 mb-0 pr-0 pr-md-1 pb-0 pl-0">
+                      <button class="btn fancy-button w-100" id="add-to-cart-btn"><i class="bi bi-cart-plus"></i> Add to Cart</button>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2 mb-0 pl-0 pl-md-1 pb-0 pr-0">
+                      <button class="btn fancy-button w-100"><i class="bi bi-cash-stack"></i> Check Out</button>
+                    </div>
                   </div>
-                  <span class="ms-2">available stocks</span>
                 </div>
               </div>
             </div>
-            <div class="btn-group fixed-bottom-left">
-              <button class="btn fancy-button" id="add-to-cart-btn"><i class="bi bi-cart-plus"></i> Add to Cart</button>
-              <button class="btn fancy-button"><i class="bi bi-cash-stack"></i> Check Out</button>
-            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 pl-5 pr-5 pt-4 pb-3 shadow-lg mb-5">
+      <div class="row">
+        <div class="col-md-1 col-sm-2 d-flex">
+          <div class="align-self-center">
+            <img class="img-thumbnail mx-auto d-block rounded-circle p-0" src="<?= json_decode($organization->logo)->url ?>" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-8 d-flex">
+          <div class="align-self-center">
+            <h1 class="w-100"><?= esc($organization->name) ?></h1>
+            <h6 class="w-100"><?= esc($organization->full_name) ?></h6>
+          </div>
+        </div>
+        <div class="col-7 col-sm-0" id="organization-description">
+          <div class="align-self-center border-start border-black">
+            <p class="ml-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur a temporibus ducimus culpa, nostrum repellendus optio eaque molestias impedit, autem natus recusandae iure eos voluptatem hic ut commodi amet quaerat. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem minus aperiam magni enim non rem, modi sunt? Voluptatum maxime veritatis itaque mollitia? Excepturi facere veniam vitae. Error fugiat quod voluptates.</p>
           </div>
         </div>
       </div>
