@@ -16,6 +16,7 @@ use CodeIgniter\Filters\SecureHeaders;
 // * Custom Filters
 use App\Filters\AdminFilter;
 use App\Filters\LoginFilter;
+use App\Filters\PreventAdminFilter;
 
 class Filters extends BaseFilters
 {
@@ -40,6 +41,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'admin'         => AdminFilter::class,
         'isLoggedIn'    => LoginFilter::class,
+        'preventAdmin'  => PreventAdminFilter::class,
     ];
 
     /**
