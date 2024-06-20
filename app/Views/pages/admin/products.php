@@ -46,8 +46,10 @@
           <?php foreach ($products as $product) : ?>
             <tr data-product-id="<?= $product->product_id ?>">
               <td class="tr-product-id"># <?= $product->product_id ?></td>
-              <td>
-                <img src="<?= json_decode($product->images)[0]->url ?>" class="rounded mx-auto d-block" style="max-width: 50px;" alt="Product Image">
+              <td style="">
+                <div style="align-items:center; display: flex;justify-content: center;">
+                <img src="<?= json_decode($product->images)[0]->url ?>" class="rounded mx-auto d-block" style="width:50px; height:50px; object-fit:cover;" alt="Product Image">
+                </div>
               </td>
               <td class="tr-product-name"><?= esc($product->product_name) ?></td>
               <td class="tr-product-price">₱<?= esc($product->price) ?></td>
