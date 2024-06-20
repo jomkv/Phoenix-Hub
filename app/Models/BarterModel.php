@@ -33,7 +33,7 @@ class BarterModel extends Model
     'price' => [
       'required'      => 'Product Price must be provided',
       'greater_than'  => 'Product Price must be greater than 0',
-      'numeric'      => 'Product Price must be a valid number'
+      'numeric'       => 'Product Price must be a valid number'
     ],
     'images' => [
       'required_without'  => 'Product Image(s) must be provided',
