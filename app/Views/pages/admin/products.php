@@ -6,23 +6,24 @@
 
 <?= $this->section("content") ?>
 
-<div class="row h-auto justify-content-between mt-2 w-100">
-  <div class="col-3">
+<div class="row h-auto justify-content-between mt-3 w-100">
+  <div class="col-12 align-items-center">
     <h1>Products</h1>
-    <a href="<?= url_to("ProductController::viewCreateProduct") ?>" class="btn btn-primary align-self-center create-modal-btn w-75 mb-2">Create New Product</a>
   </div>
-  <div class="col-6">
-
-  </div>
-  <div class="col-3">
-
-    <label for="select-org" class="form-label">Filter by Organization</label>
-    <select id="select-org" class="form-select">
-      <option value="none">None</option>
-      <?php foreach ($organizations as $org) : ?>
-        <option value="<?= $org->organization_id ?>"><?= $org->name ?></option>
-      <?php endforeach ?>
-    </select>
+  <div class="col-12 d-flex justify-content-between align-items-end mb-4">
+    <a href="<?= url_to("ProductController::viewCreateProduct") ?>" class="btn btn-primary" style="width: 200px;">Create New Product</a>
+    <div>
+      <label class="form-label">Filter by Organization</label>
+      <div class="d-flex" id="select-org">
+        <select class="form-select" id="org-filter">
+          <option value="none">None</option>
+          <?php foreach ($organizations as $org) : ?>
+            <option value="<?= $org->organization_id ?>" <?= $filter === $org->organization_id ? "selected" : "" ?>><?= $org->name ?></option>
+          <?php endforeach ?>
+        </select>
+        <button onclick="window.location='product?filter='+document.getElementById('org-filter').value;" class="btn btn-primary">Filter</button>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -33,9 +34,11 @@
         <thead>
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">Image</th>
             <th scope="col">Product Name</th>
             <th scope="col">Price</th>
             <th scope="col">Stock</th>
+            <th scope="col">Organization</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -43,9 +46,13 @@
           <?php foreach ($products as $product) : ?>
             <tr data-product-id="<?= $product->product_id ?>">
               <td class="tr-product-id"># <?= $product->product_id ?></td>
-              <td class="tr-product-name"><?= $product->product_name ?></td>
-              <td class="tr-product-price">₱<?= $product->price ?></td>
-              <td class="tr-product-stock"><?= $product->stock ?></td>
+              <td>
+                <img src="<?= json_decode($product->images)[0]->url ?>" class="rounded mx-auto d-block" style="max-width: 50px;" alt="Product Image">
+              </td>
+              <td class="tr-product-name"><?= esc($product->product_name) ?></td>
+              <td class="tr-product-price">₱<?= esc($product->price) ?></td>
+              <td class="tr-product-stock"><?= esc($product->stock) ?></td>
+              <td><?= esc($product->organization_name) ?></td>
               <td class="text-right">
                 <a href="<?= url_to("ProductController::viewEditProduct", $product->product_id) ?>" type="button" class="btn btn-primary badge-pill edit-modal-btn">EDIT</a>
                 <a href="<?= url_to("ProductController::deleteProduct", $product->product_id) ?>" data-product-id="<?= $product->product_id ?>" type="button" data-bs-toggle="modal" data-bs-target="#deleteProductModal" class="btn btn-primary badge-pill delete-modal-btn">DELETE</a>

@@ -9,11 +9,11 @@
 <div class="text-center">
   <div class="container mt-2  text-start">
     <div class="row">
-      <div class="col-lg-5 col-md-8 ">
+      <div class="col-lg-5 col-md-8 mt-3 pb-5">
         <h1>Add Product</h1>
         <?= form_open_multipart('/admin/product/new', ['class' => 'custom_form_container p-4 shadow-lg']) ?>
         <div class="mb-3">
-          <label for="organization_id">Organization</label>
+          <label for="organization_id">Product's Organization</label>
           <select name="organization_id" id="organization_id" class="form-select" style="background-color: white;">
             <?php foreach ($organizations as $org) : ?>
               <option value="<?= $org->organization_id; ?>"><?= esc($org->name) ?></option>
@@ -26,18 +26,21 @@
         </div>
         <div class="mb-3">
           <label for="description">Description</label>
-          <input type="text" name="description" id="description" class="form-control" style="background-color: white;" value="<?= esc(old('description')) ?>">
+          <textarea type="text" name="description" id="description" class="form-control" style="background-color: white; resize: none;" rows="4"><?= esc(old('description')) ?></textarea>
         </div>
         <div class="mb-3">
           <label for="price">Price</label>
-          <input type="number" name="price" id="price" class="form-control" style="background-color: white;" value="<?= esc(old('price')) ?>">
+          <div class="input-group">
+            <span class="input-group-text">₱</span>
+            <input type="number" name="price" id="price" class="form-control" style="background-color: white;" value="<?= esc(old('price')) ?>">
+          </div>
         </div>
         <div class="mb-3">
           <label for="stock">Stock</label>
           <input type="number" name="stock" id="stock" class="form-control" style="background-color: white;" value="<?= esc(old('stock')) ?>">
         </div>
         <div class="mb-3">
-          <label for="formFileMultiple" class="form-label">Product Image</label>
+          <label for="formFileMultiple" class="form-label">Image(s)</label>
           <input type="file" name="fileuploads[]" class="form-control" accept="image/*" multiple>
         </div>
 

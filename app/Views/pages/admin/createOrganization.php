@@ -9,7 +9,7 @@
 <div class="text-center">
   <div class="container mt-2 text-start">
     <div class="row">
-      <div class="col-lg-5 col-md-8 ">
+      <div class="col-lg-5 col-md-8 mt-3 pb-5">
         <h1> Create Organization </h1>
         <?= form_open_multipart('/admin/organization/new', ['class' => 'custom_form_container p-4 shadow-lg']) ?>
         <div class="mb-3">
@@ -19,7 +19,12 @@
 
         <div class="mb-3">
           <label for="description">Organization Full Name</label>
-          <textarea placeholder="Central Student Government" class="form-control" rows="4" name="full_name" id="full_name" style="background-color: white; resize: none; "><?= esc(old('full_name')) ?></textarea>
+          <input type="text" placeholder="Central Student Government" class="form-control" name="full_name" id="full_name" style="background-color: white;" value="<?= esc(old('full_name')) ?>">
+        </div>
+
+        <div class="mb-3">
+          <label for="description">Description</label>
+          <textarea class="form-control" rows="4" name="full_name" id="full_name" style="background-color: white; resize: none; "><?= esc(old('full_name')) ?></textarea>
         </div>
 
         <div class="mb-3">

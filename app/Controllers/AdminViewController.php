@@ -74,7 +74,29 @@ class AdminViewController extends BaseController
       $orgModel = new OrganizationModel();
 
       $orgs = $orgModel->findAll();
-      $products = $productModel->findAll();
+      $rawProducts = $productModel->findAll();
+
+      $products = [];
+
+      $filter = $this->request->getVar("filter");
+
+      // * If filter is given, is a number, and is a valid organization ID
+      if ($filter !== null && is_numeric($filter) && $orgModel->find($filter)) {
+        $rawProducts = $productModel->where("organization_id", $filter)->findAll();
+      } else {
+        $rawProducts = $productModel->findAll();
+      }
+
+      foreach ($rawProducts as $product) {
+        try {
+          $productOrg = $this->getOrganizationOrError($product->organization_id);
+
+          $product->organization_name = $productOrg->name;
+          array_push($products, $product);
+        } catch (\LogicException $e) {
+          // do nothing
+        }
+      }
 
       //dd($products);
 
@@ -83,10 +105,10 @@ class AdminViewController extends BaseController
         $products = [];
       }
 
-      return view('pages/admin/products', ['products' => $products, 'organizations' => $orgs]);
+      return view('pages/admin/products', ['products' => $products, 'organizations' => $orgs, 'filter' => $filter]);
     } catch (\Exception $e) {
       log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
-      return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.');
+      return redirect()->to('/admin')->with('error', $e->getMessage());
     }
   }
 
@@ -147,5 +169,18 @@ class AdminViewController extends BaseController
   public function viewBarter(): string
   {
     return view('pages/admin/barterManage');
+  }
+
+  public function getOrganizationOrError($orgId)
+  {
+    $model = new OrganizationModel();
+
+    $org = $model->find($orgId);
+
+    if ($org === null) {
+      throw new \LogicException("Organization not found.");
+    }
+
+    return $org;
   }
 }
