@@ -10,10 +10,12 @@ class ProductController extends BaseController
 {
   protected $helpers = ['form', 'upload'];
   private ProductModel $model;
+  private OrganizationModel $orgModel;
 
   public function __construct()
   {
     $this->model = new ProductModel();
+    $this->orgModel = new OrganizationModel();
   }
 
   /**
@@ -37,13 +39,15 @@ class ProductController extends BaseController
   {
     try {
       $product = $this->getProductOrError($productId);
+      $organization = $this->getOrganizationOrError($product->organization_id);
 
       // dd($product);
 
-      return view('pages/product/productPage', ["product" => $product]);
+      return view('pages/product/productPage', ["product" => $product, "organization" => $organization]);
     } catch (\LogicException $e) {
-      return redirect()->to('/product')->with('error', 'Product not found');
+      return redirect()->back()->with('error', $e->getMessage());
     } catch (\Exception $e) {
+      return redirect()->back()->with('error', 'Error, please try again later');
     }
   }
 
@@ -358,5 +362,16 @@ class ProductController extends BaseController
     }
 
     return $product;
+  }
+
+  private function getOrganizationOrError($id)
+  {
+    $org = $this->orgModel->find($id);
+
+    if ($org === null) {
+      throw new \LogicException("Product's Organization not found");
+    }
+
+    return $org;
   }
 }
