@@ -50,11 +50,11 @@ class ProductModel extends Model
     'price' => [
       'required'      => 'Product Price must be provided',
       'greater_than'  => 'Product Price must be greater than 0',
-      'numberic'      => 'Product Price must be a valid number'
+      'numeric'      => 'Product Price must be a valid number'
     ],
     'stock' => [
       'required'    => 'Product Stock must be provided',
-      'numberic'    => 'Product Stuck must be a valid number'
+      'numeric'    => 'Product Stuck must be a valid number'
     ],
     'organization_id' => [
       'required'    => 'Organization ID must be provided',
