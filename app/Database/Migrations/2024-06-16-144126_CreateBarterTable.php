@@ -37,7 +37,7 @@ class CreateBarterTable extends Migration
             'price' => [
                 'type'           => 'DECIMAL',
                 'constraint'     => '10,2',
-                'null'           => false,
+                'null'           => true,
             ],
             'images' => [ // Store stringified JSON of cloudinary images here
                 'type'           => 'TEXT',
@@ -45,16 +45,16 @@ class CreateBarterTable extends Migration
             ],
             'status' => [
                 'type'           => 'ENUM',
-                'constraint'    => ['Approved', 'Cancelled', 'Pending'],
+                'constraint'     => ['Approved', 'Cancelled', 'Pending'],
                 'null'           => true,
-                'default'        =>'Pending'
+                'default'        => 'Pending'
             ],
         ];
 
         $this->forge->addField($fields);
         $this->forge->addPrimaryKey('barter_id');
         $this->forge->addForeignKey('student_id', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('barter_posts'); // Corrected table name: barter_posts instead of barter_posts
+        $this->forge->createTable('barter_posts');
     }
 
     public function down()
