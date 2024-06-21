@@ -14,7 +14,7 @@ class VariationModel extends Model
   protected $returnType     = \App\Entities\Variation::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['product_id', 'variation_name', 'price', 'stock'];
+  protected $allowedFields = ['product_id', 'option_name', 'price', 'stock'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -30,7 +30,7 @@ class VariationModel extends Model
 
   protected $validationRules      = [
     'product_id'        => 'required',
-    'variation_name'    => 'required|max_length[255]',
+    'option_name'       => 'required|max_length[255]',
     'price'             => 'required|numeric|greater_than[0]',
     'stock'             => 'required|numeric',
   ];
@@ -39,18 +39,18 @@ class VariationModel extends Model
     'product_id' => [
       'required'    => 'Product ID must be provided'
     ],
-    'variation_name' => [
-      'required'    => 'Variation Name must be provided',
-      'max_length'  => 'Variation Name too long'
+    'option_name' => [
+      'required'    => 'Option Name must be provided',
+      'max_length'  => 'Option Name too long'
     ],
     'price' => [
-      'required'      => 'Variation Price must be provided',
-      'greater_than'  => 'Variation Price must be greater than 0',
-      'numberic'      => 'Variation Price must be a valid number'
+      'required'      => 'Option Price must be provided',
+      'greater_than'  => 'Option Price must be greater than 0',
+      'numberic'      => 'Option Price must be a valid number'
     ],
     'stock' => [
-      'required'    => 'Variation Stock must be provided',
-      'numeric'     => 'Variation Stuck must be a valid number'
+      'required'    => 'Option Stock must be provided',
+      'numeric'     => 'Option Stuck must be a valid number'
     ],
   ];
   // protected $skipValidation       = false;

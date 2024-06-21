@@ -2,20 +2,26 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
 use App\Models\OrganizationModel;
 use App\Models\ProductModel;
-use Exception;
+use App\Models\VariationModel;
 
 class ProductController extends BaseController
 {
   protected $helpers = ['form', 'upload'];
   private ProductModel $model;
   private OrganizationModel $orgModel;
+  private VariationModel $variantModel;
+  private $db;
 
   public function __construct()
   {
     $this->model = new ProductModel();
     $this->orgModel = new OrganizationModel();
+    $this->variantModel = new VariationModel();
+    $this->db = \Config\Database::connect();
   }
 
   /**
@@ -40,10 +46,11 @@ class ProductController extends BaseController
     try {
       $product = $this->getProductOrError($productId);
       $organization = $this->getOrganizationOrError($product->organization_id);
+      $variations = $this->variantModel->where("product_id", $product->product_id)->findAll();
 
       // dd($product);
 
-      return view('pages/product/productPage', ["product" => $product, "organization" => $organization]);
+      return view('pages/product/productPage', ["product" => $product, "organization" => $organization, "variants" => $variations]);
     } catch (\LogicException $e) {
       return redirect()->back()->with('error', $e->getMessage());
     } catch (\Exception $e) {
@@ -157,12 +164,29 @@ class ProductController extends BaseController
   {
     try {
       $data = $this->request->getPost();
+      $variantOptions = [];
+      $errors = [];
+      $isDataValid = true;
 
-      // Validate data
+      //* Validate data
       if (!$this->model->validate($data)) {
+        $errors = [...$this->model->errors()];
+        $isDataValid = false;
+
         return redirect()->back()
           ->with('errors', $this->model->errors())
           ->withInput();
+      }
+
+      // * Validate Variations and Options if applicable
+      if (isset($data["has_variations"])) {
+        try {
+          $variantOptions = $this->getOptionsOrError($data);
+          $data["has_variations"] = true;
+        } catch (\Exception $e) {
+          $errors = [...$errors, "options" => $e->getMessage()];
+          $isDataValid = false;
+        }
       }
 
       $rawImages = $this->request->getFileMultiple('fileuploads');
@@ -179,15 +203,13 @@ class ProductController extends BaseController
       ];
 
       if (!$this->validate($validationRules)) {
-        return redirect()->back()
-          ->with('errors', $this->validator->getErrors())
-          ->withInput();
+        $errors = [...$errors, $this->validator->getErrors()];
+        $isDataValid = false;
       }
 
       if (count($rawImages) > 4) {
-        return redirect()->back()
-          ->with('errors', ['Maximum of 4 Images'])
-          ->withInput();
+        $errors = [...$errors, "images" => "Maximum of 4 Images"];
+        $isDataValid = false;
       }
 
       $images = [];
@@ -196,12 +218,22 @@ class ProductController extends BaseController
       foreach ($rawImages as $image) {
         // * Check Image Size
         if ($image->getSizeByUnit('mb') >= 10) {
-          return redirect()->back()
-            ->with("errors", ["Each image size must be below 10mb"])
-            ->withInput();
+          $errors = [...$errors, "images" => "Each image size must be below 10mb"];
+          $isDataValid = false;
+          break;
         }
       }
 
+      if (!$isDataValid) {
+        return redirect()->back()
+          ->with('errors', $this->validator->getErrors())
+          ->withInput();
+      }
+
+      // * Start transaction
+      $this->db->transException(true)->transStart();
+
+      // * Upload image logic
       foreach ($rawImages as $image) {
         // * Store image at uploads dir
         $newName = $image->getRandomName();
@@ -217,16 +249,33 @@ class ProductController extends BaseController
         unlink(WRITEPATH . 'uploads\\' . $newName);
       }
 
+      // * Create product
       $data['images'] = json_encode($images);
+      $productId = $this->model->insert($data);
 
-      $isSuccess = $this->model->insert($data);
-
-      if ($isSuccess) {
-        return redirect()->to("/admin/product")->with("message", "New product created");
-      } else {
-        return redirect()->to("/admin/product")->with("error", "Server error, unable to create new product");
+      if (!$productId) {
+        throw new \CodeIgniter\Database\Exceptions\DatabaseException("Unable to create new product.");
       }
+
+      // * Create variation options
+      foreach ($variantOptions as $option) {
+        $newOption = [
+          "product_id"  => $productId,
+          "option_name" => $option["name"],
+          "price"       => $option["price"],
+          "stock"       => $option["stock"],
+        ];
+
+        $this->variantModel->insert($newOption);
+      }
+
+      // * Complete Transaction
+      $this->db->transComplete();
+
+      return redirect()->to("/admin/product")->with("message", "New product created");
     } catch (\Exception $e) {
+      return redirect()->to("/admin/product")->with('error', 'An error occurred. Please try again later.');
+    } catch (DatabaseException $e) {
       return redirect()->to("/admin/product")->with('error', 'An error occurred. Please try again later.');
     }
   }
@@ -373,5 +422,38 @@ class ProductController extends BaseController
     }
 
     return $org;
+  }
+
+  private function getOptionsOrError($data)
+  {
+    $variantOptions = [];
+
+    for ($i = 1; $i <= (int) $data["option_count_hidden"]; $i++) {
+      $nameKey = "option_name_" . $i;
+      $priceKey = "option_price_" . $i;
+      $stockKey = "option_stock_" . $i;
+
+      $name = $data[$nameKey];
+      $price = $data[$priceKey];
+      $stock = $data[$stockKey];
+
+      if (empty($name) || empty($price) || empty($stock)) {
+        return throw new \Exception("Incomplete option input, please try again.");
+      }
+
+      if (!is_numeric($price) || !is_numeric($stock)) {
+        return throw new \Exception("Invalid option input, price and/or stock must be numeric.");
+      }
+
+      $payload = [
+        "name"    => $name,
+        "price"   => $price,
+        "stock"   => $stock
+      ];
+
+      array_push($variantOptions, $payload);
+    }
+
+    return $variantOptions;
   }
 }

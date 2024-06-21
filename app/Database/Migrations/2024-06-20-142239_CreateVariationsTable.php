@@ -20,9 +20,9 @@ class CreateVariationsTable extends Migration
                 'unsigned'       => true,
                 'null'           => false,
             ],
-            'variation_name' => [
-                'type'           => 'INT',
-                'unsigned'       => true,
+            'option_name' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '255',
                 'null'           => false,
             ],
             'price' => [
