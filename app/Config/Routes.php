@@ -18,6 +18,7 @@ $routes->environment('development', static function ($routes) {
   $routes->get('/test/checkout/confirm', 'OrderController::success');
   $routes->get('/test/checkout/cancel', 'OrderController::cancel');
   $routes->get('/test/cart', 'TestViewsController::viewCart');
+  $routes->get('/test/studentBarter', 'TestViewsController::viewStudentBarter');
 });
 
 /**

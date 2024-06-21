@@ -74,4 +74,14 @@ class TestViewsController extends BaseController
   {
     return view('pages/product/cart.php');
   }
+
+  /**
+   * @desc View student's barter posts
+   * @route POST /test/studentBarter
+   * @access public
+   */
+  public function viewStudentBarter()
+  {
+    return view('pages/barter/barterProfile');
+  }
 }
