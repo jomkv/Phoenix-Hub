@@ -22,7 +22,7 @@ class TestViewsController extends BaseController
    */
   public function viewCheckoutForm()
   {
-    return view('pages/product/checkoutForm.php');
+    return view('pages/product/checkoutFormTest.php');
   }
 
   /**
