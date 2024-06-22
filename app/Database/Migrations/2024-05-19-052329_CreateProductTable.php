@@ -27,7 +27,7 @@ class CreateProductTable extends Migration
             'price' => [
                 'type'                  => 'DECIMAL',
                 'constraint'            => '10,2',
-                'null'                  => false,
+                'null'                  => true,
             ],
             'images' => [ // Store stringified JSON of cloudinary images here
                 'type'                  => 'TEXT',
@@ -35,7 +35,17 @@ class CreateProductTable extends Migration
             ],
             'stock' => [
                 'type'                  => 'INT',
-                'null'                  => false,
+                'null'                  => true,
+            ],
+            'has_variations' => [
+                'type'                 => 'BOOLEAN',
+                'null'                 => true,
+                'default'              => false,
+            ],
+            'variation_name' => [
+                'type'                 => 'VARCHAR',
+                'constraint'            => '255',
+                'null'                  => true,
             ],
             'organization_id' => [
                 'type'                  => 'INT',
