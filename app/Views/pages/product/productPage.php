@@ -279,6 +279,8 @@
   <div class="back-button-container">
     <a href="<?= base_url() . '#productsSection' ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
   </div>
+
+  <!-- Product Cards -->
   <div class="row justify-content-center gy-5">
     <div class="col-md-12">
       <div class="card custom-card-size shadow-lg" id="margin-top-moto">
@@ -301,7 +303,7 @@
               <div class="row pl-2 h-100">
                 <div class="col-12">
                   <h1 class="card-text mb-0 pb-0"><?= esc($product->product_name) ?></h1>
-                  <p style="color: #ee4d42;" class="card-text fs-3">₱<?= esc($product->price) ?></p>
+                  <p style="color: #ee4d42;" class="card-text fs-3">₱<?= esc($product->has_variations === "0" ? $product->price : $variants[0]->price) ?></p>
                 </div>
                 <div class="col-12 mb-2">
                   <p class="card-text text-start"><?= esc($product->description) ?></p>
@@ -309,26 +311,27 @@
                 <div class="col-12"></div>
                 <div class="col-12 pb-3">
                   <div class="row">
-                    <div class="col-12">
-                      <div class="input-group-prepend d-flex align-items-center mb-2">
-                        <h5 class="me-2 mb-0">Variation:</h5>
-                        <input type="radio" class="btn-check" name="options-base" id="option5" autocomplete="off" checked style="border-color: #7532fa;">
-                        <label class="btn" for="option5">Checked</label>
+                    <?php if ($product->has_variations === "1") : ?>
+                      <div class="col-12">
+                        <div class="input-group-prepend d-flex align-items-center mb-2">
+                          <h5 class="me-2 mb-0"><?= esc($product->variation_name) ?>:</h5>
 
-                        <input type="radio" class="btn-check" name="options-base" id="option6" autocomplete="off" style="border-color: #7532fa;">
-                        <label class="btn" for="option6">Radio</label>
-
-                        <input type="radio" class="btn-check" name="options-base" id="option8" autocomplete="off" style="border-color: #7532fa;">
-                        <label class="btn" for="option8">Radio</label>
+                          <?php $varCount = 1;
+                          foreach ($variants as $variant) : ?>
+                            <input type="radio" <?= $varCount === 1 ? "checked" : "" ?> class="btn-check" name="options-base" id="variant_<?= $variant->variation_id ?>" autocomplete="off" style="border-color: #7532fa;">
+                            <label class="btn" for="variant_<?= $variant->variation_id ?>"><?= esc($variant->option_name) ?></label>
+                          <?php $varCount++;
+                          endforeach; ?>
+                        </div>
                       </div>
-                    </div>
+                    <?php endif; ?>
                     <div class="col-12">
                       <div class="input-group-prepend d-flex align-items-center">
                         <h5 class="me-2 mb-0">Quantity:</h5>
                         <div class="item-quantity pl-2">
                           <input type="number" class="form-control quantity-input" value="1" min="1" style="width: 120px;">
                         </div>
-                        <p class="card-text ml-1"><?= esc($product->stock) ?> available stock(s)</p>
+                        <p class="card-text ml-1"><?= esc($product->has_variations === "0" ? $product->stock : $variants[0]->stock) ?> available stock(s)</p>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 mt-2 mb-0 pr-0 pr-md-1 pb-0 pl-0">
@@ -390,7 +393,7 @@
 
   $(document).ready(function() {
     $('#plusBtn').click(function() {
-      if (quantityCount < <?= $product->stock ?>) {
+      if (quantityCount < <?= $product->stock ?? $variants[0]->stock ?>) {
         quantityCount += 1;
         $('#quantityInput').val(quantityCount);
       }

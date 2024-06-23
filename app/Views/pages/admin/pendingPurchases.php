@@ -39,7 +39,11 @@
                         <td>₱<?= $order->total ?></td>
                         <td><?= $order->payment_method ?></td>
                         <td><?= $order->is_paid === "0" ? "Not Paid" : "Paid" ?></td>
-                        <td><?= $order->status ?></td>
+                        <td>
+                            <p class="<?= $order->status === "pending" ? "rounded-pill text-bg-warning" : "" ?>">
+                                <?= $order->status ?>
+                            </p>
+                        </td>
                         <td><?= $order->pickup_date ?></td>
                         <td>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Inspect</button>

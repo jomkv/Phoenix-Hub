@@ -33,7 +33,6 @@
 
   <div class="wrapper">
     <?= $this->include('partials/adminNavbar2.php'); ?>
-
     <div class="main p-3">
       <nav class="navbar navbar-expand px-3 border-bottom border-dark">
         <button class="btn" id="sidebar-toggle" type="button">
@@ -57,7 +56,7 @@
 
       <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
-      <div class="overflow-auto" id="content-custom-container" style="max-height: 100vh;">
+      <div class="overflow-auto" id="content-custom-container" style="max-height: 91vh;">
         <?= $this->renderSection("content") ?>
       </div>
     </div>

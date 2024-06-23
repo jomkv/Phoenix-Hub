@@ -124,7 +124,7 @@
               </div>
 
               <!-- SUBMIT -->
-              <button type="button" onclick="handleAddOption()" class="mb-3 p-3 option-custom-container w-100">
+              <button type="button" onclick="handleAddOption()" class="mb-3 p-3 option-custom-container add-option-container w-100">
                 <i class="bi bi-plus-lg"></i> Add Option
               </button>
             </div>
@@ -149,7 +149,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 mb-3">Create Product</button>
+            <button type="submit" class="btn btn-primary w-100 mb-3 fs-6 fw-bold pt-3 pb-3">Create Product</button>
 
             <?php if (session()->has("errors")) : ?>
               <div class="bg-danger-subtle text-dark border-danger border-start border-4 rounded" style="padding: 10px; padding-left: 15px;">
@@ -184,6 +184,22 @@
     background-color: #ebebeb;
     border: 1px dashed black;
   }
+
+
+  .add-option-container {
+    transition: 0.4s;
+  }
+
+  .add-option-container:hover {
+    background-color: #d1cfcf;
+    border: 1px solid black;
+  }
+
+  .add-option-container:active {
+    background-color: #b3afaf;
+    border: 1px solid black;
+  }
+
 
   @media (max-width: 767px) {
     .card-custom-container {

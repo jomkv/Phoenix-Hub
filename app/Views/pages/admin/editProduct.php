@@ -2,15 +2,15 @@
 
 <?= $this->extend("layouts/adminDefault2") ?>
 
-<?= $this->section("title") ?>Add Product <?= $this->endSection() ?>
+<?= $this->section("title") ?>Edit Product <?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
 
 <div class="text-center">
   <div class="container text-start">
-    <form class="needs-validation" novalidate enctype="multipart/form-data" method="post" action="<?= base_url() . "admin/product/new" ?>">
+    <form class="needs-validation" novalidate enctype="multipart/form-data" method="post" action="<?= base_url() . 'admin/product/' . $product->product_id ?>">
       <div class="row mt-4 mb-5">
-        <input type="hidden" id="option_count_hidden" value="<?= count($variations) ?>" name="option_count_hidden">
+        <input type="hidden" id="option_count_hidden" value="<?= $product->has_variations === "0" ? 1 : count($variations) ?>" name="option_count_hidden">
         <div class="col-12 d-flex justify-content-center">
           <div class="w-75">
             <h1>Edit Product - [Product ID: <?= $product->product_id ?>]</h1>
@@ -87,6 +87,8 @@
                     <div id="option_<?= $count ?>" class="mb-3 p-3 option-custom-container">
                       <div class="row row-cols-2">
                         <div class="col-10">
+                          <input type="hidden" id="option_id_<?= $count ?>" value="<?= $option->variation_id ?? "null" ?>" name="option_id_<?= $count ?>">
+
                           <!-- OPTION NAME -->
                           <div class="mb-3">
                             <label for="option_name_<?= $count ?>">Option <?= $count ?> Name</label>
@@ -101,7 +103,7 @@
                             <label for="option_price_<?= $count ?>">Price</label>
                             <div class="input-group">
                               <span class="input-group-text">₱</span>
-                              <input type="number" name="option_price_<?= $count ?>" id="option_price_<?= $count ?>" class="form-control" style="background-color: white;" value="<?= esc(old("option_price_" . $count, $option->price)) ?>">
+                              <input type="number" name="option_price_<?= $count ?>" id="option_price_<?= $count ?>" class="form-control" style="background-color: white;" min="1" value="<?= esc(old("option_price_" . $count, $option->price)) ?>">
                               <div class="invalid-feedback">
                                 Please provide Option <?= $count ?> Price.
                               </div>
@@ -129,6 +131,7 @@
                   <div id="option_1" class="mb-3 p-3 option-custom-container">
                     <div class="row row-cols-2">
                       <div class="col-10">
+                        <input type="hidden" id="option_id_${optionsCount}" value="null" name="option_id_1">
 
                         <!-- OPTION NAME -->
                         <div class="mb-3">
@@ -144,7 +147,7 @@
                           <label for="option_price_1">Price</label>
                           <div class="input-group">
                             <span class="input-group-text">₱</span>
-                            <input type="number" name="option_price_1" id="option_price_1" class="form-control" style="background-color: white;">
+                            <input type="number" name="option_price_1" min="1" id="option_price_1" class="form-control" style="background-color: white;">
                             <div class="invalid-feedback">
                               Please provide Option 1 Price.
                             </div>
@@ -169,7 +172,7 @@
               </div>
 
               <!-- SUBMIT -->
-              <button type="button" onclick="handleAddOption()" class="mb-3 p-3 option-custom-container w-100">
+              <button type="button" onclick="handleAddOption()" class="mb-3 p-3 option-custom-container add-option-container w-100">
                 <i class="bi bi-plus-lg"></i> Add Option
               </button>
             </div>
@@ -179,7 +182,7 @@
                 <label for="price">Price</label>
                 <div class="input-group">
                   <span class="input-group-text">₱</span>
-                  <input type="number" name="price" id="price" class="form-control" style="background-color: white;" value="<?= esc(old('price', $product->price)) ?>" required>
+                  <input type="number" name="price" id="price" class="form-control" min="1" style="background-color: white;" value="<?= esc(old('price', $product->has_variations === "0" ? $product->price : null)) ?>" <?= $product->has_variations === "0" ? "required" : "" ?>>
                   <div class="invalid-feedback">
                     Please provide a product price.
                   </div>
@@ -187,15 +190,15 @@
               </div>
               <div class="mb-3">
                 <label for="stock">Stock</label>
-                <input type="number" name="stock" id="stock" class="form-control" style="background-color: white;" value="<?= esc(old('stock', $product->stock)) ?>" required>
+                <input type="number" name="stock" id="stock" class="form-control" style="background-color: white;" value="<?= esc(old('stock', $product->has_variations === "0" ? $product->stock : null)) ?>" <?= $product->has_variations === "0" ? "required" : "" ?>>
                 <div class="invalid-feedback">
                   Please provide a product stock.
                 </div>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-danger w-100 mb-3 fs-6 fw-bold">Discard Changes</button>
-            <button type="submit" class="btn btn-primary w-100 mb-3 fs-6 fw-bold">Save Changes</button>
+            <a href="<?= url_to("AdminViewController::viewProducts") ?>" class="btn btn-danger w-100 mb-3 fs-6 fw-bold pt-3 pb-3">Discard Changes</a>
+            <button type="submit" class="btn btn-primary w-100 mb-3 fs-6 fw-bold pt-3 pb-3">Save Changes</button>
 
             <?php if (session()->has("errors")) : ?>
               <div class="bg-danger-subtle text-dark border-danger border-start border-4 rounded" style="padding: 10px; padding-left: 15px;">
@@ -229,6 +232,20 @@
   .option-custom-container {
     background-color: #ebebeb;
     border: 1px dashed black;
+  }
+
+  .add-option-container {
+    transition: 0.4s;
+  }
+
+  .add-option-container:hover {
+    background-color: #d1cfcf;
+    border: 1px solid black;
+  }
+
+  .add-option-container:active {
+    background-color: #b3afaf;
+    border: 1px solid black;
   }
 
   @media (max-width: 767px) {
@@ -283,7 +300,7 @@
   const noVariationsContainer = document.getElementById("no_variations_container");
   const optionsContainer = document.getElementById("options_container");
   const hiddenOptionCount = document.getElementById("option_count_hidden");
-  let optionsCount = <?= count($variations) ?>;
+  let optionsCount = <?= $product->has_variations === "1" ? count($variations) : 1 ?>;
 
   // * For creating HTML Elements from strings
   function fromHTML(html, trim = true) {
@@ -344,6 +361,8 @@
 <div id="option_${optionsCount}" class="mb-3 p-3 option-custom-container">
   <div class="row row-cols-2">
     <div class="col-10">
+      <input type="hidden" id="option_id_${optionsCount}" value="null" name="option_id_${optionsCount}">
+
       <div class="mb-3">
         <label for="option_name_${optionsCount}">Option ${optionsCount} Name</label>
         <input type="text" name="option_name_${optionsCount}" id="option_name_${optionsCount}" class="form-control" style="background-color: white;" placeholder="Small, Medium, etc..." required>
@@ -355,7 +374,7 @@
         <label for="option_price_${optionsCount}">Price</label>
         <div class="input-group">
           <span class="input-group-text">₱</span>
-          <input type="number" name="option_price_${optionsCount}" id="option_price_${optionsCount}" class="form-control" style="background-color: white;" required>
+          <input type="number" name="option_price_${optionsCount}" min="1" id="option_price_${optionsCount}" class="form-control" style="background-color: white;" required>
           <div class="invalid-feedback">
             Please provide Option ${optionsCount} Price.
           </div>

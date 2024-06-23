@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrganizationModel;
+use App\Models\VariationModel;
 use App\Models\ProductModel;
 
 class Home extends BaseController
@@ -10,8 +11,10 @@ class Home extends BaseController
     public function index(): string
     {
         $model = new ProductModel();
+        $variantModel = new VariationModel();
 
         $products = [];
+        $productPayload = [];
         $orgs = $this->getOrgs();
 
         foreach ($orgs as $org) {
@@ -19,7 +22,17 @@ class Home extends BaseController
             $products = [...$products, ...$currProducts];
         }
 
-        return view('pages/home', ['organizations' => $orgs, 'products' => $products]);
+        foreach ($products as $prod) {
+            $variants = $variantModel->where("product_id", $prod->product_id)->findAll();
+            $payload = [
+                "product" => $prod,
+                "variants" => $variants
+            ];
+
+            array_push($productPayload, $payload);
+        }   
+
+        return view('pages/home', ['organizations' => $orgs, 'productPayload' => $productPayload]);
     }
 
     protected function getOrgs()

@@ -109,19 +109,30 @@
       <?php endforeach; ?>
     </select>
   </div>
-  <?php foreach ($products as $product) : ?>
-    <a href="<?= url_to("ProductController::viewProduct", $product->product_id) ?>" class="col-md-3">
+  <?php foreach ($productPayload as $payload) : ?>
+    <a href="<?= url_to("ProductController::viewProduct", $payload["product"]->product_id) ?>" class="col-md-3">
       <div class="card text-bg-dark card-prod">
-        <img src="<?= json_decode($product->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
-        <div class="badge text-bg-primary">₱ <?= $product->price ?></div>
+        <img src="<?= json_decode($payload["product"]->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
+        <div class="badge text-bg-primary">₱
+          <?php if($payload["product"]->has_variations === "0"): ?>
+            <?= $payload["product"]->price ?> 
+          <?php else: ?>
+            <?= $payload["variants"][0]->price ?>
+          <?php endif; ?>
+        </div>
         <div class="product-info">
-          <?= $product->product_name ?>
+        <?= $payload["product"]->product_name ?> 
         </div>
         <div class="stock-info">
-          Stock: <?= $product->stock ?>
+          Stock:
+          <?php if($payload["product"]->has_variations === "0"): ?>
+            <?= $payload["product"]->stock ?> 
+          <?php else: ?>
+            <?= $payload["variants"][0]->stock ?>
+          <?php endif; ?>
         </div>
         <div class="card-img-overlay">
-          <p class="card-text"><?= $product->description ?></p>
+          <p class="card-text"><?= $payload["product"]->description ?></p>
         </div>
       </div>
     </a>

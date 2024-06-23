@@ -66,9 +66,7 @@ class ProductController extends BaseController
   public function viewCreateProduct()
   {
     try {
-      $orgModel = new OrganizationModel();
-
-      $orgs = $orgModel->findAll();
+      $orgs = $this->orgModel->findAll();
 
       // If no orgs found
       if (empty($orgs)) {
@@ -91,9 +89,7 @@ class ProductController extends BaseController
   {
     try {
       $product = $this->getProductOrError($productId);
-      $orgModel = new OrganizationModel();
-
-      $orgs = $orgModel->findAll();
+      $orgs = $this->orgModel->findAll();
 
       // If no orgs found
       if (empty($orgs)) {
@@ -101,7 +97,9 @@ class ProductController extends BaseController
           ->with('info', 'There must be an Organization before editing a product.');
       }
 
-      return view('pages/admin/editProduct', ['organizations' => $orgs, 'product' => $product]);
+      $variations = $this->variantModel->where("product_id", $product->product_id)->findAll();
+
+      return view('pages/admin/editProduct', ['organizations' => $orgs, 'product' => $product, 'variations' => $variations]);
     } catch (\LogicException $e) {
       return redirect()->to('/admin/product')->with('error', 'Product not found');
     } catch (\Exception $e) {
@@ -172,10 +170,6 @@ class ProductController extends BaseController
       if (!$this->model->validate($data)) {
         $errors = [...$this->model->errors()];
         $isDataValid = false;
-
-        return redirect()->back()
-          ->with('errors', $this->model->errors())
-          ->withInput();
       }
 
       // * Validate Variations and Options if applicable
@@ -290,8 +284,11 @@ class ProductController extends BaseController
     try {
       $product = $this->getProductOrError($productId);
       $data = $this->request->getPost();
+      $variantOptions = [];
       $data["product_id"] = $productId;
       $rawImages = $this->request->getFileMultiple('fileuploads');
+      $hasImages = false;
+      $hasVariants = false;
 
       if (!$this->model->validate($data)) {
         return redirect()->back()
@@ -305,8 +302,40 @@ class ProductController extends BaseController
           ->withInput();
       }
 
+      // * Validate Variations and Options if applicable
+      if (isset($data["has_variations"])) {
+        try {
+          $hasVariants = true;
+          $variantOptions = $this->getOptionsWithIdOrError($data);
+          $data["has_variations"] = true;
+          $data["stock"] = null;
+          $data["price"] = null;
+        } catch (\Exception $e) {
+          return redirect()->back()
+            ->with('errors', [$e->getMessage()])
+            ->withInput();
+        }
+      }
+      else {
+        $data["has_variations"] = false;
+        $data["variation_name"] = null;
+      }
+
+      // * Validate variant options if empty
+      if($hasVariants && count($variantOptions) <= 0) {
+        return redirect()->back()
+        ->with("errors", ["Variation Option cannot be 0"])
+        ->withInput();
+      }
+
+      $idsToDelete = $this->getDeletedVariations($variantOptions, $productId);
+
+      // * Start transaction
+      $this->db->transException(true)->transStart();
+
       // * If form data has image(s)
       if ($rawImages[0]->isValid()) {
+        $hasImages = true;
 
         $validationRules = [
           'fileuploads' => [
@@ -336,11 +365,6 @@ class ProductController extends BaseController
           }
         }
 
-        // * Delete product's images from cloudinary
-        foreach (json_decode($product->images) as $image) {
-          delete_image($image->public_id);
-        }
-
         // * Upload a new set of images
         $images = [];
         foreach ($rawImages as $image) {
@@ -361,17 +385,56 @@ class ProductController extends BaseController
         $data['images'] = json_encode($images);
       }
 
-      if ($this->model->update($productId, $data)) {
-        return redirect()->to('/admin/product')->with('message', 'Product edited');
-      } else {
-        return redirect()->back()
-          ->with('errors', $this->model->errors())
-          ->withInput();
+      // * Update Variation Options
+      foreach ($variantOptions as $option) {
+        // * If new variation, create new
+        if ($option["id"] === "null") {
+          $this->variantModel->insert([
+            "product_id"    => $product->product_id,
+            "option_name"   => $option["name"],
+            "price"         => $option["price"],
+            "stock"         => $option["stock"]
+          ]);
+        } // * Else, edit existing variation
+        else {
+          $this->variantModel->update($option["id"], [
+            "option_name"   => $option["name"],
+            "price"         => $option["price"],
+            "stock"         => $option["stock"],
+          ]);
+        }
       }
+
+      // * Delete variations that are not in use
+      if($hasVariants) {
+        foreach($idsToDelete as $idToDelete) {
+          $this->variantModel->delete($idToDelete);
+        }
+      }
+      else {
+        $this->variantModel->where("product_id", $productId)->delete();
+      }
+      
+
+      $this->model->update($productId, $data);
+
+       // * Complete Transaction
+       $this->db->transComplete();
+
+       // * Delete residual assets if product image was changed
+       if ($hasImages) {
+        foreach (json_decode($product->images) as $image) {
+          delete_image($image->public_id);
+        }
+       }
+
+      return redirect()->to('/admin/product')->with('message', 'Product edited');
     } catch (\LogicException $e) {
       return redirect()->to('/admin/product')->with('error', 'Product not found');
     } catch (\Exception $e) {
-      return redirect()->to('/admin/product')->with('error', $e->getMessage());
+      return redirect()->to('/admin/product')->with('error', 'An error occurred. Please try again later.');
+    } catch (DatabaseException $e) {
+      return redirect()->to("/admin/product")->with('error', 'An error occurred. Please try again later.');
     }
   }
 
@@ -455,5 +518,60 @@ class ProductController extends BaseController
     }
 
     return $variantOptions;
+  }
+
+  private function getOptionsWithIdOrError($data)
+  {
+    $variantOptions = [];
+
+    for ($i = 1; $i <= (int) $data["option_count_hidden"]; $i++) {
+      $idKey = "option_id_" . $i;
+      $nameKey = "option_name_" . $i;
+      $priceKey = "option_price_" . $i;
+      $stockKey = "option_stock_" . $i;
+
+      $id = $data[$idKey];
+      $name = $data[$nameKey];
+      $price = $data[$priceKey];
+      $stock = $data[$stockKey];
+
+      if (empty($id) || empty($name) || empty($price) || empty($stock)) {
+        return throw new \Exception("Incomplete option input, please try again.");
+      }
+
+      if (!is_numeric($price) || !is_numeric($stock)) {
+        return throw new \Exception("Invalid option input, price and/or stock must be numeric.");
+      }
+
+      $payload = [
+        "id"      => $id,
+        "name"    => $name,
+        "price"   => $price,
+        "stock"   => $stock
+      ];
+
+      array_push($variantOptions, $payload);
+    }
+
+    return $variantOptions;
+  }
+
+  private function getDeletedVariations($newVariants, $productId) {
+    $variations = $this->variantModel->where("product_id", $productId)->findAll();
+
+    $existingVariantIds = [];
+    $newVariantIds = [];
+
+    foreach($variations as $variation) {
+      array_push($existingVariantIds, $variation->variation_id);
+    }
+
+    foreach($newVariants as $newVariant) {
+      if($newVariant["id"] !== "null") {
+        array_push($newVariantIds, $newVariant["id"]);
+      }
+    }
+
+    return array_diff($existingVariantIds, $newVariantIds);
   }
 }
