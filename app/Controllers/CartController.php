@@ -8,6 +8,7 @@ use App\Models\CartItemModel;
 use App\Models\ProductModel;
 use App\Models\OrderModel;
 use App\Models\OrderItemModel;
+use App\Models\VariationModel;
 
 use App\Entities\CartItem;
 use App\Entities\Product;
@@ -20,6 +21,7 @@ class CartController extends BaseController
   private ProductModel $productModel;
   private OrderModel $orderModel;
   private OrderItemModel $orderItemModel;
+  private VariationModel $variantModel;
   private $studentModel;
   private $db;
 
@@ -29,6 +31,7 @@ class CartController extends BaseController
     $this->cartItemModel = new CartItemModel();
     $this->orderModel = new OrderModel();
     $this->orderItemModel = new OrderItemModel();
+    $this->variantModel = new VariationModel();
     $this->studentModel = auth()->getProvider();;
     $this->db = \Config\Database::connect();
   }
@@ -47,10 +50,15 @@ class CartController extends BaseController
       $cartItems = [];
 
       for ($i = 0; $i < count($items); $i++) {
-        $cartItems[$i] = [
+        $productId = $items[$i]->product_id;
+
+        $payload = [
           "cartItem" => $items[$i],
-          "product"  => $this->getProductOrError($items[$i]->product_id),
+          "product"  => $this->getProductOrError($productId),
+          "variant" => $this->variantModel->where("variation_id", $items[$i]->variant_id)->first() ?? null
         ];
+
+        $cartItems[$i] = $payload;
       }
 
       return view('pages/product/cart.php', ["cartItems" => $cartItems]);
@@ -62,45 +70,118 @@ class CartController extends BaseController
   }
 
   /**
-   * @desc Adds a product to cart
-   * @route GET /cart/add/:productId/:quantity
+   * @desc Adds a product/variant to cart
+   * @route POST /cart/add
    * @access private
    */
-  public function addToCart($productId, $quantity)
+  public function addToCart()
   {
     try {
-      $product = $this->getProductOrError($productId);
+      // * Properties
+      $data = $this->request->getPost();
+      $productId = $data["product_id"];
+      $quantity = (int) $data["quantity"];
+      $studentId = auth()->id();
+      $hasVariant = $data["has_variants"]; // If prod has no variants, data["variantId"] will be nonexistent 
 
-      if ($quantity > $product->stock) {
-        return redirect()->back()->with("error", "Unable to add to cart, not enough stocks.");
+      // * Check if cart item exists, if so then update it
+      if ($hasVariant) {
+        // * Check if variant exists
+        $variant = $this->getVariantOrError($data["variantId"]);
+
+        // * Check if cart item exists
+        $existingCartItem = $this->cartItemModel
+          ->where("student_id", $studentId)
+          ->where("is_variant", true)
+          ->where("variant_id", $variant->variation_id)
+          ->first();
+
+        // * Update the existing cart item instead if it exists
+        if ($existingCartItem) {
+          // * Check if quantity will exceed stock
+          if (($existingCartItem->quantity + $quantity) > $variant->stock) {
+            return redirect()->back()->with("error", "Unable to add to cart, not enough stocks.");
+          }
+
+          // * Update quantity 
+          $existingCartItem->quantity += $quantity;
+
+          $isSuccess = $this->cartItemModel->save($existingCartItem);
+
+          if ($isSuccess) {
+            return redirect()->back()->with("message", "Item added to cart.");
+          } else {
+            return redirect()->back()->with("error", "Unable to add item to cart.");
+          }
+        }
+      } else {
+        // * Check if product exists
+        $product = $this->getProductOrError($productId);
+
+        // * Check if cart item exists
+        $existingCartItem = $this->cartItemModel
+          ->where("student_id", $studentId)
+          ->where("is_variant", false)
+          ->where("product_id", $productId)
+          ->first();
+
+        // * Update the existing cart item instead if it exists
+        if ($existingCartItem) {
+          // * Check if quantity will exceed stock
+          if (($existingCartItem->quantity + $quantity) > $product->stock) {
+            return redirect()->back()->with("error", "Unable to add to cart, not enough stocks.");
+          }
+
+          // * Update quantity 
+          $existingCartItem->quantity += $quantity;
+
+          $isSuccess = $this->cartItemModel->save($existingCartItem);
+
+          if ($isSuccess) {
+            return redirect()->back()->with("message", "Item added to cart.");
+          } else {
+            return redirect()->back()->with("error", "Unable to add item to cart.");
+          }
+        }
       }
 
-      $existingCartItem = $this->cartItemModel
-        ->where("student_id", auth()->id())
-        ->where("product_id", $productId)
-        ->first();
+      // * New cart item
+      $newCartItem = [];
 
-      if ($existingCartItem) {
-        if (($existingCartItem->quantity + $quantity) > $product->stock) {
+      if ($hasVariant) {
+        // * Check if variant exists
+        $variant = $this->getVariantOrError($data["variantId"]);
+
+        // * Check if quantity exceeds variant stock
+        if ($quantity > $variant->stock) {
+          return redirect()->back()->with("error", "Unable to add to cart, not enough stock.");
+        }
+
+        // * Create new cart item
+        $newCartItem = new CartItem([
+          "student_id" => $studentId,
+          "product_id" => $productId,
+          "variant_id" => $variant->variation_id,
+          "is_variant" => true,
+          "quantity"   => $quantity,
+        ]);
+      } else {
+        // * Check if product exists
+        $product = $this->getProductOrError($productId);
+
+        // * Check if quantity exceeds product stock
+        if ($quantity > $product->stock) {
           return redirect()->back()->with("error", "Unable to add to cart, not enough stocks.");
         }
-        // Update quantity of existing cart item
-        $existingCartItem->quantity += $quantity;
 
-        $isSuccess = $this->cartItemModel->save($existingCartItem);
-
-        if ($isSuccess) {
-          return redirect()->back()->with("message", "Item added to cart.");
-        } else {
-          return redirect()->back()->with("error", "Unable to add item to cart.");
-        }
+        // * Create new cart item
+        $newCartItem = new CartItem([
+          "student_id" => auth()->id(),
+          "product_id" => $productId,
+          "is_variant" => false,
+          "quantity"   => $quantity,
+        ]);
       }
-
-      $newCartItem = new CartItem([
-        "student_id" => auth()->id(),
-        "product_id" => $productId,
-        "quantity"   => $quantity,
-      ]);
 
       // Get all student's cart items
       $isSuccess = $this->cartItemModel->save($newCartItem);
@@ -113,7 +194,7 @@ class CartController extends BaseController
     } catch (\LogicException $e) {
       return redirect()->to("/")->with('error', $e->getMessage());
     } catch (\Exception $e) {
-      return redirect()->to("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with('devError', $e->getMessage());
     }
   }
 
@@ -300,6 +381,17 @@ class CartController extends BaseController
     }
 
     return $product;
+  }
+
+  private function getVariantOrError($variantId)
+  {
+    $variant = $this->variantModel->find($variantId);
+
+    if ($variant === null) {
+      throw new \LogicException("Variant not found");
+    }
+
+    return $variant;
   }
 
   private function getOrderOrError($orderId)

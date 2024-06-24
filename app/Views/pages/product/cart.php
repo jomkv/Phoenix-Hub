@@ -235,13 +235,23 @@
                 <?php $total = 0; ?>
                 <?php foreach ($cartItems as $item) : ?>
                     <?php
-                    $cartItemTotal = $item['product']->price * $item['cartItem']->quantity;
+                    $cartItemTotal = 0;
+
+                    if ($item['cartItem']->is_variant) {
+                        $cartItemTotal = $item["variant"]->price * $item['cartItem']->quantity;
+                    } else {
+                        $cartItemTotal = $item['product']->price * $item['cartItem']->quantity;
+                    }
+
                     $total += $cartItemTotal;
                     ?>
                     <tr>
                         <td>
                             <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded-start mb-2" alt="Product Image">
                             <div class="card-title"><?= $item['product']->product_name ?></div>
+                            <?php if ($item['cartItem']->is_variant && $item['product']->has_variations) : ?>
+                                <div class="card-title">[<?= $item["product"]->variation_name . ": " . $item["variant"]->option_name ?>]</div>
+                            <?php endif; ?>
                         </td>
                         <td>$<?= $cartItemTotal ?></td>
                         <td>
@@ -249,7 +259,7 @@
                                 <div class="item-quantity">
                                     <input type="number" class="form-control" value="<?= $item['cartItem']->quantity ?>" max="<?= $item['product']->stock ?>">
                                 </div>
-                                <div class="available-stocks">Available Stocks: <?= $item['product']->stock ?></div>
+                                <div class="available-stocks">Available Stocks: <?= $item["variant"]->stock ?? $item['product']->stock ?></div>
                             </div>
                         </td>
                         <td>

@@ -283,7 +283,7 @@
   <!-- Product Cards -->
   <div class="row justify-content-center gy-5">
     <div class="col-md-12">
-      <div class="card custom-card-size shadow-lg" id="margin-top-moto">
+      <div class="card custom-card-size shadow-lg" style="background-color: #FAF9F6;" id="margin-top-moto">
         <div class="row no-gutters pt-2">
           <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
             <?php $images = json_decode($product->images) ?>
@@ -310,7 +310,11 @@
                 </div>
                 <div class="col-12"></div>
                 <div class="col-12 pb-3">
+                  <?= form_open("/cart/add") ?>
                   <div class="row">
+                    <input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+                    <input type="hidden" name="has_variants" value="<?= $product->has_variations ?>">
+                    <!-- VARIATIONS (IF ANY) -->
                     <?php if ($product->has_variations === "1") : ?>
                       <div class="col-12">
                         <div class="input-group-prepend d-flex align-items-center mb-2">
@@ -318,29 +322,36 @@
 
                           <?php $varCount = 1;
                           foreach ($variants as $variant) : ?>
-                            <input type="radio" <?= $varCount === 1 ? "checked" : "" ?> class="btn-check" name="options-base" id="variant_<?= $variant->variation_id ?>" autocomplete="off" style="border-color: #7532fa;">
+                            <input name="variantId" value="<?= $variant->variation_id ?>" type="radio" <?= $varCount === 1 ? "checked" : "" ?> class="btn-check" name="options-base" id="variant_<?= $variant->variation_id ?>" autocomplete="off" style="border-color: #7532fa;">
                             <label class="btn" for="variant_<?= $variant->variation_id ?>"><?= esc($variant->option_name) ?></label>
                           <?php $varCount++;
                           endforeach; ?>
                         </div>
                       </div>
                     <?php endif; ?>
+
+                    <!-- QUANTITY -->
                     <div class="col-12">
                       <div class="input-group-prepend d-flex align-items-center">
                         <h5 class="me-2 mb-0">Quantity:</h5>
                         <div class="item-quantity pl-2">
-                          <input type="number" class="form-control quantity-input" value="1" min="1" style="width: 120px;">
+                          <input name="quantity" type="number" class="form-control quantity-input" value="1" min="1" max="<?= $product->has_variations === "0" ? $product->stock : $variants[0]->stock ?>" style="width: 120px;">
                         </div>
                         <p class="card-text ml-1"><?= esc($product->has_variations === "0" ? $product->stock : $variants[0]->stock) ?> available stock(s)</p>
                       </div>
                     </div>
+
+                    <!-- ADD TO CART -->
                     <div class="col-12 col-md-6 mt-2 mb-0 pr-0 pr-md-1 pb-0 pl-0">
-                      <button class="btn fancy-button w-100" id="add-to-cart-btn"><i class="bi bi-cart-plus"></i> Add to Cart</button>
+                      <button type="submit" class="btn fancy-button w-100 fs-6 fw-bold" id="add-to-cart-btn"><i class="bi bi-cart-plus-fill mr-2"></i>Add to Cart</button>
                     </div>
+
+                    <!-- CHECKOUT -->
                     <div class="col-12 col-md-6 mt-2 mb-0 pl-0 pl-md-1 pb-0 pr-0">
-                      <button class="btn fancy-button w-100"><i class="bi bi-cash-stack"></i> Check Out</button>
+                      <a href="#" class="btn fancy-button w-100 fs-6 fw-bold"><i class="bi bi-bag-fill mr-2"></i>Buy Now</a>
                     </div>
                   </div>
+                  <?= form_close() ?>
                 </div>
               </div>
             </div>
@@ -348,7 +359,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 pl-5 pr-5 pt-4 pb-3 shadow-lg mb-5">
+    <div class="col-12 pl-5 pr-5 pt-4 pb-3 shadow-lg mb-5" style="background-color: #FAF9F6;">
       <div class="row">
         <div class="col-md-1 col-sm-2 d-flex">
           <div class="align-self-center">
@@ -405,11 +416,6 @@
         $('#quantityInput').val(quantityCount);
       }
     });
-
-    $('#add-to-cart-btn').click(function() {
-      const url = "<?= base_url() ?>" + `cart/add/<?= $product->product_id ?>/${quantityCount}`
-      window.location.href = url;
-    })
   });
 </script>
 <?= $this->endSection() ?>

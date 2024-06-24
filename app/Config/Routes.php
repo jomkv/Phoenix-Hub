@@ -46,7 +46,7 @@ $routes->get('/product/(:num)', 'ProductController::viewProduct/$1');
 //$routes->get('/product/test', 'ProductController::viewProduct');
 
 // * Cart
-$routes->get('/cart/add/(:num)/(:num)', 'CartController::addToCart/$1/$2', ['filter' => 'isLoggedIn']);
+$routes->post('/cart/add', 'CartController::addToCart', ['filter' => 'isLoggedIn']);
 $routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => 'isLoggedIn']);
 $routes->post('/cart/checkout', 'CartController::checkoutCart', ['filter' => 'isLoggedIn']);
 
