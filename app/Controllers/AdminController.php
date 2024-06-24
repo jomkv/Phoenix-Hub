@@ -30,8 +30,7 @@ class AdminController extends BaseController
         return redirect()->to('/login/admin')->with('error', 'Wrong credentials. Please try again.');
       }
 
-      log_message('info', 'Admin ' . $data['email'] . ' logged in.');
-      return redirect()->to('/admin')->with('info', 'User logged in.');
+      return redirect()->to('/admin')->with('message', 'Admin logged in.');
     } catch (\Exception $e) {
       log_message('error', 'Error admin login: ' . $e->getMessage());
       return redirect()->to('/login/admin')->with('error', 'An error occurred. Please try again.');

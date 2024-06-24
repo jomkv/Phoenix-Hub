@@ -14,7 +14,7 @@ class CartItemModel extends Model
   protected $returnType     = \App\Entities\CartItem::class;
   //protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['student_id', 'product_id', 'quantity'];
+  protected $allowedFields = ['student_id', 'product_id', 'variant_id', 'is_variant', 'quantity'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -29,14 +29,10 @@ class CartItemModel extends Model
   // * Validation
 
   protected $validationRules      = [
-    'product_id'                      => 'required',
     'quantity'                        => 'required',
   ];
 
   protected $validationMessages   = [
-    'product_id' => [
-      'required'    => 'product_id must be provided',
-    ],
     'quantity' => [
       'required'    => 'quantity must be provided',
     ],

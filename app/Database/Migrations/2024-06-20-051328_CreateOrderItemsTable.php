@@ -23,7 +23,17 @@ class CreateOrderItemsTable extends Migration
             'product_id'     => [
                 'type'                  => 'INT',
                 'unsigned'              => true,
-                'null'                  => false,
+                'null'                  => true,
+            ],
+            'variant_id'     => [
+                'type'                  => 'INT',
+                'unsigned'              => true,
+                'null'                  => true,
+            ],
+            'is_variant'     => [
+                'type'                  => 'BOOLEAN',
+                'null'                  => true,
+                'default'               => false,
             ],
             'quantity'       => [
                 'type'                  => 'INT',
@@ -49,6 +59,7 @@ class CreateOrderItemsTable extends Migration
         $this->forge->addKey('order_item_id', TRUE);
         $this->forge->addForeignKey('order_id', 'orders', 'order_id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('product_id', 'products', 'product_id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('variant_id', 'variations', 'variation_id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('order_items');
     }
 

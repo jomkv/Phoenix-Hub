@@ -14,7 +14,7 @@ class OrderItemModel extends Model
   protected $returnType     = \App\Entities\OrderItem::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['order_id', 'product_id', 'quantity', 'item_total'];
+  protected $allowedFields = ['order_id', 'product_id', 'variant_id', 'is_variant', 'quantity', 'item_total'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -30,7 +30,6 @@ class OrderItemModel extends Model
 
   protected $validationRules      = [
     'order_id'                   => 'required',
-    'product_id'                 => 'required',
     'quantity'                   => 'required',
     'item_total'                 => 'required',
   ];
@@ -38,9 +37,6 @@ class OrderItemModel extends Model
   protected $validationMessages   = [
     'order_id' => [
       'required'    => 'order_id must be provided',
-    ],
-    'product_id' => [
-      'required'    => 'product_id must be provided',
     ],
     'quantity' => [
       'required'    => 'quantity must be provided',

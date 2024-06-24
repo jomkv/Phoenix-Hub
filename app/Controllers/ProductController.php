@@ -7,6 +7,7 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 use App\Models\OrganizationModel;
 use App\Models\ProductModel;
 use App\Models\VariationModel;
+use App\Models\CartItemModel;
 
 class ProductController extends BaseController
 {
@@ -14,6 +15,7 @@ class ProductController extends BaseController
   private ProductModel $model;
   private OrganizationModel $orgModel;
   private VariationModel $variantModel;
+  private CartItemModel $cartItemModel;
   private $db;
 
   public function __construct()
@@ -21,6 +23,7 @@ class ProductController extends BaseController
     $this->model = new ProductModel();
     $this->orgModel = new OrganizationModel();
     $this->variantModel = new VariationModel();
+    $this->cartItemModel = new CartItemModel();
     $this->db = \Config\Database::connect();
   }
 
@@ -315,17 +318,16 @@ class ProductController extends BaseController
             ->with('errors', [$e->getMessage()])
             ->withInput();
         }
-      }
-      else {
+      } else {
         $data["has_variations"] = false;
         $data["variation_name"] = null;
       }
 
       // * Validate variant options if empty
-      if($hasVariants && count($variantOptions) <= 0) {
+      if ($hasVariants && count($variantOptions) <= 0) {
         return redirect()->back()
-        ->with("errors", ["Variation Option cannot be 0"])
-        ->withInput();
+          ->with("errors", ["Variation Option cannot be 0"])
+          ->withInput();
       }
 
       $idsToDelete = $this->getDeletedVariations($variantOptions, $productId);
@@ -406,27 +408,26 @@ class ProductController extends BaseController
       }
 
       // * Delete variations that are not in use
-      if($hasVariants) {
-        foreach($idsToDelete as $idToDelete) {
+      if ($hasVariants) {
+        foreach ($idsToDelete as $idToDelete) {
           $this->variantModel->delete($idToDelete);
         }
-      }
-      else {
+      } else {
         $this->variantModel->where("product_id", $productId)->delete();
       }
-      
+
 
       $this->model->update($productId, $data);
 
-       // * Complete Transaction
-       $this->db->transComplete();
+      // * Complete Transaction
+      $this->db->transComplete();
 
-       // * Delete residual assets if product image was changed
-       if ($hasImages) {
+      // * Delete residual assets if product image was changed
+      if ($hasImages) {
         foreach (json_decode($product->images) as $image) {
           delete_image($image->public_id);
         }
-       }
+      }
 
       return redirect()->to('/admin/product')->with('message', 'Product edited');
     } catch (\LogicException $e) {
@@ -450,18 +451,48 @@ class ProductController extends BaseController
 
       $images = json_decode($product->images);
 
+      // * Start transaction
+      $this->db->transException(true)->transStart();
+
+      // * Delete variations and cart items (if any)
+      $variants = $this->variantModel->where("product_id", $productId)->findAll();
+      if (count($variants) > 0) {
+        foreach ($variants as $variant) {
+          // * Delete variant from cart item first 
+          $this->cartItemModel
+            ->where("is_variant", true)
+            ->where("variant_id", $variant->variation_id)
+            ->delete();
+
+          // * Then delete the variant itself
+          $this->variantModel->delete($variant->variation_id);
+        }
+      }
+
+      // * Delete product from cart items (if any)
+      $this->cartItemModel
+        ->where("is_variant", false)
+        ->where("product_id", $productId)
+        ->delete();
+
+      $this->model->delete($productId);
+
+      // * Complete Transaction
+      $this->db->transComplete();
+
+      // * Delete product's images if all goes well
       foreach ($images as $image) {
         delete_image($image->public_id);
       }
-
-      $this->model->delete($productId);
 
       return $this->response->setStatusCode(200)->setJSON(['message' => 'Product successfuly deleted']);
     } catch (\LogicException $e) {
       return $this->response->setStatusCode(400)->setJSON(['message' => 'Product not found']);
     } catch (\Exception $e) {
       log_message('error', 'Error deleting product: ' . $e->getMessage());
-      return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
+      return $this->response->setStatusCode(500)->setJSON(['message' => $e->getMessage()]);
+    } catch (DatabaseException $e) {
+      return $this->response->setStatusCode(500)->setJSON(['message', $e->getMessage()]);
     }
   }
 
@@ -556,18 +587,19 @@ class ProductController extends BaseController
     return $variantOptions;
   }
 
-  private function getDeletedVariations($newVariants, $productId) {
+  private function getDeletedVariations($newVariants, $productId)
+  {
     $variations = $this->variantModel->where("product_id", $productId)->findAll();
 
     $existingVariantIds = [];
     $newVariantIds = [];
 
-    foreach($variations as $variation) {
+    foreach ($variations as $variation) {
       array_push($existingVariantIds, $variation->variation_id);
     }
 
-    foreach($newVariants as $newVariant) {
-      if($newVariant["id"] !== "null") {
+    foreach ($newVariants as $newVariant) {
+      if ($newVariant["id"] !== "null") {
         array_push($newVariantIds, $newVariant["id"]);
       }
     }

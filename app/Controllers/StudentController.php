@@ -9,11 +9,11 @@ use CodeIgniter\Shield\Entities\User;
 class StudentController extends BaseController
 {
   protected $helpers = ['form', 'upload'];
-  private StudentModel $model;
+  private $model;
 
   public function __construct()
   {
-    $this->model = new StudentModel();
+    $this->model = auth()->getProvider();
   }
 
   public function index(): string

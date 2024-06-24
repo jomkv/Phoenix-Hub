@@ -14,7 +14,7 @@ class OrganizationModel extends Model
   protected $returnType     = \App\Entities\Organization::class;
   protected $useSoftDeletes = true; // Only modify entity's 'deleted_at' column, instead of hard delete
 
-  protected $allowedFields = ['organization_id', 'name', 'full_name', 'contact_email', 'contact_person', 'logo'];
+  protected $allowedFields = ['organization_id', 'name', 'full_name', 'description', 'contact_email', 'contact_person', 'logo'];
   // protected bool $updateOnlyChanged = true;
 
   protected bool $allowEmptyInserts = false;
@@ -31,7 +31,8 @@ class OrganizationModel extends Model
   protected $validationRules      = [
     'organization_id'      => 'permit_empty',
     'name'                 => 'required|max_length[255]|is_unique[organizations.name, organization_id, {organization_id}]',
-    'full_name'            => 'required|max_length[65530]',
+    'description'          => 'required|max_length[65530]',
+    'full_name'            => 'required|max_length[255]',
     'contact_email'        => 'required|max_length[254]|valid_email',
     'contact_person'       => 'required|max_length[100]',
     'logo'                 => 'required_without[organization_id]|max_length[500]'
@@ -46,6 +47,10 @@ class OrganizationModel extends Model
     'full_name' => [
       'required'    => 'Organization Full Name must be provided',
       'max_length'  => 'Organization Full Name too long'
+    ],
+    'description' => [
+      'required'    => 'Description must be provided',
+      'max_length'  => 'Description too long'
     ],
     'contact_email' => [
       'required'    => 'Contact Email must be provided',

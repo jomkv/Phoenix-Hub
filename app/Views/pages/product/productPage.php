@@ -363,7 +363,7 @@
         </div>
         <div class="col-7 col-sm-0" id="organization-description">
           <div class="align-self-center border-start border-black">
-            <p class="ml-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur a temporibus ducimus culpa, nostrum repellendus optio eaque molestias impedit, autem natus recusandae iure eos voluptatem hic ut commodi amet quaerat. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem minus aperiam magni enim non rem, modi sunt? Voluptatum maxime veritatis itaque mollitia? Excepturi facere veniam vitae. Error fugiat quod voluptates.</p>
+            <p class="ml-4"><?= esc($organization->description) ?></p>
           </div>
         </div>
       </div>

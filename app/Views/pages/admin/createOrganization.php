@@ -24,7 +24,7 @@
 
         <div class="mb-3">
           <label for="description">Description</label>
-          <textarea class="form-control" rows="4" name="full_name" id="full_name" style="background-color: white; resize: none; "><?= esc(old('full_name')) ?></textarea>
+          <textarea class="form-control" rows="4" name="description" id="description" style="background-color: white; resize: none; "><?= esc(old('description')) ?></textarea>
         </div>
 
         <div class="mb-3">

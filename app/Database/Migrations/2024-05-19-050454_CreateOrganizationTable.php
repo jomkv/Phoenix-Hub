@@ -20,8 +20,13 @@ class CreateOrganizationTable extends Migration
                 'constraint'        => '255',
                 'null'              => false,
             ],
-            'full_name' => [
+            'description' => [
                 'type'              => 'TEXT',
+                'null'              => false,
+            ],
+            'full_name' => [
+                'type'              => 'VARCHAR',
+                'constraint'        => '255',
                 'null'              => false,
             ],
             'contact_email' => [
