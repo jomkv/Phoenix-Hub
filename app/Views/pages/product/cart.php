@@ -248,9 +248,9 @@
                     <tr>
                         <td>
                             <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded-start mb-2" alt="Product Image">
-                            <div class="card-title"><?= $item['product']->product_name ?></div>
+                            <div class="card-title"><?= esc($item['product']->product_name) ?></div>
                             <?php if ($item['cartItem']->is_variant && $item['product']->has_variations) : ?>
-                                <div class="card-title">[<?= $item["product"]->variation_name . ": " . $item["variant"]->option_name ?>]</div>
+                                <div class="card-title">[<?= esc($item["product"]->variation_name) . ": " . esc($item["variant"]->option_name) ?>]</div>
                             <?php endif; ?>
                         </td>
                         <td>$<?= $cartItemTotal ?></td>

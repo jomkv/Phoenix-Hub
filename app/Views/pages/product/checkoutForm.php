@@ -27,7 +27,14 @@
         <?php $total = 0; ?>
         <?php foreach ($cartItems as $item) : ?>
           <?php
-          $cartItemTotal = $item['product']->price * $item['cartItem']->quantity;
+          $cartItemTotal = 0;
+
+          if ($item['cartItem']->is_variant) {
+            $cartItemTotal = $item["variant"]->price * $item['cartItem']->quantity;
+          } else {
+            $cartItemTotal = $item['product']->price * $item['cartItem']->quantity;
+          }
+
           $total += $cartItemTotal;
           ?>
           <tr>
@@ -35,9 +42,18 @@
               <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded-start mb-2" style="object-fit: scale-down; width: 50px;" alt="Product Image">
             </td>
             <td class="text-center">
-              <?= $item['product']->product_name ?>
+              <?= esc($item['product']->product_name) ?>
+              <?php if ($item['cartItem']->is_variant && $item['product']->has_variations) : ?>
+                <div class="card-title">[<?= esc($item["product"]->variation_name) . ": " . esc($item["variant"]->option_name) ?>]</div>
+              <?php endif; ?>
             </td>
-            <td class="text-center">₱<?= $item['product']->price ?></td>
+            <td class="text-center">
+              <?php if ($item['cartItem']->is_variant) : ?>
+                <?= "₱" . $item['variant']->price ?>
+              <?php else : ?>
+                <?= "₱" . $item['product']->price ?>
+              <?php endif; ?>
+            </td>
             <td class="text-center"><?= $item['cartItem']->quantity ?></td>
             <td class="text-center">₱<?= $cartItemTotal ?></td>
           </tr>

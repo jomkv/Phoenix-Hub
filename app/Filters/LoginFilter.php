@@ -14,7 +14,7 @@ class LoginFilter implements FilterInterface
 
     // * Check if logged in
     if (!$auth->loggedIn()) {
-      return redirect()->to('/')->with('error', 'User not logged in.');
+      return redirect()->to('/login')->with('error', 'User not logged in.');
     }
   }
 

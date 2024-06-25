@@ -238,11 +238,10 @@ class CartController extends BaseController
       for ($i = 0; $i < count($items); $i++) {
         $cartItems[$i] = [
           "cartItem" => $items[$i],
-          "product"  => $this->getProductOrError($items[$i]->product_id),
+          "product"  => $items[$i]->product_id ? $this->productModel->find($items[$i]->product_id) : null,
+          "variant"  => $items[$i]->variant_id ? $this->variantModel->find($items[$i]->variant_id) : null
         ];
       }
-
-
 
       return view('pages/product/checkoutForm.php', ["cartItems" => $cartItems]);
     } catch (\LogicException $e) {
@@ -273,7 +272,8 @@ class CartController extends BaseController
       for ($i = 0; $i < count($items); $i++) {
         $cartItems[$i] = [
           "cartItem" => $items[$i],
-          "product"  => $this->getProductOrError($items[$i]->product_id),
+          "product"  => $items[$i]->product_id ? $this->productModel->find($items[$i]->product_id) : null,
+          "variant"  => $items[$i]->variant_id ? $this->variantModel->find($items[$i]->variant_id) : null
         ];
       }
 
@@ -296,14 +296,30 @@ class CartController extends BaseController
       $order = $this->getOrderOrError($orderId);
 
       foreach ($cartItems as $item) {
-        $itemTotal = $item["cartItem"]->quantity * $item["product"]->price;
+        $newOrderItem = [];
 
-        $newOrderItem = [
-          "order_id"    => $orderId,
-          "product_id"  => $item["cartItem"]->product_id,
-          "quantity"    => $item["cartItem"]->quantity,
-          "item_total"  => $itemTotal
-        ];
+        if ($item["cartItem"]->is_variant) {
+          $itemTotal = $item["cartItem"]->quantity * $item["variant"]->price;
+
+          $newOrderItem = [
+            "order_id"    => $orderId,
+            "variant_id"  => $item["cartItem"]->variant_id,
+            "quantity"    => $item["cartItem"]->quantity,
+            "is_variant"  => true,
+            "item_total"  => $itemTotal
+          ];
+        } else {
+          $itemTotal = $item["cartItem"]->quantity * $item["product"]->price;
+
+          $newOrderItem = [
+            "order_id"    => $orderId,
+            "product_id"  => $item["cartItem"]->product_id,
+            "quantity"    => $item["cartItem"]->quantity,
+            "is_variant"  => false,
+            "item_total"  => $itemTotal
+          ];
+        }
+
 
         // * Create Order Item
         $isSuccess = $this->orderItemModel->insert($newOrderItem);
@@ -411,13 +427,27 @@ class CartController extends BaseController
 
     // * Map cart items as line item
     foreach ($cartItems as $item) {
-      $lineItem = [
-        'currency'    => 'PHP',
-        'amount'      => round($item["product"]->price * 100, 0), // round off
-        'description' => $item["product"]->description,
-        'name'        => $item["product"]->product_name,
-        'quantity'    => (int)$item["cartItem"]->quantity
-      ];
+      $lineItem = [];
+
+      if ($item["cartItem"]->is_variant) {
+        $variantProduct = $this->getProductOrError($item["variant"]->product_id);
+
+        $lineItem = [
+          'currency'    => 'PHP',
+          'amount'      => round($item["variant"]->price * 100, 0), // round off
+          'description' => $variantProduct->description,
+          'name'        => $variantProduct->product_name . "[" . $variantProduct->variation_name . ": " . $item["variant"]->option_name . "]",
+          'quantity'    => (int)$item["cartItem"]->quantity
+        ];
+      } else {
+        $lineItem = [
+          'currency'    => 'PHP',
+          'amount'      => round($item["product"]->price * 100, 0), // round off
+          'description' => $item["product"]->description,
+          'name'        => $item["product"]->product_name,
+          'quantity'    => (int)$item["cartItem"]->quantity
+        ];
+      }
 
       array_push($lineItems, $lineItem);
     }

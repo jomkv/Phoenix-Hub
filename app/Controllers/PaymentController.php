@@ -7,12 +7,14 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 use App\Models\OrderModel;
 use App\Models\OrderItemModel;
 use App\Models\ProductModel;
+use App\Models\VariationModel;
 
 class PaymentController extends BaseController
 {
   private OrderModel $orderModel;
   private OrderItemModel $orderItemModel;
   private ProductModel $productModel;
+  private VariationModel $variantModel;
   private $studentModel;
   private $db;
 
@@ -21,6 +23,7 @@ class PaymentController extends BaseController
     $this->orderModel = new OrderModel();
     $this->orderItemModel = new OrderItemModel();
     $this->productModel = new ProductModel();
+    $this->variantModel = new VariationModel();
     $this->studentModel = auth()->getProvider();
     $this->db = \Config\Database::connect();
   }
@@ -74,12 +77,21 @@ class PaymentController extends BaseController
 
       // * Update product stock
       foreach ($orderItems as $item) {
-        $product = $this->getProductOrError($item->product_id);
+        if ($item->is_variant) {
+          $variant = $this->getVariantOrError($item->variant_id);
 
-        // * Subtract order item quantity from product stock count
-        $newStock = $product->stock - $item->quantity;
-        $product->stock = $newStock;
-        $this->productModel->save($product);
+          // * Subtract order item quantity from variant stock count
+          $newStock = $variant->stock - $item->quantity;
+          $variant->stock = $newStock;
+          $this->variantModel->save($variant);
+        } else {
+          $product = $this->getProductOrError($item->product_id);
+
+          // * Subtract order item quantity from product stock count
+          $newStock = $product->stock - $item->quantity;
+          $product->stock = $newStock;
+          $this->productModel->save($product);
+        }
       }
 
       // * Update order status
@@ -95,11 +107,11 @@ class PaymentController extends BaseController
 
       return redirect()->to("/")->with("message", "Payment received, order confirmed.");
     } catch (\LogicException $e) {
-      return redirect()->to("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with("devError", $e->getMessage());
     } catch (\Exception $e) {
-      return redirect()->back("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with("devError", $e->getMessage());
     } catch (DatabaseException $e) {
-      return redirect()->back("/")->with('error', "Error, please try again later.");
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with("devError", $e->getMessage());
     }
   }
 
@@ -171,6 +183,17 @@ class PaymentController extends BaseController
     }
 
     return $product;
+  }
+
+  private function getVariantOrError($variantId)
+  {
+    $variant = $this->variantModel->withDeleted()->find($variantId);
+
+    if ($variant === null) {
+      throw new \LogicException("Product Variant not found");
+    }
+
+    return $variant;
   }
 
   private function getOrderOrError($orderId)
