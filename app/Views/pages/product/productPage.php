@@ -416,7 +416,8 @@
         if (this !== prev) {
           prev = this;
 
-          document.getElementById("prod-quantity").val = 1;
+          document.getElementById("prod-quantity").value = 1;
+          document.getElementById("prod-quantity").setAttribute("max", variants.get(this.value).stock);
           document.getElementById("prod-stocks").innerText = `${variants.get(this.value).stock} available stock(s)`;
           document.getElementById("prod-price").innerText = `₱${variants.get(this.value).price}`;
         }
