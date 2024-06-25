@@ -303,14 +303,14 @@
               <div class="row pl-2 h-100">
                 <div class="col-12">
                   <h1 class="card-text mb-0 pb-0"><?= esc($product->product_name) ?></h1>
-                  <p style="color: #ee4d42;" class="card-text fs-3">₱<?= esc($product->has_variations === "0" ? $product->price : $variants[0]->price) ?></p>
+                  <p style="color: #ee4d42;" class="card-text fs-3" id="prod-price">₱<?= esc($product->has_variations === "0" ? $product->price : $variants[0]->price) ?></p>
                 </div>
                 <div class="col-12 mb-2">
                   <p class="card-text text-start"><?= esc($product->description) ?></p>
                 </div>
                 <div class="col-12"></div>
                 <div class="col-12 pb-3">
-                  <?= form_open("/cart/add") ?>
+                  <?= form_open("/cart/add", ["name" => "product_page_form"]) ?>
                   <div class="row">
                     <input type="hidden" name="product_id" value="<?= $product->product_id ?>">
                     <input type="hidden" name="has_variants" value="<?= $product->has_variations ?>">
@@ -335,9 +335,9 @@
                       <div class="input-group-prepend d-flex align-items-center">
                         <h5 class="me-2 mb-0">Quantity:</h5>
                         <div class="item-quantity pl-2">
-                          <input name="quantity" type="number" class="form-control quantity-input" value="1" min="1" max="<?= $product->has_variations === "0" ? $product->stock : $variants[0]->stock ?>" style="width: 120px;">
+                          <input name="quantity" id="prod-quantity" type="number" class="form-control quantity-input" value="1" min="1" max="<?= $product->has_variations === "0" ? $product->stock : $variants[0]->stock ?>" style="width: 120px;">
                         </div>
-                        <p class="card-text ml-1"><?= esc($product->has_variations === "0" ? $product->stock : $variants[0]->stock) ?> available stock(s)</p>
+                        <p class="card-text ml-1" id="prod-stocks"><?= esc($product->has_variations === "0" ? $product->stock : $variants[0]->stock) ?> available stock(s)</p>
                       </div>
                     </div>
 
@@ -391,6 +391,41 @@
 
 <script>
   let quantityCount = 1;
+  let variants = null;
+
+  // * Map each variant's properties to a javascript array
+  <?php if ($product->has_variations === "1") : ?>
+    variants = new Map();
+    <?php foreach ($variants as $var) : ?>
+      variants.set(
+        "<?= $var->variation_id ?>", {
+          price: "<?= $var->price ?>",
+          stock: "<?= $var->stock ?>",
+        }
+      )
+    <?php endforeach; ?>
+    console.log(variants)
+  <?php endif; ?>
+
+  if (variants) {
+    var rad = document.product_page_form.variantId;
+    var prev = null;
+    for (var i = 0; i < rad.length; i++) {
+      rad[i].addEventListener('change', function() {
+        // (prev) ? console.log("PREV: " + prev.value): null;
+        if (this !== prev) {
+          prev = this;
+
+          document.getElementById("prod-quantity").val = 1;
+          document.getElementById("prod-stocks").innerText = `${variants.get(this.value).stock} available stock(s)`;
+          document.getElementById("prod-price").innerText = `₱${variants.get(this.value).price}`;
+        }
+      });
+    }
+  }
+
+
+
 
   $(document).ready(function() {
     $('.small-img').hover(function() {
