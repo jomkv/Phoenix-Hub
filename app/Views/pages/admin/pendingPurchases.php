@@ -48,7 +48,9 @@
                         <td>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Inspect</button>
                             <?php if ($order->status === "pending") : ?>
-                                <button class="btn btn-success">Confirm</button>
+                                <?= form_open("/admin/order/confirm/" . $order->order_id) ?>
+                                <button type="submit" class="btn btn-success">Confirm</button>
+                                <?= form_close(); ?>
                                 <button class="btn btn-danger">Cancel</button>
                             <?php elseif ($order->status === "confirmed") : ?>
                                 <button class="btn btn-success">Received</button>

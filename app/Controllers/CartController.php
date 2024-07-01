@@ -464,7 +464,7 @@ class CartController extends BaseController
           ],
           'success_url' => url_to('PaymentController::success'),
           'cancel_url' => url_to('PaymentController::fail'),
-          'description' => 'Payment for Test Product'
+          'description' => 'Phoenix Hub Merchandise'
         ],
       ]
     ];

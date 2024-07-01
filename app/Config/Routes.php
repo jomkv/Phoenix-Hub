@@ -45,6 +45,9 @@ $routes->get('/product', 'ProductController::viewAllProducts');
 $routes->get('/product/(:num)', 'ProductController::viewProduct/$1');
 //$routes->get('/product/test', 'ProductController::viewProduct');
 
+$routes->get('/checkout/product/(:num)', 'OrderController::viewBuyProduct/$1', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+$routes->get('/checkout/variant/(:num)', 'OrderController::viewBuyVariant/$1', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+
 // * Cart
 $routes->post('/cart/add', 'CartController::addToCart', ['filter' => 'isLoggedIn']);
 $routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => 'isLoggedIn']);
@@ -54,6 +57,9 @@ $routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filt
 
 // * Orders and Payments
 $routes->post('/payment/webhook', 'PaymentController::webhook');
+
+$routes->post('/checkout/product/(:num)', 'OrderController::buyProduct/$1', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+$routes->post('/checkout/variant/(:num)', 'OrderController::buyVariant/$1', ['filter' => ['isLoggedIn', 'preventAdmin']]);
 
 $routes->get('/payment/success', 'PaymentController::success');
 $routes->get('/payment/fail', 'PaymentController::fail');

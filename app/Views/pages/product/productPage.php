@@ -281,6 +281,7 @@
   </div>
 
   <!-- Product Cards -->
+  <?= form_open("/cart/add", ["name" => "product_page_form"]) ?>
   <div class="row justify-content-center gy-5">
     <div class="col-md-12">
       <div class="card custom-card-size shadow-lg" style="background-color: #FAF9F6;" id="margin-top-moto">
@@ -310,7 +311,6 @@
                 </div>
                 <div class="col-12"></div>
                 <div class="col-12 pb-3">
-                  <?= form_open("/cart/add", ["name" => "product_page_form"]) ?>
                   <div class="row">
                     <input type="hidden" name="product_id" value="<?= $product->product_id ?>">
                     <input type="hidden" name="has_variants" value="<?= $product->has_variations ?>">
@@ -348,10 +348,13 @@
 
                     <!-- CHECKOUT -->
                     <div class="col-12 col-md-6 mt-2 mb-0 pl-0 pl-md-1 pb-0 pr-0">
-                      <a href="#" class="btn fancy-button w-100 fs-6 fw-bold"><i class="bi bi-bag-fill mr-2"></i>Buy Now</a>
+                      <?php if ($product->has_variations) : ?>
+                        <button type="button" onclick="window.location.replace(`<?= url_to('OrderController::viewBuyVariant', $variants[0]->variation_id); ?>` + `?quantity=` + document.getElementById('prod-quantity').value);" id="buy_now_variant_btn" class=" btn fancy-button w-100 fs-6 fw-bold"><i class="bi bi-bag-fill mr-2"></i>Buy Now</button>
+                      <?php else : ?>
+                        <button type="button" onclick="window.location.replace(`<?= url_to('OrderController::viewBuyProduct', $product->product_id); ?>` + `?quantity=` + document.getElementById('prod-quantity').value);" class=" btn fancy-button w-100 fs-6 fw-bold"><i class="bi bi-bag-fill mr-2"></i>Buy Now</button>
+                      <?php endif; ?>
                     </div>
                   </div>
-                  <?= form_close() ?>
                 </div>
               </div>
             </div>
@@ -380,6 +383,8 @@
       </div>
     </div>
   </div>
+  <?= form_close(); ?>
+
 </div>
 
 <!-- Include Bootstrap JS -->
@@ -404,7 +409,6 @@
         }
       )
     <?php endforeach; ?>
-    console.log(variants)
   <?php endif; ?>
 
   if (variants) {
@@ -415,6 +419,10 @@
         // (prev) ? console.log("PREV: " + prev.value): null;
         if (this !== prev) {
           prev = this;
+
+          document.getElementById("buy_now_variant_btn").onclick = () => {
+            window.location.replace(`<?= base_url() . "checkout/variant/" ?>` + this.value + `?quantity=` + document.getElementById('prod-quantity').value);
+          }
 
           document.getElementById("prod-quantity").value = 1;
           document.getElementById("prod-quantity").setAttribute("max", variants.get(this.value).stock);
