@@ -58,7 +58,7 @@ $current_url = current_url(); // This gets the current URL
         </a>
       </li>
       <li class="sidebar-item">
-        <a href="<?= url_to('AdminViewController::viewPending') ?>" class="sidebar-link">
+        <a href="<?= url_to('AdminViewController::viewPendingOrders') ?>" class="sidebar-link">
           <i class="bi bi-receipt pe-2"></i>
           Orders
         </a>

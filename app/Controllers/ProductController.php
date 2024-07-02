@@ -326,7 +326,7 @@ class ProductController extends BaseController
       // * Validate variant options if empty
       if ($hasVariants && count($variantOptions) <= 0) {
         return redirect()->back()
-          ->with("errors", ["Variation Option cannot be 0"])
+          ->with("errors", ["Variation Options cannot be 0"])
           ->withInput();
       }
 
@@ -411,9 +411,15 @@ class ProductController extends BaseController
       if ($hasVariants) {
         foreach ($idsToDelete as $idToDelete) {
           $this->variantModel->delete($idToDelete);
+          $this->cartItemModel->where("variant_id", $idToDelete)->delete();
         }
       } else {
-        $this->variantModel->where("product_id", $productId)->delete();
+        $variantsToDelete = $this->variantModel->where("product_id", $productId)->findAll();
+
+        foreach ($variantsToDelete as $variant) {
+          $this->cartItemModel->where("variant_id", $variant->variation_id)->delete();
+          $this->variantModel->delete($variant->variation_id);
+        }
       }
 
 

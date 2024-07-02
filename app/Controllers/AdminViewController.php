@@ -113,38 +113,45 @@ class AdminViewController extends BaseController
   }
 
   /**
-   * @desc Admin orders menu
-   * @route GET /admin/orders
+   * @desc Admin pending orders menu
+   * @route GET /admin/pending
    * @access private
    */
-  public function viewPending(): string
+  public function viewPendingOrders(): string
   {
     $model = new OrderModel();
 
-    $pending = $model->where("status", "pending")->findAll();
-    $confirmed = $model->where("status", "confirmed")->findAll();
-    $all = [...$pending, ...$confirmed];
-    $filter = "none";
+    $pendingOrders = $model->where("status", "pending")->findAll();
 
-    $orders = [];
+    return view('pages/admin/pendingOrders', ["orders" => $pendingOrders]);
+  }
 
-    if ($this->request->getMethod() === "POST") {
-      $data = $this->request->getPost();
+  /**
+   * @desc Admin pending orders menu
+   * @route GET /admin/confirmed
+   * @access private
+   */
+  public function viewConfirmedOrders(): string
+  {
+    $model = new OrderModel();
 
-      if ($data["filter"] === "pending") {
-        $filter = "pending";
-        $orders = $pending;
-      } else if ($data["filter"] === "confirmed") {
-        $filter = "confirmed";
-        $orders = $confirmed;
-      } else {
-        $orders = $all;
-      }
-    } else {
-      $orders = $all;
-    }
+    $confirmedOrders = $model->where("status", "confirmed")->findAll();
 
-    return view('pages/admin/pendingPurchases', ["orders" => $orders, "filter" => $filter]);
+    return view('pages/admin/confirmedOrders', ["orders" => $confirmedOrders]);
+  }
+
+  /**
+   * @desc Admin pending orders menu
+   * @route GET /admin/cancelled
+   * @access private
+   */
+  public function viewCancelledOrders(): string
+  {
+    $model = new OrderModel();
+
+    $cancelledOrders = $model->where("status", "cancelled")->findAll();
+
+    return view('pages/admin/cancelledOrders', ["orders" => $cancelledOrders]);
   }
 
   /**

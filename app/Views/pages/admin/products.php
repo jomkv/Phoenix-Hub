@@ -18,7 +18,7 @@
         <select class="form-select" id="org-filter">
           <option value="none">None</option>
           <?php foreach ($organizations as $org) : ?>
-            <option value="<?= $org->organization_id ?>" <?= $filter === $org->organization_id ? "selected" : "" ?>><?= $org->name ?></option>
+            <option value="<?= $org->organization_id ?>" <?= $filter === $org->organization_id ? "selected" : "" ?>><?= esc($org->name) ?></option>
           <?php endforeach ?>
         </select>
         <button onclick="window.location='product?filter='+document.getElementById('org-filter').value;" class="btn btn-primary">Filter</button>

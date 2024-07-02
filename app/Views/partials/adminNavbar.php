@@ -27,7 +27,7 @@
       </a>
     </li>
     <li class="sidebar-item">
-      <a href="<?= url_to('AdminViewController::viewPending') ?>" class="sidebar-link">
+      <a href="<?= url_to('AdminViewController::viewPendingOrders') ?>" class="sidebar-link">
         <i class="bi bi-receipt"></i>
         <span>Pending Purchases</span>
       </a>

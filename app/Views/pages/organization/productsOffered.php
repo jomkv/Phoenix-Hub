@@ -105,7 +105,7 @@
     <select class="form-select form-select-lg w-25" aria-label="Large select example">
       <option><a class="dropdown-item" href="#">None</a></option>
       <?php foreach ($organizations as $organization) : ?>
-        <option><a class="dropdown-item" href="#"><?= $organization->name ?></a></option>
+        <option><a class="dropdown-item" href="#"><?= esc($organization->name) ?></a></option>
       <?php endforeach; ?>
     </select>
   </div>
@@ -114,25 +114,25 @@
       <div class="card text-bg-dark card-prod">
         <img src="<?= json_decode($payload["product"]->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
         <div class="badge text-bg-primary">₱
-          <?php if($payload["product"]->has_variations === "0"): ?>
-            <?= $payload["product"]->price ?> 
-          <?php else: ?>
+          <?php if ($payload["product"]->has_variations === "0") : ?>
+            <?= $payload["product"]->price ?>
+          <?php else : ?>
             <?= $payload["variants"][0]->price ?>
           <?php endif; ?>
         </div>
         <div class="product-info">
-        <?= $payload["product"]->product_name ?> 
+          <?= esc($payload["product"]->product_name) ?>
         </div>
         <div class="stock-info">
           Stock:
-          <?php if($payload["product"]->has_variations === "0"): ?>
-            <?= $payload["product"]->stock ?> 
-          <?php else: ?>
+          <?php if ($payload["product"]->has_variations === "0") : ?>
+            <?= $payload["product"]->stock ?>
+          <?php else : ?>
             <?= $payload["variants"][0]->stock ?>
           <?php endif; ?>
         </div>
         <div class="card-img-overlay">
-          <p class="card-text"><?= $payload["product"]->description ?></p>
+          <p class="card-text"><?= esc($payload["product"]->description) ?></p>
         </div>
       </div>
     </a>

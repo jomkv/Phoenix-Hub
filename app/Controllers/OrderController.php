@@ -37,6 +37,52 @@ class OrderController extends BaseController
   }
 
   /**
+   * @desc Get order details
+   * @route POST /admin/order/details/:orderId
+   * @access private
+   */
+  public function getOrderDetails($orderId)
+  {
+    try {
+      $order = $this->getOrderOrError($orderId);
+      $orderItems = $this->orderItemModel->where("order_id", $orderId)->findAll();
+
+      $orderItemPayload = [];
+
+      foreach ($orderItems as $item) {
+        $product = null;
+        $variant = null;
+
+        if ($item->is_variant) {
+          $variant = $this->getVariantOrError($item->variant_id);
+          $product = $this->getProductOrError($variant->product_id);
+        } else {
+          $product = $this->getProductOrError($item->product_id);
+        }
+
+        $currPayload = [
+          "item"    => $item,
+          "product" => $product,
+          "variant" => $variant
+        ];
+
+        array_push($orderItemPayload, $currPayload);
+      }
+
+      $payload = [
+        "order" => $order,
+        "orderItems" => $orderItemPayload
+      ];
+
+      return $this->response->setStatusCode(200)->setJSON($payload);
+    } catch (\Exception $e) {
+      return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
+    } catch (\LogicException $e) {
+      return $this->response->setStatusCode(400)->setJSON(['message' => $e->getMessage()]);
+    }
+  }
+
+  /**
    * @desc Returns a view to a specific product's checkout page
    * @route GET /checkout/product/:productId
    * @access private
@@ -314,6 +360,60 @@ class OrderController extends BaseController
     } catch (\Exception $e) {
       return redirect()->back()->with('error', "Error, please try again later.")->with("devErr", $e->getMessage());
     } catch (DatabaseException $e) {
+      return redirect()->back()->with('error', "Error, please try again later.")->with("devErr", $e->getMessage());
+    }
+  }
+
+  /**
+   * @desc mark order as received
+   * @route POST /admin/order/receive/:id
+   * @access private
+   */
+  public function receiveOrder($orderId)
+  {
+    try {
+      $order = $this->getOrderOrError($orderId);
+
+      // * Update order status
+      $order->status = "received";
+      if (!$this->orderModel->save($order)) {
+        return redirect()->back()->with("error", "Error, unable to receive order.");
+      }
+
+      // * Notify student
+      $this->orderPickupEmail($order->student_id, $orderId);
+
+      return redirect()->back()->with("message", "Order received.");
+    } catch (\LogicException $e) {
+      return redirect()->back()->with('error', $e->getMessage());
+    } catch (\Exception $e) {
+      return redirect()->back()->with('error', "Error, please try again later.")->with("devErr", $e->getMessage());
+    }
+  }
+
+  /**
+   * @desc cancel order
+   * @route POST /admin/order/cancel/:id
+   * @access private
+   */
+  public function cancelOrder($orderId)
+  {
+    try {
+      $order = $this->getOrderOrError($orderId);
+
+      // * Update order status
+      $order->status = "cancelled";
+      if (!$this->orderModel->save($order)) {
+        return redirect()->back()->with("error", "Error, unable to cancel order.");
+      }
+
+      // * Notify student
+      $this->orderCancelEmail($order->student_id, $orderId);
+
+      return redirect()->back()->with("message", "Order cancelled.");
+    } catch (\LogicException $e) {
+      return redirect()->back()->with('error', $e->getMessage());
+    } catch (\Exception $e) {
       return redirect()->back()->with('error', "Error, please try again later.")->with("devErr", $e->getMessage());
     }
   }
