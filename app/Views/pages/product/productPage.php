@@ -104,15 +104,15 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
 
-  /* Back button styling */
+  /* Back button style */
   .back-button {
     position: fixed;
-    top: 105px;
+    top: 100px;
     left: 10px;
-    z-index: 1000;
+    z-index: 100;
     width: 50px;
     height: 50px;
-    background-color: #007bff;
+    background-color: #7433FA;
     color: white;
     border: none;
     border-radius: 10px;

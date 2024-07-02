@@ -1,251 +1,190 @@
-  <?= $this->extend("layouts/default") ?>
+<?= $this->extend("layouts/default") ?>
 
-  <?= $this->section("title") ?>Barter Item<?= $this->endSection() ?>
+<?= $this->section("title") ?>Barter Item<?= $this->endSection() ?>
 
-  <?= $this->section("content") ?>
-  <style>
-    /* Custom CSS for minimalist design */
-    body {
-      font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-color: #f0f2f5;
-      padding-top: 70px;
-      margin-bottom: 50px;
+<?= $this->section("content") ?>
+<style>
+  body {
+    overflow: auto;
+    margin-bottom: 10px;
+    background: #dee2e6;
+  }
+  .image-container {
+    max-width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .profile-container img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  .card-header .profile-name {
+    font-weight: bold;
+    color: black;
+  }
+  .description h5 {
+    margin-bottom: 0px;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    .profile-container .profile-name {
+      font-size: 0.7rem;
     }
-
-    .post-card {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      position: relative;
+    .profile-container .text-muted {
+      font-size: 0.6rem;
     }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #ddd;
+    .card {
+      max-height: 450px;
     }
-
-    .profile {
-      display: flex;
-      align-items: center;
-    }
-
-    .post-header img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .post-header .profile-name {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .post-date {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .post-body {
-      padding: 15px;
-    }
-
-    .post-content {
-      margin-bottom: 20px;
-    }
-
-    .comment-section {
-      background-color: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-      margin-bottom: 20px;
-    }
-
-    .comment {
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .comment .profile-img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .comment .profile-name {
-      font-size: 14px;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .comment .comment-text {
-      margin: 5px 0;
-    }
-
-    .comment-form {
-      margin-top: 15px;
-    }
-
-    .comment-form textarea {
-      width: 100%;
-      min-height: 80px;
-      resize: vertical;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .comment-form .btn-primary {
-      margin-top: 10px;
-    }
-
-    /* Carousel styles */
-    .carousel-container {
-      height: 400px;
-      /* Set a fixed height for the carousel */
-      overflow: hidden;
-      /* Hide overflow to prevent image scaling */
-    }
-
-    .carousel-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      /* Maintain aspect ratio and cover container */
-    }
-
-    /* Back button style */
     .back-button {
-      position: fixed;
-      top: 100px;
-      left: 10px;
-      z-index: 1000;
-      width: 50px;
-      height: 50px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      text-decoration: none;
+      top: 50px; /* Adjust the top position for smaller screens */
+      left: 10px; /* Adjust the left position for smaller screens */
     }
-
-    /* Carousel control button fix */
-    .carousel-control-prev,
-    .carousel-control-next {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-    }
-  </style>
-
-  <div class="container" style="margin-top: 550px;">
-    <!-- Back button float -->
-    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
-    <div class="row justify-content-center">
-      <div class="col-md-9">
-        <div class="card post-card" style="padding:20px; border-radius:10px;">
-          <div class="post-header">
-            <div class="profile">
-              <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" alt="Profile Image">
-              <p class="profile-name">Seller's Name</p>
-            </div>
-          </div>
-          <div class="post-date">
-            <p>Date Posted: March 14, 2024</p>
-          </div>
-          <div class="carousel-container" style="border-radius:10px;">
-            <div id="carouselExampleFade" class="carousel slide carousel-fade">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                  <img src="<?= base_url() . 'WALTAR.png' ?>" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                  <img src="<?= base_url() . 'toyota-supra-mk4.png' ?>" class="d-block w-100" alt="...">
-                </div>
-              </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-          </div>
-          <div class="post-content">
-            <h2 class="card-title text-center">Product Title</h2>
-            <p><strong>Product Details / Specs:</strong></p>
-            <ul>
-              <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-              <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</li>
-              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-              <!-- Add more details as needed -->
-            </ul>
-            <p><strong>Contact:</strong></p>
-            <p>Contact Number: XXX-XXX-XXXX</p>
-            <p>Email: example@example.com</p>
-          </div>
-          <div class="comment-section">
-            <h3>Comments</h3>
-            <div class="comment">
-              <div class="profile">
-                <img src="<?= base_url() . 'phoenix.png' ?>" class="profile-img" alt="Profile Image">
-                <p class="profile-name">Commenter Name</p>
-              </div>
-              <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, modi.</p>
-            </div>
-            <!-- Add more comments as needed -->
-            <div class="comment">
-              <div class="profile">
-                <img src="<?= base_url() . 'WALTAR.png' ?>" class="profile-img" alt="Profile Image">
-                <p class="profile-name">Another Commenter</p>
-              </div>
-              <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, quaerat.</p>
-            </div>
-            <!-- Comment Form -->
-            <form class="comment-form">
-              <textarea class="form-control mb-3" placeholder="Write a comment..." rows="3"></textarea>
-              <button type="submit" class="btn btn-primary">Post Comment</button>
-            </form>
-          </div>
+  }
+  /* Back button style */
+  .back-button {
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    background-color: #7433FA;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    text-decoration: none;
+  }
+  /* Divider style */
+  .comment-divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 1rem 0;
+  }
+  /* Scrollable comments */
+  .comments-container {
+    max-height: 300px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  /* Contact info style */
+  .contact-info {
+    margin-top: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .contact-info h6 {
+    margin: 0;
+    font-weight: bold;
+  }
+  .contact-info p {
+    margin: 0;
+  }
+</style>
+<div class="container mb-3" style="margin-top:380px;">
+  <!-- Back button float -->
+  <a href="<?= url_to("TestViewsController::viewBarter") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
+  <div class="card text-start" style="margin-top: 10px;">
+    <div class="image-container mx-auto d-block">
+      <img src="<?= base_url() . 'WALTAR.png'?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
+    </div>
+    <div class="card-header">
+      <div class="profile-container">
+        <div>
+          <img src="<?= base_url() . 'WALTAR.png'?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+          <a class="profile-name">Rhondel Divinasflores</a>
+          <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small>
         </div>
+      </div>
+      <div class="product-title">
+        <h5>School Uniform</h5>
+      </div>
+      <div class="description">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sagittis, nisi vitae sollicitudin lobortis.</p>
+      </div>
+      <div class="contact-info">
+        <h6>Contact Information</h6>
+        <p>Email: rhondel@example.com</p>
+        <p>Phone: (123) 456-7890</p>
       </div>
     </div>
   </div>
 
-  <!-- Custom JavaScript to fix carousel behavior -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var carousel = document.querySelector('.carousel');
-      var carouselInstance = new bootstrap.Carousel(carousel, {
-        interval: false // Disable automatic cycling
-      });
-    });
-  </script>
-
-  <!-- Include Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-  <?= $this->endSection() ?>
+  <!-- Comments Section -->
+  <div class="card mt-3">
+    <div class="card-header">
+      <h5>Comments</h5>
+    </div>
+    <div class="card-body comments-container">
+      <!-- Individual comment -->
+      <div class="media mb-3">
+        <img src="<?= base_url() . 'WALTAR.png'?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
+        <div class="media-body">
+          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
+          <p>Great post! I really enjoyed reading it.</p>
+        </div>
+      </div>
+      <hr class="comment-divider">
+      <!-- Add more comments here -->
+      <div class="media mb-3">
+        <img src="<?= base_url() . 'WALTAR.png'?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
+        <div class="media-body">
+          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
+          <p>Great post! I really enjoyed reading it.</p>
+        </div>
+      </div>
+      <hr class="comment-divider">
+      <div class="media mb-3">
+        <img src="<?= base_url() . 'WALTAR.png'?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
+        <div class="media-body">
+          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
+          <p>Great post! I really enjoyed reading it.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Comment input field -->
+    <div class="card-footer">
+      <form>
+        <div class="form-group">
+          <textarea class="form-control" id="comment" rows="2" placeholder="Write a comment..."></textarea>
+        </div>
+        <button type="submit" class="btn" style="background-color:#7433FA; color: white;">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<?= $this->endSection() ?>

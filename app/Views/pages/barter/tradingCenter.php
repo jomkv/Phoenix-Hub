@@ -93,7 +93,7 @@
   </style>
 
 <div class="container mb-3" style="margin-top: 100px;">
-    <a type="button" class="btn btn-primary btn-lg" href="" style="border-radius:10px; background-color:#7532FA;">
+    <a type="button" class="btn btn-primary btn-lg" href="<?= url_to("TestViewsController::viewCreateBarter")?>" style="border-radius:10px; background-color:#7532FA;">
       <i class="bi bi-plus-circle-fill"></i> Add Post
     </a>
     
@@ -102,11 +102,11 @@
         <div class="profile-container">
           <div>
             <img src="<?= base_url() . 'WALTAR.png'?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
-            <a class="profile-name">Rhondel Divinasflores</a>
+            <a href="<?= url_to("TestViewsController::viewStudentBarter")?>" class="profile-name">Rhondel Divinasflores</a>
             <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
           </div>
         </div>
-        <div class="description">
+        <div class="product-title">
           <h5>
             School Uniform that kill all the students and make them high.
           </h5>
@@ -118,7 +118,7 @@
       <div class="card-footer text-body-secondary">
         <div class="icon-btn rounded-pill"><i class="bi bi-star"></i></div>
         <div class="icon-btn rounded-pill"><i class="bi bi-chat-square"></i></div>
-        <a href="#" class="btn btn-primary rounded-pill" style=" background-color:#7532FA;">View More</a>
+        <a href="<?= url_to("TestViewsController::viewBarterPost")?>" class="btn btn-primary rounded-pill" style=" background-color:#7532FA;">View More</a>
       </div>
     </div>
   </div>
