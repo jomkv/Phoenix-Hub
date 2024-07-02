@@ -232,15 +232,6 @@
     "locale": {
       "firstDayOfWeek": 1 // set start day of week to Monday
     },
-    allowInput: true,
-    altInput: true,
-    onOpen: function(selectedDates, dateStr, instance) {
-      $("#pickup_date").prop('readonly', true);
-    },
-    onClose: function(selectedDates, dateStr, instance) {
-      $("#pickup_date").prop('readonly', false);
-      $("#pickup_date").blur();
-    }
   });
 
   $("#pickup_date").onkeypress = () => false

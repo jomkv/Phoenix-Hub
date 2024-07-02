@@ -8,13 +8,64 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 
+<style>
+  h1,
+  h4 {
+    color: #333;
+  }
+
+  .bg-white {
+    background-color: #fff !important;
+  }
+
+  .shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+  }
+
+  .form-label {
+    font-weight: bold;
+  }
+
+  .form-control {
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+  }
+
+  .table th,
+  .table td {
+    vertical-align: middle;
+  }
+
+  .terms-conditions {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+  }
+
+  .terms-conditions ul {
+    margin-bottom: 0;
+  }
+
+  .btn-primary {
+    padding: .75rem 1.25rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+  }
+</style>
+
 <div class="container pb-4" style="margin-top: 150px;">
 
   <h1>Phoenix Hub | Checkout</h1>
-  <div class="bg-white shadow-lg p-5 w-100">
+  <div class="shadow-lg p-5 w-100" style="background-color: #faf9f6">
     <h4>Order Details</h4>
     <table class="table table-bordered table-hover rounded w-100">
-      <thead>
+      <thead class="table-dark">
         <tr>
           <th scope="col" class="text-center"><i class="bi bi-image"></i></th>
           <th scope="col" class="text-center">Merchandise</th>
@@ -23,7 +74,7 @@
           <th scope="col" class="text-center">Item Subtotal</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style="background-color: white;">
         <?php $total = 0; ?>
         <?php foreach ($cartItems as $item) : ?>
           <?php
@@ -38,8 +89,8 @@
           $total += $cartItemTotal;
           ?>
           <tr>
-            <td style="height: 50px">
-              <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded-start mb-2" style="object-fit: scale-down; width: 50px;" alt="Product Image">
+            <td class="text-center" style="height: 50px;">
+              <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded mb-2 mx-auto d-block" style="object-fit: scale-down; width: 50px;" alt="Product Image">
             </td>
             <td class="text-center">
               <?= esc($item['product']->product_name) ?>
@@ -71,59 +122,122 @@
     </table>
   </div>
 
-  <?= form_open('/cart/checkout', ['class' => 'mt-5 bg-white shadow-lg rounded p-5 pb-2 mb-4']) ?>
-  <h4>Pickup and Payment Details</h4>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Payment Method</label>
-    <select id="payment_method" name="payment_method" class="form-select">
-      <option value="cod" selected>Pay Cash on Pickup</option>
-      <option value="online" <?= $total < 20 ? "disabled" : "" ?>>Pay Online in Advance</option>
-    </select>
-  </div>
-  <div class="mb-3">
-    <label for="pickup_date" class="form-label">Date</label>
-    <input name="pickup_date" id="pickup_date" class="form-control bg-white" placeholder="YYYY-MM-DD" data-input value="<?= old("pickup_date") ?>" />
-  </div>
-  <div class="mb-5">
-    <label for="pickup_time" class="form-label">Time</label>
-    <input name="pickup_time" class="form-control bg-white" id="pickup_time" placeholder="HH:MM" value="<?= old("pickup_time") ?>">
-  </div>
-  <h4 class="mb-3">Terms and Conditions</h4>
+  <form class="mt-5 shadow-lg rounded p-5 pb-2 mb-4 needs-validation" novalidate method="post" action="<?= base_url() . 'cart/checkout' ?>" style="background-color: #faf9f6;">
+    <h4>Pickup and Payment Details</h4>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Payment Method</label>
+      <select id="payment_method" name="payment_method" class="form-select">
+        <option value="cod" selected>Pay Cash on Pickup</option>
+        <option value="online" <?= $total < 20 ? "disabled" : "" ?>>Pay Online in Advance</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="pickup_date" class="form-label">Pickup Date</label>
+      <input name="pickup_date" autocomplete="off" id="pickup_date" class="form-control bg-white" placeholder="YYYY-MM-DD" data-input value="<?= old("pickup_date") ?>" required />
+      <div class="invalid-feedback">
+        Please select a valid pickup date.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="pickup_time" class="form-label">Pickup Time</label>
+      <select name="pickup_time" class="form-select" id="pickup_time" required>
+        <option selected disabled value="">Choose...</option>
+        <option value="09:00">09:00 AM</option>
+        <option value="10:00">10:00 AM</option>
+        <option value="11:00">11:00 AM</option>
+        <option value="12:00">12:00 PM</option>
+        <option value="13:00">01:00 PM</option>
+        <option value="14:00">02:00 PM</option>
+        <option value="15:00">03:00 PM</option>
+        <option value="16:00">04:00 PM</option>
+        <option value="17:00">05:00 PM</option>
+      </select>
+      <div class="invalid-feedback">
+        Please select a valid pickup time.
+      </div>
+    </div>
+    <h4 class="mb-3">Terms and Conditions</h4>
 
-  <ul class="mb-3" id="cod_payment_terms">
-    <li>Upon submission of your order, you will receive an acknowledgment email. However, please note that this does not guarantee order confirmation. Our team will review your order and confirm its availability and processing. You will be notified via email if your order is confirmed or canceled.</li>
-    <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
-    <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
-  </ul>
-  <ul class="mb-3" id="online_payment_terms">
-    <li>Order will automatically be confirmed upon successful payment processing.</li>
-    <li>If the online payment fails, your order will be automatically cancelled, and you will be notified via email</li>
-    <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
-    <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
-  </ul>
-
-  <div class="mb-3 ml-2 form-check">
-    <input type="checkbox" class="form-check-input pl-2" id="terms_accept">
-    <label class="form-check-label" for="terms_accept">Do you agree?</label>
-  </div>
-  <?php if (session()->has("errors")) : ?>
-    <div class="bg-danger-subtle text-dark border-danger border-start border-4 rounded" style="padding: 10px; padding-left: 15px;">
-      <h4 class="fw-bold">Something went wrong</h4>
+    <div class="terms-conditions mb-3" id="cod_payment_terms">
       <ul>
-        <?php foreach (session("errors") as $error) : ?>
-          <li class="fw-medium"><?= $error ?></li>
-        <?php endforeach; ?>
+        <li>Upon submission of your order, you will receive an acknowledgment email. However, please note that this does not guarantee order confirmation. Our team will review your order and confirm its availability and processing. You will be notified via email if your order is confirmed or canceled.</li>
+        <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
+        <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
       </ul>
     </div>
-  <?php endif; ?>
-  <div class="text-center mt-4">
-    <button type="submit" class="btn btn-primary pt-3 pb-3 pl-4 pr-4 fw-bold">Submit Order</button>
-  </div>
-  <?= form_close(); ?>
+
+    <div class="terms-conditions mb-3" id="online_payment_terms">
+      <ul>
+        <li>Order will automatically be confirmed upon successful payment processing.</li>
+        <li>If the online payment fails, your order will be automatically cancelled, and you will be notified via email</li>
+        <li>Once your order is picked up and paid for, refunds will not be processed. We encourage you to carefully review your order details before confirming it.</li>
+        <li>All orders must be picked up at the designated location: CvSU SIlang Gymnasium. We do not offer alternative pick-up locations at this time.</li>
+      </ul>
+    </div>
+
+    <div class="mb-3 form-check bg-success-subtle p-3 pl-5 rounded">
+      <input type="checkbox" class="form-check-input" id="terms_accept">
+      <label class="form-check-label fw-bold" for="terms_accept">Do you agree?</label>
+    </div>
+
+    <?php if (session()->has("errors")) : ?>
+      <div class="bg-danger-subtle text-dark border-danger border-start border-4 rounded" style="padding: 10px; padding-left: 15px;">
+        <h4 class="fw-bold">Something went wrong</h4>
+        <ul>
+          <?php foreach (session("errors") as $error) : ?>
+            <li class="fw-medium"><?= $error ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    <?php endif; ?>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary" disabled>Submit Order</button>
+    </div>
+  </form>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+
+<script>
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      const forms = document.getElementsByClassName('needs-validation');
+      Array.prototype.filter.call(forms, function(form) {
+        // Add event listener for both submit and change events
+        form.addEventListener('submit', validateForm);
+        form.addEventListener('change', validateInput);
+
+        function validateForm(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          // Remove existing "is-invalid" classes before adding new ones
+          const previouslyInvalid = form.querySelectorAll('.is-invalid');
+          for (let i = 0; i < previouslyInvalid.length; i++) {
+            previouslyInvalid[i].classList.remove('is-invalid');
+          }
+          const invalidGroup = form.querySelectorAll(':invalid');
+          for (let j = 0; j < invalidGroup.length; j++) {
+            invalidGroup[j].classList.add('is-invalid');
+          }
+        }
+
+        function validateInput(event) {
+          const input = event.target;
+          if (input.checkValidity()) {
+            input.classList.remove('is-invalid');
+          } else {
+            input.classList.add('is-invalid');
+          }
+        }
+      });
+    }, false);
+  })();
+</script>
 
 <script>
   $("#pickup_date").flatpickr({
@@ -146,22 +260,21 @@
     minTime: "9:00",
     maxTime: "17:00",
     dateFormat: "H:i"
-  })
-
+  });
   $(document).ready(function() {
-    // Get the checkbox and submit button elements
     const termsCheckbox = $('#terms_accept');
     const submitButton = $('button[type="submit"]');
 
-    // Check the initial state (disable if unchecked)
+    termsCheckbox.prop('checked', false);
+    submitButton.prop('disabled', true);
+
+    termsCheckbox.on('change', function() {
+      submitButton.prop('disabled', !this.checked);
+    });
+
     if (!termsCheckbox.is(':checked')) {
       submitButton.prop('disabled', true);
     }
-
-    // Update button state on checkbox change
-    termsCheckbox.change(function() {
-      submitButton.prop('disabled', !$(this).is(':checked'));
-    });
 
     const onlineTerms = $('#online_payment_terms');
     const codTerms = $('#cod_payment_terms');
@@ -173,6 +286,8 @@
     // Show terms based on selected payment method
     paymentMethodSelect.change(function() {
       const selectedMethod = $(this).val();
+      termsCheckbox.prop('checked', false);
+      submitButton.prop('disabled', true);
 
       if (selectedMethod === 'online') {
         onlineTerms.show();
@@ -181,7 +296,7 @@
         onlineTerms.hide();
         codTerms.show();
       }
-    });
+    })
   });
 </script>
 

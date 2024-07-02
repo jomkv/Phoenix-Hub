@@ -160,6 +160,13 @@ class OrderController extends BaseController
       $data["student_id"] = auth()->id();
       $data["total"] = 0;
 
+      // * Validate data
+      if (!$this->orderModel->validate($data)) {
+        return redirect()->back()
+          ->with('errors', $this->orderModel->errors())
+          ->withInput();
+      }
+
       // * Start transaction
       $this->db->transException(true)->transStart();
 
