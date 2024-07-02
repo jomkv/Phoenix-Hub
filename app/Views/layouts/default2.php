@@ -16,7 +16,7 @@
 </head>
 
 <body style="height: 100vh">
-  <?= $this->include('partials/homeNavbar.php'); ?>
+  <?= $this->include('partials/navbar.php'); ?>
 
   <div class="container">
 
@@ -24,9 +24,9 @@
     <?= $this->renderSection("content") ?>
 
     <style>
-    *{
+      * {
         font-family: 'Poppins', sans-serif;
-        }
+      }
 
       body {
         /* display: flex; */

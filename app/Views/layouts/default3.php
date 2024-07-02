@@ -27,7 +27,7 @@
     ?>
 
     <div class="wrapper h-100 d-flex align-items-center justify-content-center">
-        <?= $this->include('partials/homeNavbar.php'); ?>
+        <?= $this->include('partials/navbar.php'); ?>
 
         <div class="w-100">
             <?= $this->renderSection("content") ?>
@@ -132,10 +132,10 @@
     </script>
 
     <style>
-       
-       *{
-        font-family: 'Poppins', sans-serif;
+        * {
+            font-family: 'Poppins', sans-serif;
         }
+
         body {
             display: flex;
             justify-content: center;
