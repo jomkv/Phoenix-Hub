@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $this->renderSection("title") ?></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="<?= base_url() . 'jquery.js' ?>"></script>
+  <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,10 +21,20 @@
 </head>
 
 <body style="height: 100vh">
+  <?php
+  $error = session()->getFlashdata('error');
+  $message = session()->getFlashdata('message');
+  $info = session()->getFlashdata('info');
+
+  $js_info = json_encode($info ? $info : "");
+  $js_error = json_encode($error ? $error : "");
+  $js_message = json_encode($message ? $message : "");
+  ?>
+
   <?= $this->include('partials/navbar.php'); ?>
 
   <div class="container">
-
+    <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
     <?= $this->renderSection("content") ?>
 
@@ -107,10 +122,96 @@
       }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function generateSuccessToast(message) {
+        const toast = document.createElement('div');
+        toast.classList.add('toast', 'align-items-center', 'text-bg-success', 'border-0');
+        toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+        const container = document.getElementById('custom-toast-container');
+        if (container) {
+          container.appendChild(toast);
+        }
+
+        const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+        toastInstance.show();
+      }
+
+      function generateInfoToast(message) {
+        const toast = document.createElement('div');
+        toast.classList.add('toast', 'align-items-center', 'text-bg-secondary', 'border-0');
+        toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+        const container = document.getElementById('custom-toast-container');
+        if (container) {
+          container.appendChild(toast);
+        }
+
+        const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+        toastInstance.show();
+      }
+
+      function generateErrorToast(message) {
+        const toast = document.createElement('div');
+        toast.classList.add('toast', 'align-items-center', 'text-bg-danger', 'border-0');
+        toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+        const container = document.getElementById('custom-toast-container');
+        if (container) {
+          container.appendChild(toast);
+        }
+
+        const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+        toastInstance.show();
+      }
+
+      function generateErrorToasts(xhr) {
+        const response = JSON.parse(xhr.responseText);
+        if (response.errors && response.errors instanceof Object) {
+          const errorsArr = Object.values(response.errors);
+
+          errorsArr.forEach(
+            error => {
+              generateErrorToast(error);
+            }
+          )
+        } else {
+          generateErrorToast("Error, please try again later.");
+        }
+      }
+
+      const phpError = JSON.parse('<?= $js_error ?>');
+      const phpMessage = JSON.parse('<?= $js_message ?>');
+      const phpInfo = JSON.parse('<?= $js_info ?>');
+
+      if (phpError && phpError !== "") {
+        generateErrorToast(phpError);
+      }
+      if (phpMessage && phpMessage !== "") {
+        generateSuccessToast(phpMessage);
+      }
+      if (phpInfo && phpInfo !== "") {
+        generateInfoToast(phpInfo);
+      }
+    </script>
 </body>
 
 </html>

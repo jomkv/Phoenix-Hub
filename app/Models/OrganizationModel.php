@@ -30,7 +30,7 @@ class OrganizationModel extends Model
 
   protected $validationRules      = [
     'organization_id'      => 'permit_empty',
-    'name'                 => 'required|max_length[255]|is_unique[organizations.name, organization_id, {organization_id}]',
+    'name'                 => 'required|max_length[255]',
     'description'          => 'required|max_length[65530]',
     'full_name'            => 'required|max_length[255]',
     'contact_email'        => 'required|max_length[254]|valid_email',
@@ -42,7 +42,6 @@ class OrganizationModel extends Model
     'name' => [
       'required'    => 'Organization Name must be provided',
       'max_length'  => 'Organization Name too long',
-      'is_unique'   => 'Organization Name already taken',
     ],
     'full_name' => [
       'required'    => 'Organization Full Name must be provided',

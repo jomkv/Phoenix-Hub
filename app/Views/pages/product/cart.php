@@ -11,12 +11,8 @@
         overflow: hidden;
     }
 
-    .container {
-        margin-top: 2rem;
-    }
-
-    .header {
-        padding-top: 5rem;
+    #cart-container {
+        padding-top: 120px;
     }
 
     .shopping-cart {
@@ -169,6 +165,10 @@
     }
 
     @media (max-width: 767px) {
+        #cart-container {
+            padding-top: 70px;
+        }
+
         .header {
             padding: 1rem 0;
             /* Reduce padding for smaller screens */
@@ -214,10 +214,11 @@
     }
 </style>
 
-<div class="container">
-    <div class="header mb-3 d-flex justify-content-between align-items-center">
-        <div class="shopping-cart">
-            <i class="bi bi-cart-fill"></i> Shopping Cart
+<div class="container" id="cart-container">
+    <div class="header row">
+        <div class="col-12 d-flex align-items-center">
+            <img src="<?= base_url() . '/circular-logo-purple(4).png' ?>" class="img-fluid" style="width:50px; height: 50px; margin-right: 5px;">
+            <h1 class="fw-semibold fs-1 m-0">Shopping Cart</h1>
         </div>
     </div>
 
@@ -225,21 +226,26 @@
         <table class="table">
             <thead class="table-dark">
                 <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
+                    <th class="fw-semibold">Product</th>
+                    <th class="fw-semibold">Price</th>
+                    <th class="fw-semibold">Quantity</th>
+                    <th class="fw-semibold">Subtotal</th>
+                    <th class="fw-semibold">Update</th>
+                    <th class="fw-semibold">Remove</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $total = 0; ?>
                 <?php foreach ($cartItems as $item) : ?>
                     <?php
+                    $cartItemPrice = 0;
                     $cartItemTotal = 0;
 
                     if ($item['cartItem']->is_variant) {
+                        $cartItemPrice = $item["variant"]->price;
                         $cartItemTotal = $item["variant"]->price * $item['cartItem']->quantity;
                     } else {
+                        $cartItemPrice = $item["product"]->price;
                         $cartItemTotal = $item['product']->price * $item['cartItem']->quantity;
                     }
 
@@ -247,13 +253,13 @@
                     ?>
                     <tr>
                         <td>
-                            <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded-start mb-2" alt="Product Image">
+                            <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid mb-2" alt="Product Image">
                             <div class="card-title"><?= esc($item['product']->product_name) ?></div>
                             <?php if ($item['cartItem']->is_variant && $item['product']->has_variations) : ?>
                                 <div class="card-title">[<?= esc($item["product"]->variation_name) . ": " . esc($item["variant"]->option_name) ?>]</div>
                             <?php endif; ?>
                         </td>
-                        <td>$<?= $cartItemTotal ?></td>
+                        <td>₱<?= $cartItemPrice ?></td>
                         <td>
                             <div class="quantity-container">
                                 <div class="item-quantity">
@@ -262,10 +268,13 @@
                                 <div class="available-stocks">Available Stocks: <?= $item["variant"]->stock ?? $item['product']->stock ?></div>
                             </div>
                         </td>
+                        <td>₱<?= $cartItemTotal ?></td>
                         <td>
-                            <button class="btn btn-update btn-sm">Update</button>
+                            <button class="btn btn-update"><i class="bi bi-pencil-fill"></i></button>
+                        </td>
+                        <td>
                             <?= form_open('/cart/remove/' . $item['cartItem']->cart_item_id) ?>
-                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
                             <?= form_close() ?>
                         </td>
                     </tr>
@@ -281,7 +290,7 @@
             <p>Total Price: $<span id="total-price"><?= $total ?></span></p>
             <p>Total Items: <span id="total-items"><?= count($cartItems) ?></span></p>
         </div>
-        <a href="<?= url_to("CartController::viewCheckoutCart") ?>" type="button" class="btn btn-checkout">Check Out</a>
+        <a href="<?= url_to("CartController::viewCheckoutCart") ?>" type="button" class="btn btn-primary btn-lg fw-bold">Check Out</a>
     </div>
 </div>
 

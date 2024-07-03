@@ -187,7 +187,7 @@ class CartController extends BaseController
       $isSuccess = $this->cartItemModel->save($newCartItem);
 
       if ($isSuccess) {
-        return redirect()->to("/cart")->with("message", "Item added to cart");
+        return redirect()->back()->with("message", "Item added to cart");
       } else {
         return redirect()->back()->with("error", "Unable to add to cart");
       }

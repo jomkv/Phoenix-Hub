@@ -58,7 +58,7 @@ class PaymentController extends BaseController
     $sessionId = session()->get('session_id');
 
     if (!$this->isPaymentSuccess($sessionId)) {
-      return redirect()->back("/")->with("error", "Error, payment didn't go through.");
+      return redirect()->to("/")->with("error", "Error, payment didn't go through.");
     }
 
     $order = $this->orderModel->where("payment_reference", $sessionId)->first();
