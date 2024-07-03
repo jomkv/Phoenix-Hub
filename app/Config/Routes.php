@@ -50,10 +50,11 @@ $routes->get('/checkout/variant/(:num)', 'OrderController::viewBuyVariant/$1', [
 
 // * Cart
 $routes->post('/cart/add', 'CartController::addToCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+$routes->post('/cart/edit/(:num)', 'CartController::editCartItem/$1', ['filter' => 'isLoggedIn']);
+$routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filter' => 'isLoggedIn']);
+
 $routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
 $routes->post('/cart/checkout', 'CartController::checkoutCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
-
-$routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filter' => 'isLoggedIn']);
 
 // * Orders and Payments
 $routes->post('/payment/webhook', 'PaymentController::webhook');

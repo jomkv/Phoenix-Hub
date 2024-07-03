@@ -260,18 +260,20 @@
                             <?php endif; ?>
                         </td>
                         <td>₱<?= $cartItemPrice ?></td>
+                        <?= form_open('/cart/edit/' . $item['cartItem']->cart_item_id) ?>
                         <td>
                             <div class="quantity-container">
                                 <div class="item-quantity">
-                                    <input type="number" class="form-control" value="<?= $item['cartItem']->quantity ?>" max="<?= $item['product']->stock ?>">
+                                    <input type="number" class="form-control" name="quantity" value="<?= $item['cartItem']->quantity ?>" max="<?= $item['product']->stock ?>">
                                 </div>
                                 <div class="available-stocks">Available Stocks: <?= $item["variant"]->stock ?? $item['product']->stock ?></div>
                             </div>
                         </td>
                         <td>₱<?= $cartItemTotal ?></td>
                         <td>
-                            <button class="btn btn-update"><i class="bi bi-pencil-fill"></i></button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-pencil-fill"></i></button>
                         </td>
+                        <?= form_close() ?>
                         <td>
                             <?= form_open('/cart/remove/' . $item['cartItem']->cart_item_id) ?>
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>

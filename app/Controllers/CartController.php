@@ -199,6 +199,50 @@ class CartController extends BaseController
   }
 
   /**
+   * @desc edit a cart item's quantity
+   * @route POST /cart/edit/:cartItemId
+   * @access private
+   */
+  public function editCartItem($cartItemId)
+  {
+    try {
+      $cartItem = $this->getCartItemOrError($cartItemId);
+      $data = $this->request->getPost();
+      $quantity = (int) $data["quantity"];
+
+      // * Check if quantity exceeds stock
+      if ($cartItem->is_variant && $cartItem->variant_id) {
+        $variant = $this->getVariantOrError($cartItem->variant_id);
+
+        if ($quantity > $variant->stock) {
+          return redirect()->back()->with("error", "Unable to update cart item, not enough stock.");
+        }
+      } else if (!$cartItem->is_variant && $cartItem->product_id) {
+        $product = $this->getProductOrError($cartItem->product_id);
+
+        if ($quantity > $product->stock) {
+          return redirect()->back()->with("error", "Unable to update cart item, not enough stock.");
+        }
+      }
+
+      // * Update cart item quantity
+      if ($quantity <= 0) {
+        // * Delete if quantity less than 0
+        $this->cartItemModel->delete($cartItem->cart_item_id);
+      } else {
+        $cartItem->quantity = $quantity;
+        $this->cartItemModel->save($cartItem);
+      }
+
+      return redirect()->to("/cart")->with("message", "Cart item updated.");
+    } catch (\LogicException $e) {
+      return redirect()->to("/")->with('error', $e->getMessage());
+    } catch (\Exception $e) {
+      return redirect()->to("/")->with('error', "Error, please try again later.")->with("devErr", $e->getMessage());
+    }
+  }
+
+  /**
    * @desc removes a product from cart
    * @route POST /cart/remove/:cartItemId
    * @access private
@@ -241,6 +285,15 @@ class CartController extends BaseController
           "product"  => $items[$i]->product_id ? $this->productModel->find($items[$i]->product_id) : null,
           "variant"  => $items[$i]->variant_id ? $this->variantModel->find($items[$i]->variant_id) : null
         ];
+      }
+
+      // * Check if any cart item quantity exceeds the stock
+      foreach ($cartItems as $cartItem) {
+        if ($cartItem["cartItem"]->is_variant && $cartItem["variant"] && $cartItem["cartItem"]->quantity > $cartItem["variant"]->stock) {
+          return redirect()->back()->with("error", "Not enough stocks.");
+        } else if (!$cartItem["cartItem"]->is_variant && $cartItem["product"] && $cartItem["cartItem"]->quantity > $cartItem["product"]->stock) {
+          return redirect()->back()->with("error", "Not enough stocks.");
+        }
       }
 
       return view('pages/product/checkoutForm.php', ["cartItems" => $cartItems]);
