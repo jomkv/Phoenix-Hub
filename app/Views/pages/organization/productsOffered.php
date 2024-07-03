@@ -17,6 +17,8 @@
     transition: transform 0.3s;
     width: 100%;
     max-width: 350px;
+    margin-bottom: 20px; /* Add margin between cards */
+    border-bottom: 10px solid #7532FA; /* Add border at the bottom */
   }
 
   .card-img-prod {
@@ -38,8 +40,7 @@
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 17px;
   }
 
   .card-prod:hover .card-img-overlay {
@@ -95,7 +96,7 @@
 
   .card-prod:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(117, 50, 250, 0.4); /* Adjusted shadow color */
   }
 
   .sold-out-overlay {
@@ -118,7 +119,7 @@
   }
 </style>
 
-<div class="row pt-4 gy-4 mb-5" id="productsSection">
+<div class="row pt-4 gy-5 mb-5" id="productsSection">
   <div class="col-12 d-flex justify-content-end">
     <select class="form-select form-select-lg w-25" aria-label="Large select example">
       <option><a class="dropdown-item" href="#">None</a></option>
@@ -142,7 +143,7 @@
         }
       }
     ?>
-    <div class="col-md-3">
+    <div class="col-md-4"> <!-- Adjust column size here -->
       <?php if (!$isSoldOut): ?>
         <a href="<?= url_to("ProductController::viewProduct", $payload["product"]->product_id) ?>">
       <?php endif; ?>
@@ -155,7 +156,7 @@
               <?= $payload["variants"][0]->price ?>
             <?php endif; ?>
           </div>
-          <div class="product-info">
+          <div class="product-info fw-meduim">
             <?= strtoupper(esc($payload["product"]->product_name)) ?>
           </div>
           <div class="stock-info">
@@ -172,7 +173,7 @@
               ?>
             <?php endif; ?>
           </div>
-          <div class="card-img-overlay">
+          <div class="card-img-overlay fw-normal">
             <p class="card-text"><?= esc($payload["product"]->description) ?></p>
           </div>
           <div class="sold-out-overlay">Sold Out</div>

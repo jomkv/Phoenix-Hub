@@ -363,25 +363,27 @@
       </div>
     </div>
     <div class="col-12 pl-5 pr-5 pt-4 pb-3 shadow-lg mb-5" style="background-color: #FAF9F6;">
-      <div class="row">
-        <div class="col-md-1 col-sm-2 d-flex">
-          <div class="align-self-center">
-            <img class="img-thumbnail mx-auto d-block rounded-circle p-0" src="<?= json_decode($organization->logo)->url ?>" style="width: 100%; height: 100%; object-fit: contain;">
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-8 d-flex">
-          <div class="align-self-center">
-            <h1 class="w-100"><?= esc($organization->name) ?></h1>
-            <h6 class="w-100"><?= esc($organization->full_name) ?></h6>
-          </div>
-        </div>
-        <div class="col-7 col-sm-0" id="organization-description">
-          <div class="align-self-center border-start border-black">
-            <p class="ml-4"><?= esc($organization->description) ?></p>
-          </div>
-        </div>
+  <div class="row align-items-center">
+    <!-- Logo and organization name section -->
+    <div class="col-md-2 col-sm-3 d-flex align-items-center">
+      <img class="img-thumbnail rounded-circle" src="<?= json_decode($organization->logo)->url ?>" style="width: 80px; height: 80px; object-fit: cover;">
+    </div>
+    <div class="col-md-4 col-sm-6 d-flex align-items-center">
+      <div class="ml-2">
+        <h1 style="margin: 0;"><?= esc($organization->name) ?></h1>
+        <h6 style="margin: 0;"><?= esc($organization->full_name) ?></h6>
       </div>
     </div>
+    <!-- Description section -->
+    <div class="col-md-6 col-sm-3 d-flex align-items-center">
+      <div class="border-start pl-3 ml-3">
+        <p><?= esc($organization->description) ?></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   </div>
   <?= form_close(); ?>
 
