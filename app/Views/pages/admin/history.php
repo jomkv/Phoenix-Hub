@@ -4,208 +4,69 @@
 
 <?= $this->section("content") ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin History</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
+<div class="row w-100 mt-4">
+    <div class="col-12 col-md-6 d-flex order-md-1 w-100">
+        <div class="card flex-fill border-0 w-100">
+            <div class="card-body py-4">
+                <!-- CARD HEADER -->
+                <div class="row h-auto justify-content-between w-100">
+                    <div class="col-12 align-items-center">
+                        <h1>Payment History</h1>
+                    </div>
+                </div>
 
-        .content {
-            padding: 20px;
-        }
-
-        .table-container {
-            background: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-            text-transform: uppercase;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .status-paid {
-            color: green;
-            font-weight: bold;
-        }
-
-        .status-not-paid {
-            color: red;
-            font-weight: bold;
-        }
-
-        .button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: center;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-
-        @media (max-width: 768px) {
-            table, th, td {
-                display: block;
-                width: 100%;
-            }
-
-            th {
-                display: none;
-            }
-
-            td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-            }
-
-            td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                text-transform: uppercase;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="content">
-        <h1>Recent Orders</h1>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Order Code</th>
-                        <th>Customer Name</th>
-                        <th>Product</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td data-label="Order Code">NEOG-1680</td>
-                        <td data-label="Customer Name">Tammy R. Polley</td>
-                        <td data-label="Product">Crab Cake</td>
-                        <td data-label="Unit Price">$16</td>
-                        <td data-label="Quantity">1</td>
-                        <td data-label="Total Price">$16</td>
-                        <td data-label="Status" class="status-not-paid">NOT PAID</td>
-                        <td data-label="Date">04/Sep/2022 9:46</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Order Code">AEHM-0653</td>
-                        <td data-label="Customer Name">Ana J. Browne</td>
-                        <td data-label="Product">Turkish Coffee</td>
-                        <td data-label="Unit Price">$8</td>
-                        <td data-label="Quantity">1</td>
-                        <td data-label="Total Price">$8</td>
-                        <td data-label="Status" class="status-paid">PAID</td>
-                        <td data-label="Date">03/Sep/2022 7:11</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Order Code">OTEV-8532</td>
-                        <td data-label="Customer Name">Louise R. Holloman</td>
-                        <td data-label="Product">Spaghetti Bolognese</td>
-                        <td data-label="Unit Price">$15</td>
-                        <td data-label="Quantity">1</td>
-                        <td data-label="Total Price">$15</td>
-                        <td data-label="Status" class="status-paid">PAID</td>
-                        <td data-label="Date">03/Sep/2022 6:58</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Order Code">ZPXD-6951</td>
-                        <td data-label="Customer Name">Julie R. Martin</td>
-                        <td data-label="Product">Pulled Pork</td>
-                        <td data-label="Unit Price">$8</td>
-                        <td data-label="Quantity">2</td>
-                        <td data-label="Total Price">$16</td>
-                        <td data-label="Status" class="status-paid">PAID</td>
-                        <td data-label="Date">03/Sep/2022 6:57</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h1>Recent Payments</h1>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Payment Code</th>
-                        <th>Amount</th>
-                        <th>Order Code</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td data-label="Payment Code">WERGFCXZSR</td>
-                        <td data-label="Amount">$8</td>
-                        <td data-label="Order Code">AEHM-0653</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Payment Code">AZSUNOKEI7</td>
-                        <td data-label="Amount">$15</td>
-                        <td data-label="Order Code">OTEV-8532</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Payment Code">MF2TVJA1PY</td>
-                        <td data-label="Amount">$16</td>
-                        <td data-label="Order Code">ZPXD-6951</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Payment Code">5E31DQ2NCG</td>
-                        <td data-label="Amount">$22</td>
-                        <td data-label="Order Code">COXP-6018</td>
-                    </tr>
-                </tbody>
-            </table>
+                <!-- CARD CONTENT (TABLE) -->
+                <div class="table-responsive p-4 rounded mt-2">
+                    <table class="table table-dark table-hover table-bordered table-striped text-center w-100 mt-2" id="payments-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">ID</th>
+                                <th style="text-align:center;">Name</th>
+                                <th style="text-align:center;">Email</th>
+                                <th style="text-align:center;">Amount</th>
+                                <th style="text-align:center;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-light">
+                            <?php foreach ($payments as $payment) : ?>
+                                <tr>
+                                    <td style="text-align:center;"><?= $payment->payment_id ?></td>
+                                    <td style="text-align:center;"><?= esc($payment->full_name) ?></td>
+                                    <td style="text-align:center;"><?= esc($payment->email) ?></td>
+                                    <td style="text-align:center;">₱<?= $payment->amount ?></td>
+                                    <td style="text-align:center;"><?= $payment->date ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable with additional options
+        $('#payments-table').DataTable({
+            paging: false,
+            info: false,
+            responsive: true,
+            language: {
+                search: "Search payment:",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "No entries available",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
+                }
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

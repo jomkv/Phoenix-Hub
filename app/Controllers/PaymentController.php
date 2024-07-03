@@ -8,6 +8,7 @@ use App\Models\OrderModel;
 use App\Models\OrderItemModel;
 use App\Models\ProductModel;
 use App\Models\VariationModel;
+use App\Models\PaymentModel;
 
 class PaymentController extends BaseController
 {
@@ -15,6 +16,7 @@ class PaymentController extends BaseController
   private OrderItemModel $orderItemModel;
   private ProductModel $productModel;
   private VariationModel $variantModel;
+  private PaymentModel $paymentModel;
   private $studentModel;
   private $db;
 
@@ -24,6 +26,7 @@ class PaymentController extends BaseController
     $this->orderItemModel = new OrderItemModel();
     $this->productModel = new ProductModel();
     $this->variantModel = new VariationModel();
+    $this->paymentModel = new PaymentModel();
     $this->studentModel = auth()->getProvider();
     $this->db = \Config\Database::connect();
   }
@@ -57,15 +60,27 @@ class PaymentController extends BaseController
   {
     $sessionId = session()->get('session_id');
 
-    if (!$this->isPaymentSuccess($sessionId)) {
-      return redirect()->to("/")->with("error", "Error, payment didn't go through.");
-    }
+    $payment = $this->getPaymentOrFalse($sessionId);
 
     $order = $this->orderModel->where("payment_reference", $sessionId)->first();
 
     if (!$order) {
       return redirect()->to("/")->with("error", "Error, order not found.");
     }
+
+    if (!$order->status === "confirmed") {
+      return redirect()->to("/");
+    }
+
+    if ($payment === false) {
+      $order->status = "cancelled";
+      $this->orderModel->save($order);
+
+      $this->orderCancelEmail($order->student_id, $order->order_id);
+
+      return redirect()->to("/")->with("error", "Error, payment didn't go through.");
+    }
+
 
     // * If all goes well, process order (update stocks, status etc)
     try {
@@ -141,7 +156,7 @@ class PaymentController extends BaseController
     }
   }
 
-  private function isPaymentSuccess($sessionId)
+  private function getPaymentOrFalse($sessionId)
   {
     try {
       if ($sessionId) {
@@ -160,11 +175,17 @@ class PaymentController extends BaseController
         curl_close($curl);
         $res = json_decode($rawRes);
 
-        // * If payment detected
-        if (isset($res->data->attributes->paid_at)) {
-          return true;
-        }
+        if (isset($res->data->attributes->payment_intent->id)) {
+          $payment = $this->getPaymentDetail($res->data->attributes->payment_intent->id);
 
+          if ($payment) {
+            return $payment;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
         return false;
       } else {
         return false;
@@ -172,6 +193,57 @@ class PaymentController extends BaseController
     } catch (\Exception $e) {
       return false;
     }
+  }
+
+  private function getPaymentDetail($pi)
+  {
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+      CURLOPT_URL => "https://api.paymongo.com/v1/payment_intents/" . $pi,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_HTTPHEADER => [
+        "accept: application/json",
+        'Authorization: Basic ' . base64_encode(getenv('paymongo.secret'))
+      ],
+    ]);
+
+    $rawRes = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if (!$err) {
+      $res = json_decode($rawRes, false);
+
+      if (isset($res->data->attributes->status) && $res->data->attributes->status === "succeeded") {
+        if (isset($res->data->attributes->payments[0]->attributes->status) && $res->data->attributes->payments[0]->attributes->status === "paid") {
+          if (
+            isset($res->data->attributes->payments[0]->attributes->amount) &&
+            isset($res->data->attributes->payments[0]->attributes->billing) &&
+            isset($res->data->attributes->payments[0]->attributes->billing->email) &&
+            isset($res->data->attributes->payments[0]->attributes->billing->name)
+          ) {
+            $payload = [
+              "amount" => $res->data->attributes->payments[0]->attributes->amount / 100,
+              "email"  => $res->data->attributes->payments[0]->attributes->billing->email,
+              "full_name"   => $res->data->attributes->payments[0]->attributes->billing->name
+            ];
+
+            $this->paymentModel->insert($payload);
+
+            return $payload;
+          }
+        }
+      }
+    }
+
+    return null;
   }
 
   private function getProductOrError($productId)

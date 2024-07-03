@@ -194,7 +194,7 @@ class OrderController extends BaseController
       $this->orderModel->save($order);
 
       if ($data["payment_method"] === "online") {
-        $res = $this->getCheckoutSessionOrError($newOrderItem);
+        $res = $this->getCheckoutSessionOrError($newOrderItem, auth()->user());
 
         $this->orderModel->update($orderId, [
           "payment_reference" => $res["id"]
@@ -269,7 +269,7 @@ class OrderController extends BaseController
       $this->orderModel->save($order);
 
       if ($data["payment_method"] === "online") {
-        $res = $this->getCheckoutSessionOrError($newOrderItem);
+        $res = $this->getCheckoutSessionOrError($newOrderItem, auth()->user());
 
         $this->orderModel->update($orderId, [
           "payment_reference" => $res["id"]
@@ -470,7 +470,7 @@ class OrderController extends BaseController
     return $variant;
   }
 
-  private function getCheckoutSessionOrError($orderItem)
+  private function getCheckoutSessionOrError($orderItem, $student)
   {
     $lineItems = [];
 
@@ -502,10 +502,13 @@ class OrderController extends BaseController
       array_push($lineItems, $lineItem);
     }
 
-
     $data = [
       'data' => [
         'attributes' => [
+          'billing' => [
+            'name'  => $student->full_name,
+            'email' => $student->email
+          ],
           'line_items' => $lineItems,
           'payment_method_types' => [
             'card',

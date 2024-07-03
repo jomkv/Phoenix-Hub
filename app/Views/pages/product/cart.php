@@ -264,7 +264,7 @@
                         <td>
                             <div class="quantity-container">
                                 <div class="item-quantity">
-                                    <input type="number" class="form-control" name="quantity" value="<?= $item['cartItem']->quantity ?>" max="<?= $item['product']->stock ?>">
+                                    <input type="number" class="form-control" name="quantity" value="<?= $item['cartItem']->quantity ?>" max="<?= $item['cartItem']->is_variant === "1" ? $item['variant']->stock : $item['product']->stock ?>">
                                 </div>
                                 <div class="available-stocks">Available Stocks: <?= $item["variant"]->stock ?? $item['product']->stock ?></div>
                             </div>

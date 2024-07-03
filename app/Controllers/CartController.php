@@ -392,7 +392,7 @@ class CartController extends BaseController
       $this->cartItemModel->where("student_id", $order->student_id)->delete();
 
       if ($data["payment_method"] === "online") {
-        $res = $this->getCheckoutSessionOrError($cartItems);
+        $res = $this->getCheckoutSessionOrError($cartItems, auth()->user());
 
         $this->orderModel->update($orderId, [
           "payment_reference" => $res["id"]
@@ -474,7 +474,7 @@ class CartController extends BaseController
     return $order;
   }
 
-  private function getCheckoutSessionOrError($cartItems)
+  private function getCheckoutSessionOrError($cartItems, $student)
   {
     $lineItems = [];
 
@@ -508,6 +508,10 @@ class CartController extends BaseController
     $data = [
       'data' => [
         'attributes' => [
+          'billing' => [
+            'name'  => $student->full_name,
+            'email' => $student->email
+          ],
           'line_items' => $lineItems,
           'payment_method_types' => [
             'card',

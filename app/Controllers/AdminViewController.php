@@ -6,6 +6,7 @@ use App\Models\OrganizationModel;
 use App\Models\OrderModel;
 use App\Models\ProductModel;
 use App\Models\BarterModel;
+use App\Models\PaymentModel;
 use CodeIgniter\Shield\Entities\User;
 
 class AdminViewController extends BaseController
@@ -180,13 +181,17 @@ class AdminViewController extends BaseController
   }
 
   /**
-   * @desc Admin history menu
+   * @desc Admin payment history menu
    * @route GET /admin/history
    * @access private
    */
   public function viewHistory(): string
   {
-    return view('pages/admin/history');
+    $model = new PaymentModel();
+
+    $payments = $model->find();
+
+    return view('pages/admin/history', ["payments" => $payments]);
   }
 
   /**
