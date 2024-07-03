@@ -188,8 +188,8 @@
   <div class="card mb-3" style="margin-top:100px; border-radius:10px; max-height:500px;">
     <div class="row g-0">
       <div class="col-md-12">
-        <div class="card-body position-relative" style="background-image:url('<?= base_url() . "CVSU_LOGO.png"?>'); background-repeat: no-repeat; background-attachment: local; background-position:50% 50%;">
-          <img src="<?= base_url() . "WALTAR.png"?>" class="rounded-circle student-profile" alt="..." style="width:200px; height:200px; border: 5px solid #7532FA; position: relative;">
+        <div class="card-body position-relative" style="background-image:url('<?= base_url() . "barter-bg.jpeg"?>'); background-repeat: no-repeat; background-attachment: local; background-position:50% 50%;">
+          <img src="<?= base_url() . "student (3).png"?>" class="rounded-circle student-profile" alt="..." style="width:200px; height:200px; border: 5px solid #7432FB; position: relative;">
         </div>
       </div>
       <div class="col-md-12">
@@ -210,7 +210,7 @@
   <div class="card-header">
     <div class="profile-container">
       <div>
-        <img src="<?= base_url() . 'WALTAR.png'?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+        <img src="<?= base_url() . 'student (3).png'?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
         <span class="profile-name">Rhondel Divinasflores</span>
         <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
       </div>
@@ -229,29 +229,6 @@
     <div class="icon-btn rounded-pill"><i class="bi bi-chat-square"></i></div>
     <a href="#" class="btn btn-primary rounded-pill" style="background-color:#7532FA;">View More</a>
   </div>
-</div>
-<div class="card text-start" style="margin-top: 10px;">
-  <div class="card-header">
-    <div class="profile-container">
-      <div>
-        <img src="<?= base_url() . 'WALTAR.png'?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
-        <span class="profile-name">Rhondel Divinasflores</span>
-        <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
-      </div>
-    </div>
-    <div class="description">
-      <h5>
-        School Uniform that kill all the students and make them high.
-      </h5>
-    </div>
-  </div>
-  <div class="image-container mx-auto d-block">
-    <img src="<?= base_url() . 'WALTAR.png'?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
-  </div>
-  <div class="card-footer card-footer-2 text-body-secondary">
-    <div class="icon-btn rounded-pill"><i class="bi bi-star"></i></div>
-    <div class="icon-btn rounded-pill"><i class="bi bi-chat-square"></i></div>
-    <a href="#" class="btn btn-primary rounded-pill" style="background-color:#7532FA;">View More</a>
-  </div>
+ </div>
 </div>
 <?= $this->endSection() ?>
