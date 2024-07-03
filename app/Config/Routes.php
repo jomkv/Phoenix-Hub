@@ -113,6 +113,7 @@ $routes->delete('/admin/organization/(:num)', 'OrganizationController::deleteOrg
 // * Admin Products
 
 $routes->get('/admin/product/all', 'ProductController::getAllProducts');
+$routes->post('/admin/variants/(:num)', 'ProductController::getVariants/$1');
 //$routes->get('/admin/product/(:num)', 'ProductController::getProduct/$1');
 
 $routes->get('/admin/product/new', 'ProductController::viewCreateProduct');

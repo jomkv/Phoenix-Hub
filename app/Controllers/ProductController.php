@@ -134,25 +134,26 @@ class ProductController extends BaseController
   }
 
   /**
-   * @desc Get product info
-   * @route GET /admin/product/:productId
+   * @desc Get product variants info
+   * @route POST /admin/variants/:productId
    * @access private
    */
-  public function getProduct($productId)
+  public function getVariants($productId)
   {
     try {
-      $productModel = new ProductModel();
+      $product = $this->getProductOrError($productId);
+      $variants = $this->variantModel->where("product_id", $productId)->findAll();
 
-      $product = $productModel->find($productId);
+      $payload = [
+        "product" => $product,
+        "variants" => $variants
+      ];
 
-      if (!$product) {
-        return $this->response->setStatusCode(400)->setJSON(['message' => 'Unable to get product']);
-      }
-
-      return $this->response->setStatusCode(200)->setJSON($product);
+      return $this->response->setStatusCode(200)->setJSON($payload);
     } catch (\Exception $e) {
-      log_message('error', 'Error finding product: ' . $e->getMessage());
       return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
+    } catch (\LogicException $e) {
+      return $this->response->setStatusCode(400)->setJSON(['message' => 'Product not found']);
     }
   }
 
