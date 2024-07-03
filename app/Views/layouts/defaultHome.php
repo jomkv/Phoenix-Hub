@@ -22,8 +22,17 @@
     <?= $this->renderSection("content") ?>
   </div>
 
-  <div class="w-100 bg-primary text-center" style="height: 150px;">
-    <h1>products</h1>
+  <!-- Our Vendible Section -->
+  <div class="our-vendible">
+    <video autoplay muted loop>
+      <source src="<?= base_url() . '4K Space Starfield Background.mp4' ?>" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="content">
+    <img class="logo" src="<?= base_url() . 'circular-logo -combo6(11).png' ?>" style="height: 8rem; alt="Phoenix Hub Logo">
+      <div class="divider-product"> PHOENIX HUB FOR ONE, MERCH FOR ALL.</div>
+      <p>Discover the best merch with unbeatable quality and affordable price, made by our favorite Student Organizations.</p>
+    </div>
   </div>
 
   <div class="container w-100 min-vh-100">
@@ -143,6 +152,68 @@
   --yellow: #fbbd32;
   --navgray: #2A3144;
 }
+ /* Divider product styles */
+.divider-product {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-size: 3rem;
+  font-style: italic;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.divider-product:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+  color: var(--accent);
+}
+
+/* Paragraph styles */
+p {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+p:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+  color: var(--accent);
+}
+
+  .our-vendible {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 0.7rem;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .our-vendible video {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+    }
+
+    .our-vendible::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      z-index: -1;
+    }
     body {
       /* display: flex; */
       /* justify-content: center;
