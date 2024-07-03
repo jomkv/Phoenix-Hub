@@ -16,11 +16,11 @@
                 <?= form_open_multipart('/barter/new', ['class' => 'custom_form_container p-4 shadow-lg']) ?>
                 <div class="mb-3">
                     <label for="title">Post Title</label>
-                    <input class="form-control" type="text" id="title" name="title">
+                    <input class="form-control" type="text" id="title" name="title" value="<?= old("title") ?>">
                 </div>
                 <div class="mb-3">
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description"></textarea>
+                    <textarea class="form-control" id="description" name="description"><?= old("description") ?></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="barter_category">Category</label>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="price">Price (PHP)</label>
-                    <input class="form-control" type="number" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="e.g., 1000.00">
+                    <input class="form-control" type="number" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="1000.00" value="<?= old("price") ?>">
                 </div>
                 <div class="mb-3">
                     <label for="file">Upload File</label>

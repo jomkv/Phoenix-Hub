@@ -8,11 +8,14 @@ class BarterModel extends Model
 {
   protected $table = 'barter_posts';
   protected $primaryKey = 'barter_id';
-  protected $allowedFields = ['student_id', 'title', 'description', 'barter_category', 'price', 'images'];
+
+  protected $returnType = \App\Entities\Barter::class;
+
+  protected $allowedFields = ['student_id', 'title', 'description', 'status', 'barter_category', 'price', 'images'];
 
   protected $validationRules = [
     'student_id'        => 'required',
-    'title'             => 'required|max_length[8]',
+    'title'             => 'required|max_length[255]',
     'description'       => 'required|max_length[255]',
     'barter_category'   => 'required',
     'price'             => 'required|numeric|greater_than[0]',

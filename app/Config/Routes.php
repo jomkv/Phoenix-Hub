@@ -133,4 +133,9 @@ $routes->post('/admin/order/confirm/(:num)', 'OrderController::confirmOrder/$1')
 $routes->post('/admin/order/receive/(:num)', 'OrderController::receiveOrder/$1');
 $routes->post('/admin/order/cancel/(:num)', 'OrderController::cancelOrder/$1');
 
+// * Admin Barter
+
+$routes->post('/admin/barter/(:num)', 'BarterController::getBarterDetails/$1');
+$routes->post('/admin/barter/approve/(:num)', 'BarterController::approvePost/$1');
+
 service('auth')->routes($routes);

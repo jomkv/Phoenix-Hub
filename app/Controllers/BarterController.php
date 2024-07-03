@@ -22,7 +22,25 @@ class BarterController extends BaseController
      */
     public function viewBarterHome()
     {
-        return view('pages/barter/tradingCenter.php');
+        try {
+            $posts = $this->model->where("status", "approved")->findAll();
+
+            $payload = [];
+            foreach ($posts as $post) {
+                $student = $this->getStudentOrError($post->student_id);
+
+                array_push($payload, [
+                    "post"      => $post,
+                    "student"   => $student
+                ]);
+            }
+
+            return view('pages/barter/tradingCenter.php', ["payload" => $payload]);
+        } catch (\Exception $e) {
+            return redirect()->to("/")->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        } catch (\LogicException $e) {
+            return redirect()->to("/")->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        }
     }
 
     /**
@@ -33,6 +51,30 @@ class BarterController extends BaseController
     public function viewCreateBarter()
     {
         return view('pages/barter/createBarterForm.php');
+    }
+
+    /**
+     * @desc get barter post details
+     * @route POST /admin/barter/:postId
+     * @access private
+     */
+    public function getBarterDetails($postId)
+    {
+        try {
+            $post = $this->getPostOrError($postId);
+            $student = $this->getStudentOrError($post->student_id);
+
+            $payload = [
+                "post"      => $post,
+                "student"   => $student
+            ];
+
+            return $this->response->setStatusCode(200)->setJSON($payload);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON(['message' => 'Error occurred']);
+        } catch (\LogicException $e) {
+            return $this->response->setStatusCode(400)->setJSON(['message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -101,5 +143,52 @@ class BarterController extends BaseController
         } catch (\Exception $e) {
             return redirect()->to('/barter')->with('error', 'Error, please try again later')->with('stack', $e);
         }
+    }
+
+    /**
+     * @desc approve a barter post
+     * @route POST /admin/barter/approve/:id
+     * @access private
+     */
+    public function approvePost($postId)
+    {
+        try {
+            $post = $this->getPostOrError($postId);
+
+            $post->status = "approved";
+            if ($this->model->save($post)) {
+                return redirect()->back()->with('message', 'Post successfuly approved.');
+            } else {
+                return redirect()->back()->with('error', 'Something went wrong.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        } catch (\LogicException $e) {
+            return redirect()->back()->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        }
+    }
+
+    public function getPostOrError($postId)
+    {
+        $post = $this->model->find($postId);
+
+        if ($post === null) {
+            throw new \LogicException("Post not found.");
+        }
+
+        return $post;
+    }
+
+    public function getStudentOrError($studentId)
+    {
+        $model = auth()->getProvider();
+
+        $student = $model->find($studentId);
+
+        if ($student === null) {
+            throw new \LogicException("Student not found.");
+        }
+
+        return $student;
     }
 }

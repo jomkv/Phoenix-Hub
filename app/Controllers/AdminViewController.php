@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\OrganizationModel;
 use App\Models\OrderModel;
 use App\Models\ProductModel;
+use App\Models\BarterModel;
 use CodeIgniter\Shield\Entities\User;
 
 class AdminViewController extends BaseController
@@ -187,9 +188,37 @@ class AdminViewController extends BaseController
   {
     return view('pages/admin/history');
   }
-  public function viewBarter(): string
+
+  /**
+   * @desc Admin pending barter posts menu
+   * @route GET /admin/barter
+   * @access private
+   */
+  public function viewBarter()
   {
-    return view('pages/admin/barterManage');
+    try {
+      $model = new BarterModel();
+
+      $pendingPosts = $model->where("status", "pending")->findAll();
+
+      // * Populate posts alongside their poster (student)
+      $payload = [];
+      foreach ($pendingPosts as $post) {
+        $student = $this->getStudentOrError($post->student_id);
+
+        array_push($payload, [
+          "post"    => $post,
+          "student" => $student
+        ]);
+      }
+
+      return view('pages/admin/barterManage', ["payload" => $payload]);
+    } catch (\Exception $e) {
+      log_message('error', 'Error viewing admin products menu: ' . $e->getMessage());
+      return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.')->with('devErr', $e->getMessage());
+    } catch (\LogicException $e) {
+      return redirect()->to('/admin')->with('error', 'An error occurred. Please try again later.')->with('devErr', $e->getMessage());
+    }
   }
 
   public function getOrganizationOrError($orgId)
@@ -203,5 +232,18 @@ class AdminViewController extends BaseController
     }
 
     return $org;
+  }
+
+  public function getStudentOrError($studentId)
+  {
+    $model = auth()->getProvider();
+
+    $student = $model->find($studentId);
+
+    if ($student === null) {
+      throw new \LogicException("Student not found.");
+    }
+
+    return $student;
   }
 }
