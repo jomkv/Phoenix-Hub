@@ -8,6 +8,7 @@
   body {
     background-color: #1B1B1B;
   }
+
   .card {
     min-height: 300px;
     min-width: 250px;
@@ -15,13 +16,17 @@
     margin-right: 5px;
     overflow: hidden;
   }
-  .card-title, .card-body p {
+
+  .card-title,
+  .card-body p {
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
   }
+
   .card-body p {
-    max-height: none; /* Allow full content to be displayed */
+    max-height: none;
+    /* Allow full content to be displayed */
     line-height: 1.25em;
   }
 </style>
@@ -41,8 +46,8 @@
       <?php endforeach; ?>
     </div>
   </div>
-  <div class="col-12 text-center">
-    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary " type="button" style="width: 250px; height: 50px;">Barter</a>
+  <div class="col-12 text-center" style="height: 80px;">
+    <a href="<?= url_to("BarterController::viewBarterHome") ?>" class="btn fw-semibold fs-5" type="button" style="background-color: #4f089a; color: white; width: 180px;">Barter</a>
   </div>
 </div>
 
