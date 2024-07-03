@@ -111,35 +111,37 @@
   }
 </style>
 
-<div class="container mb-3" style="margin-top: 100px;">
-  <a type="button" class="btn btn-primary btn-lg" href="<?= url_to("BarterController::viewCreateBarter") ?>" style="border-radius:10px; background-color:#7532FA;">
+<div class="container mb-3" style="margin-top: 110px;">
+  <a type="button" class="btn btn-primary btn-lg" href="<?= url_to("BarterController::viewCreateBarter") ?>" style="border-radius:10px; background-color:#7532FA; border-color: #7532FA">
     <i class="bi bi-plus-circle-fill"></i> Add Post
   </a>
 
-  <div class="card text-start" style="margin-top: 10px;">
-    <div class="card-header">
-      <div class="profile-container">
-        <div>
-          <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
-          <a href="<?= url_to("TestViewsController::viewStudentBarter") ?>" class="profile-name">Rhondel Divinasflores</a>
-          <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
+  <?php foreach ($payload as $post) : ?>
+    <div class="card text-start" style="margin-top: 20px;">
+      <div class="card-header">
+        <div class="profile-container">
+          <div>
+            <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+            <a href="<?= url_to("TestViewsController::viewStudentBarter") ?>" class="profile-name">
+              <?= esc($post["student"]->full_name) ?>
+            </a>
+            <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
+          </div>
+        </div>
+        <div class="product-title">
+          <h5>
+            <?= esc($post["post"]->title) ?>
+          </h5>
         </div>
       </div>
-      <div class="product-title">
-        <h5>
-          School Uniform that kill all the students and make them high.
-        </h5>
+      <div class="image-container mx-auto d-block">
+        <img src="<?= json_decode($post["post"]->images)->url ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
+      </div>
+      <div class="card-footer text-body-secondary">
+        <a href="<?= url_to("TestViewsController::viewBarterPost") ?>" class="btn btn-primary rounded" style=" background-color:#7532FA; border-color: #7532FA">View More</a>
       </div>
     </div>
-    <div class="image-container mx-auto d-block">
-      <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
-    </div>
-    <div class="card-footer text-body-secondary">
-      <div class="icon-btn rounded-pill"><i class="bi bi-star"></i></div>
-      <div class="icon-btn rounded-pill"><i class="bi bi-chat-square"></i></div>
-      <a href="<?= url_to("TestViewsController::viewBarterPost") ?>" class="btn btn-primary rounded-pill" style=" background-color:#7532FA;">View More</a>
-    </div>
-  </div>
+  <?php endforeach; ?>
 </div>
 
 <?= $this->endSection() ?>
