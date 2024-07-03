@@ -16,6 +16,9 @@
         <a class="nav-link" href="<?= url_to("AdminViewController::viewConfirmedOrders") ?>">Confirmed</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?= url_to("AdminViewController::viewReceivedOrders") ?>">Received</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link active" href="<?= url_to("AdminViewController::viewCancelledOrders") ?>">Cancelled</a>
       </li>
     </ul>

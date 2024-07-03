@@ -13,10 +13,10 @@
         <a class="nav-link" aria-current="true" href="<?= url_to("AdminViewController::viewPendingOrders") ?>">Pending</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="<?= url_to("AdminViewController::viewConfirmedOrders") ?>">Confirmed</a>
+        <a class="nav-link" href="<?= url_to("AdminViewController::viewConfirmedOrders") ?>">Confirmed</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= url_to("AdminViewController::viewReceivedOrders") ?>">Received</a>
+        <a class="nav-link active" href="<?= url_to("AdminViewController::viewReceivedOrders") ?>">Received</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?= url_to("AdminViewController::viewCancelledOrders") ?>">Cancelled</a>
@@ -37,7 +37,6 @@
               <th scope="col">Order Status</th>
               <th scope="col">Pickup Date</th>
               <th scope="col">Inspect</th>
-              <th scope="col">Received</th>
             </tr>
           </thead>
           <tbody>
@@ -54,10 +53,7 @@
                 </td>
                 <td><?= $order->pickup_date ?></td>
                 <td>
-                  <button class="btn btn-primary view-product-btn" data-order-id="<?= $order->order_id ?>" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye"></i></button>
-                </td>
-                <td>
-                  <button type="button" data-order-id="<?= $order->order_id ?>" class="btn btn-success receive-order-btn" data-bs-toggle="modal" data-bs-target="#receiveModal"><i class="bi bi-check-lg"></i></button>
+                  <button class="btn btn-primary view-product-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-order-id="<?= $order->order_id ?>"><i class="bi bi-eye"></i></button>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -121,34 +117,8 @@
   </div>
 </div>
 
-<!-- Receive Modal -->
-<div class="modal fade" id="receiveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="receiveModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="receive-order-header">Mark Order as Received</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p class="fs-5" style="color: black;">This action cannot be undone, are you sure you want to mark this order as received?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <form action="<?= base_url() ?>admin/order/receive/-1" method="post" accept-charset="utf-8" id="receive-order-form">
-          <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Yes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   $(document).ready(function() {
-    $('.receive-order-btn').click(function() {
-      $('#receive-order-header').text(`Mark Order #${$(this).data('order-id')} as Received`);
-      $('#receive-order-form').attr('action', `<?= base_url() ?>admin/order/receive/${$(this).data('order-id')}`)
-    });
-
     $('.view-product-btn').click(function() {
       let url = '<?= base_url() ?>' + `admin/order/details/${$(this).data('order-id')}`;
 
@@ -224,5 +194,6 @@
         `)
   }
 </script>
+
 
 <?= $this->endSection() ?>

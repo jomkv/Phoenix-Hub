@@ -49,9 +49,9 @@ $routes->get('/checkout/product/(:num)', 'OrderController::viewBuyProduct/$1', [
 $routes->get('/checkout/variant/(:num)', 'OrderController::viewBuyVariant/$1', ['filter' => ['isLoggedIn', 'preventAdmin']]);
 
 // * Cart
-$routes->post('/cart/add', 'CartController::addToCart', ['filter' => 'isLoggedIn']);
-$routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => 'isLoggedIn']);
-$routes->post('/cart/checkout', 'CartController::checkoutCart', ['filter' => 'isLoggedIn']);
+$routes->post('/cart/add', 'CartController::addToCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+$routes->get('/cart/checkout', 'CartController::viewCheckoutCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+$routes->post('/cart/checkout', 'CartController::checkoutCart', ['filter' => ['isLoggedIn', 'preventAdmin']]);
 
 $routes->post('/cart/remove/(:num)', 'CartController::deleteCartItem/$1', ['filter' => 'isLoggedIn']);
 
@@ -78,8 +78,9 @@ $routes->get('/admin/history', 'AdminViewController::viewHistory'); // pending p
 $routes->get('/admin/barter', 'AdminViewController::viewBarter'); // Manage Barter
 
 $routes->get('/admin/pending', 'AdminViewController::viewPendingOrders'); // pending orders
-$routes->get('/admin/confirmed', 'AdminViewController::viewConfirmedOrders'); // pending orders
-$routes->get('/admin/cancelled', 'AdminViewController::viewCancelledOrders'); // pending orders
+$routes->get('/admin/confirmed', 'AdminViewController::viewConfirmedOrders'); // confirmed orders
+$routes->get('/admin/received', 'AdminViewController::viewReceivedOrders'); // pending orders
+$routes->get('/admin/cancelled', 'AdminViewController::viewCancelledOrders'); // cancelled orders
 
 // * Admin User
 $routes->post('/login/admin', 'AdminController::login');

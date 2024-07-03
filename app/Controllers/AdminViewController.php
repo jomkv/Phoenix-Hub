@@ -127,7 +127,7 @@ class AdminViewController extends BaseController
   }
 
   /**
-   * @desc Admin pending orders menu
+   * @desc Admin confirmed orders menu
    * @route GET /admin/confirmed
    * @access private
    */
@@ -141,7 +141,21 @@ class AdminViewController extends BaseController
   }
 
   /**
-   * @desc Admin pending orders menu
+   * @desc Admin received orders menu
+   * @route GET /admin/received
+   * @access private
+   */
+  public function viewReceivedOrders(): string
+  {
+    $model = new OrderModel();
+
+    $confirmedOrders = $model->where("status", "received")->findAll();
+
+    return view('pages/admin/receivedOrders', ["orders" => $confirmedOrders]);
+  }
+
+  /**
+   * @desc Admin cancelled orders menu
    * @route GET /admin/cancelled
    * @access private
    */
