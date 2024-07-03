@@ -31,7 +31,7 @@
     <div class="content">
     <img class="logo" src="<?= base_url() . 'circular-logo -combo6(11).png' ?>" style="height: 8rem; alt="Phoenix Hub Logo">
       <div class="divider-product"> PHOENIX HUB FOR ONE, MERCH FOR ALL.</div>
-      <p>Discover the best merch with unbeatable quality and affordable price, made by our favorite Student Organizations.</p>
+      <div class="divider-product-2">Discover the best merch with unbeatable quality and affordable price, made by our favorite Student Organizations.</div>
     </div>
   </div>
 
@@ -168,12 +168,12 @@
 }
 
 /* Paragraph styles */
-p {
+.divider-product-2 {
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   transition: text-shadow 0.3s ease, color 0.3s ease;
 }
 
-p:hover {
+.divider-product-2:hover {
   text-shadow: 0 0 15px rgba(255, 255, 255, 1);
   color: var(--accent);
 }
