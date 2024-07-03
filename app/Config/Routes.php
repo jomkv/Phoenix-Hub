@@ -65,6 +65,12 @@ $routes->post('/checkout/variant/(:num)', 'OrderController::buyVariant/$1', ['fi
 $routes->get('/payment/success', 'PaymentController::success');
 $routes->get('/payment/fail', 'PaymentController::fail');
 
+// * Barter
+$routes->get('/barter', 'BarterController::viewBarterHome');
+$routes->get('/barter/new', 'BarterController::viewCreateBarter', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+
+$routes->post('/barter/new', 'BarterController::createPost', ['filter' => ['isLoggedIn', 'preventAdmin']]);
+
 /**
  * ADMIN ROUTES
  */
@@ -126,6 +132,5 @@ $routes->post('/orders', 'AdminViewController::viewPending');
 $routes->post('/admin/order/confirm/(:num)', 'OrderController::confirmOrder/$1');
 $routes->post('/admin/order/receive/(:num)', 'OrderController::receiveOrder/$1');
 $routes->post('/admin/order/cancel/(:num)', 'OrderController::cancelOrder/$1');
-$routes->post('/test/barterHome', 'BarterController::submit_barter');
 
 service('auth')->routes($routes);

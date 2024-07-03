@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateBarterTable extends Migration
 {
@@ -30,8 +31,8 @@ class CreateBarterTable extends Migration
                 'null' => false,
             ],
             'barter_category' => [
-                'type'           => 'ENUM',
-                'constraint'     => ['swap', 'For Sale'],
+                'type'           => 'VARCHAR',
+                'constraint'     => 255,
                 'null'           => false,
             ],
             'price' => [
@@ -39,16 +40,20 @@ class CreateBarterTable extends Migration
                 'constraint'     => '10,2',
                 'null'           => true,
             ],
-            'images' => [ // Store stringified JSON of cloudinary images here
+            'images' => [           // Store stringified JSON of cloudinary images here
                 'type'           => 'TEXT',
                 'null'           => true,
             ],
             'status' => [
-                'type'           => 'ENUM',
-                'constraint'     => ['Approved', 'Cancelled', 'Pending'],
+                'type'           => 'VARCHAR',
+                'constraint'     => 255,
                 'null'           => true,
-                'default'        => 'Pending'
+                'default'        => 'pending'
             ],
+            'date' => [
+                'type'          => 'DATE',
+                'default'       => new RawSql('CURRENT_DATE'),
+            ]
         ];
 
         $this->forge->addField($fields);

@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $this->renderSection("title") ?></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="<?= base_url() . 'jquery.js' ?>"></script>
+  <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +21,18 @@
 </head>
 
 <body>
+  <?php
+  $error = session()->getFlashdata('error');
+  $message = session()->getFlashdata('message');
+  $info = session()->getFlashdata('info');
+
+  $js_info = json_encode($info ? $info : "");
+  $js_error = json_encode($error ? $error : "");
+  $js_message = json_encode($message ? $message : "");
+  ?>
+
   <?= $this->include('partials/homeNavbar.php'); ?>
+  <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="custom-toast-container" style="z-index: 1096;"></div>
 
   <div class="container min-vh-100 d-flex align-items-center justify-content-center flex-column">
     <?= $this->renderSection("content") ?>
@@ -29,7 +45,7 @@
       Your browser does not support the video tag.
     </video>
     <div class="content">
-    <img class="logo" src="<?= base_url() . 'circular-logo -combo6(11).png' ?>" style="height: 8rem; alt="Phoenix Hub Logo">
+      <img class="logo" src="<?= base_url() . 'circular-logo -combo6(11).png' ?>" style="height: 8rem;" alt="Phoenix Hub Logo">
       <div class="divider-product"> PHOENIX HUB FOR ONE, MERCH FOR ALL.</div>
       <div class="divider-product-2">Discover the best merch with unbeatable quality and affordable price, made by our favorite Student Organizations.</div>
     </div>
@@ -40,193 +56,190 @@
   </div>
 
   <div class="w-100 bg-primary text-center" style="height: 150px;">
-  <footer class="footer-section">
-        <div class="container">
-            <div class="footer-cta pt-5 pb-5">
-                <div class="row">
-                <div class="col-xl-4 col-md-4 mb-30">
-                        <div class="single-cta">
-                            <i class="fas fa-map-marker-alt" style="color: var(--lightpurple);"></i>
-                            <div class="cta-text">
-                                <h4>Find us</h4>
-                                <span>CvSU - Silang, 4118 Cavite</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-4 mb-30">
-                        <div class="single-cta">
-                            <i class="fas fa-phone" style="color: var(--lightpurple);"></i>
-                            <div class="cta-text">
-                                <h4>Call us</h4>
-                                <span>09999999999</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-4 mb-30">
-                        <div class="single-cta">
-                            <i class="far fa-envelope-open" style="color: var(--lightpurple);"></i>
-                            <div class="cta-text">
-                                <h4>Mail us</h4>
-                                <span>sc.bscs2b@cvsu.edu.ph</span>
-                            </div>
-                        </div>
-                    </div>
+    <footer class="footer-section">
+      <div class="container">
+        <div class="footer-cta pt-5 pb-5">
+          <div class="row">
+            <div class="col-xl-4 col-md-4 mb-30">
+              <div class="single-cta">
+                <i class="fas fa-map-marker-alt" style="color: var(--lightpurple);"></i>
+                <div class="cta-text">
+                  <h4>Find us</h4>
+                  <span>CvSU - Silang, 4118 Cavite</span>
                 </div>
+              </div>
             </div>
-            <div class="footer-content pt-5 pb-5">
-    <div class="row justify-content-center text-center">
-        <div class="col-xl-4 col-lg-4 col-md-5 mb-30">
-            <div class="footer-widget">
+            <div class="col-xl-4 col-md-4 mb-30">
+              <div class="single-cta">
+                <i class="fas fa-phone" style="color: var(--lightpurple);"></i>
+                <div class="cta-text">
+                  <h4>Call us</h4>
+                  <span>09154552035</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-4 mb-30">
+              <div class="single-cta">
+                <i class="far fa-envelope-open" style="color: var(--lightpurple);"></i>
+                <div class="cta-text">
+                  <h4>Mail us</h4>
+                  <span>phoenixhubsilang@gmail.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-content pt-5 pb-5">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-4 col-lg-4 col-md-5 mb-30">
+              <div class="footer-widget">
                 <div class="footer-logo">
-                    <a href="index.html"><img src="circular-logo-lightgray(1).png" class="img-fluid" alt="logo" height="200px" width="200px"></a>
+                  <img src="circular-logo-lightgray(1).png" class="img-fluid" alt="logo" height="200px" width="200px">
                 </div>
                 <div class="footer-text">
-                    <p>Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed do eiusmod tempor incididuntut consec tetur adipisicing elit,Lorem ipsum dolor sit amet.</p>
+                  <p>Your one-stop shop for School Organization Merchanise. We hope you enjoy your stay.</p>
                 </div>
-                <div class="footer-social-icon">
-                    <span>Follow us</span>
-                    <a href="#"><i class="fab fa-facebook-f facebook-bg"></i></a>
-                    <a href="#"><i class="fab fa-twitter twitter-bg"></i></a>
-                    <a href="#"><i class="fab fa-google-plus-g google-bg"></i></a>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
 
-        </div>
-        <div class="copyright-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 text-center text-lg-left">
-                        <div class="copyright-text">
-                            <p>Copyright &copy; 2024, All Right Reserved Phoenix Hub.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-                        <div class="footer-menu">
-                            <ul>
-                            <li class="nav-item">
-            <a href="#">Organizations</a>
-          </li>
-          <li class="nav-item">
-            <a  href="#productsSection">Products</a>
-          </li>
-          <?php if (!auth()->loggedIn()) : ?>
-            <li >
-              <a  href="<?= base_url() . 'login' ?>">Login</a>
-            </li>
-            <li >
-              <a  href="<?= base_url() . 'register' ?>">Signup</a>
-            </li>
-          <?php else : ?>
-            <li >
-              <a  href="<?= base_url() . 'cart' ?>">Cart</a>
-            </li>
-            <li >
-              <a  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
-            </li>
-          <?php endif; ?>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
+      </div>
+      <div class="copyright-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 text-center text-lg-left">
+              <div class="copyright-text">
+                <p>Copyright &copy; 2024, All Right Reserved Phoenix Hub.</p>
+              </div>
             </div>
+            <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
+              <div class="footer-menu">
+                <ul>
+                  <li class="nav-item">
+                    <a href="#">Organizations</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#productsSection">Products</a>
+                  </li>
+                  <?php if (!auth()->loggedIn()) : ?>
+                    <li>
+                      <a href="<?= base_url() . 'login' ?>">Login</a>
+                    </li>
+                    <li>
+                      <a href="<?= base_url() . 'register' ?>">Signup</a>
+                    </li>
+                  <?php else : ?>
+                    <li>
+                      <a href="<?= base_url() . 'cart' ?>">Cart</a>
+                    </li>
+                    <li>
+                      <a data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
+                    </li>
+                  <?php endif; ?>
+                </ul>
+              </div>
+
+            </div>
+          </div>
         </div>
+      </div>
     </footer>
   </div>
 
   <style>
     :root {
-  --text: #0a090b;
-  --background: #f7f6f9;
-  --primary: #7532FA;
-  --secondary: #6366F1;
-  --accent: #ffe400;
-  --lightgray: #edf5f1;
-  --gray: #4d4c52;
-  --black: #000000;
-  --purple: #4f089a;
-  --lightpurple: #6a5ac1;
-  --yellow: #fbbd32;
-  --navgray: #2A3144;
-}
- /* Divider product styles */
-.divider-product {
-  font-family: "Poppins", sans-serif;
-  font-weight: 900;
-  font-size: 3rem;
-  font-style: italic;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  transition: text-shadow 0.3s ease, color 0.3s ease;
-}
+      --text: #0a090b;
+      --background: #f7f6f9;
+      --primary: #7532FA;
+      --secondary: #6366F1;
+      --accent: #ffe400;
+      --lightgray: #edf5f1;
+      --gray: #4d4c52;
+      --black: #000000;
+      --purple: #4f089a;
+      --lightpurple: #6a5ac1;
+      --yellow: #fbbd32;
+      --navgray: #2A3144;
+    }
 
-.divider-product:hover {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-  color: var(--accent);
-}
+    /* Divider product styles */
+    .divider-product {
+      font-family: "Poppins", sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      font-style: italic;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
 
-/* Paragraph styles */
-.divider-product-2 {
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  transition: text-shadow 0.3s ease, color 0.3s ease;
-}
+    .divider-product:hover {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+      color: var(--accent);
+    }
 
-.divider-product-2:hover {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-  color: var(--accent);
-}
+    /* Paragraph styles */
+    .divider-product-2 {
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
 
-/* Our vendible section */
-.our-vendible {
-  position: relative;
-  width: 100%;
-  height: auto; /* Adjusted to be flexible */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 1rem; /* Adjusted for readability on smaller screens */
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  overflow: hidden;
-  padding: 3rem;
-}
+    .divider-product-2:hover {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+      color: var(--accent);
+    }
 
-.our-vendible video {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -1;
-}
+    /* Our vendible section */
+    .our-vendible {
+      position: relative;
+      width: 100%;
+      height: auto;
+      /* Adjusted to be flexible */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1rem;
+      /* Adjusted for readability on smaller screens */
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      padding: 3rem;
+    }
 
-.our-vendible::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 25%;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  z-index: -1;
-}
+    .our-vendible video {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+    }
 
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-  .divider-product {
-    font-size: 2rem;
-  }
+    .our-vendible::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      z-index: -1;
+    }
 
-  .our-vendible {
-    font-size: 0.9rem;
-  }
-}
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+      .divider-product {
+        font-size: 2rem;
+      }
+
+      .our-vendible {
+        font-size: 0.9rem;
+      }
+    }
 
     body {
       /* display: flex; */
@@ -309,172 +322,289 @@
     }
 
     ul {
-    margin: 0;
-    padding: 0;
-}
+      margin: 0;
+      padding: 0;
+    }
 
-.footer-section {
-  background: var(--navgray);
-  position: relative;
-}
-.footer-cta {
-  border-bottom: 1px solid #373636;
-}
-.single-cta i {
-  color: #ff5e14;
-  font-size: 30px;
-  float: left;
-  margin-top: 8px;
-}
-.cta-text {
-  padding-left: 15px;
-  display: inline-block;
-}
-.cta-text h4 {
-  color: var(--lightgray);
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-.cta-text span {
-  color: #757575;
-  font-size: 15px;
-}
-.footer-content {
-  position: relative;
-  z-index: 2;
-}
-.footer-pattern img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 330px;
-  background-size: cover;
-  background-position: 100% 100%;
-}
-.footer-logo {
-  margin-bottom: 30px;
-}
-.footer-logo img {
-    max-width: 200px;
-}
-.footer-text p {
-  margin-bottom: 14px;
-  font-size: 14px;
+    .footer-section {
+      background: var(--navgray);
+      position: relative;
+    }
+
+    .footer-cta {
+      border-bottom: 1px solid #373636;
+    }
+
+    .single-cta i {
+      color: #ff5e14;
+      font-size: 30px;
+      float: left;
+      margin-top: 8px;
+    }
+
+    .cta-text {
+      padding-left: 15px;
+      display: inline-block;
+    }
+
+    .cta-text h4 {
+      color: var(--lightgray);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .cta-text span {
+      color: #757575;
+      font-size: 15px;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-pattern img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 330px;
+      background-size: cover;
+      background-position: 100% 100%;
+    }
+
+    .footer-logo {
+      margin-bottom: 30px;
+    }
+
+    .footer-logo img {
+      max-width: 200px;
+    }
+
+    .footer-text p {
+      margin-bottom: 14px;
+      font-size: 14px;
       color: #7e7e7e;
-  line-height: 28px;
-}
-.footer-social-icon span {
-  color: #fff;
-  display: block;
-  font-size: 20px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 20px;
-}
-.footer-social-icon a {
-  color: #fff;
-  font-size: 16px;
-  margin-right: 15px;
-}
-.footer-social-icon i {
-  height: 40px;
-  width: 40px;
-  text-align: center;
-  line-height: 38px;
-  border-radius: 50%;
-}
-.facebook-bg{
-  background: #3B5998;
-}
-.twitter-bg{
-  background: #55ACEE;
-}
-.google-bg{
-  background: #DD4B39;
-}
-.footer-widget-heading h3 {
-  color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 40px;
-  position: relative;
-}
-.footer-widget-heading h3::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -15px;
-  height: 2px;
-  width: 50px;
-  background: #ff5e14;
-}
-.footer-widget ul li {
-  display: inline-block;
-  float: left;
-  width: 50%;
-  margin-bottom: 12px;
-}
-.footer-widget ul li a:hover{
-  color: #ff5e14;
-}
-.footer-widget ul li a {
-  color: #878787;
-  text-transform: capitalize;
-}
-.subscribe-form {
-  position: relative;
-  overflow: hidden;
-}
-.subscribe-form input {
-  width: 100%;
-  padding: 14px 28px;
-  background: #2E2E2E;
-  border: 1px solid #2E2E2E;
-  color: #fff;
-}
-.subscribe-form button {
-    position: absolute;
-    right: 0;
-    background: #ff5e14;
-    padding: 13px 20px;
-    border: 1px solid #ff5e14;
-    top: 0;
-}
-.subscribe-form button i {
-  color: #fff;
-  font-size: 22px;
-  transform: rotate(-6deg);
-}
-.copyright-area{
-  background: var(--purple);
-  padding: 25px 0;
-}
-.copyright-text p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--lightgray);
-}
-.copyright-text p a{
-  color: #ff5e14;
-}
-.footer-menu li {
-  display: inline-block;
-  margin-left: 20px;
-}
-.footer-menu li:hover a{
-  color: var(--accent);
-}
-.footer-menu li a {
-  font-size: 14px;
-  color: #878787;
-}
+      line-height: 28px;
+    }
+
+    .footer-social-icon span {
+      color: #fff;
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .footer-social-icon a {
+      color: #fff;
+      font-size: 16px;
+      margin-right: 15px;
+    }
+
+    .footer-social-icon i {
+      height: 40px;
+      width: 40px;
+      text-align: center;
+      line-height: 38px;
+      border-radius: 50%;
+    }
+
+    .facebook-bg {
+      background: #3B5998;
+    }
+
+    .twitter-bg {
+      background: #55ACEE;
+    }
+
+    .google-bg {
+      background: #DD4B39;
+    }
+
+    .footer-widget-heading h3 {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .footer-widget-heading h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -15px;
+      height: 2px;
+      width: 50px;
+      background: #ff5e14;
+    }
+
+    .footer-widget ul li {
+      display: inline-block;
+      float: left;
+      width: 50%;
+      margin-bottom: 12px;
+    }
+
+    .footer-widget ul li a:hover {
+      color: #ff5e14;
+    }
+
+    .footer-widget ul li a {
+      color: #878787;
+      text-transform: capitalize;
+    }
+
+    .subscribe-form {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subscribe-form input {
+      width: 100%;
+      padding: 14px 28px;
+      background: #2E2E2E;
+      border: 1px solid #2E2E2E;
+      color: #fff;
+    }
+
+    .subscribe-form button {
+      position: absolute;
+      right: 0;
+      background: #ff5e14;
+      padding: 13px 20px;
+      border: 1px solid #ff5e14;
+      top: 0;
+    }
+
+    .subscribe-form button i {
+      color: #fff;
+      font-size: 22px;
+      transform: rotate(-6deg);
+    }
+
+    .copyright-area {
+      background: var(--purple);
+      padding: 25px 0;
+    }
+
+    .copyright-text p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--lightgray);
+    }
+
+    .copyright-text p a {
+      color: #ff5e14;
+    }
+
+    .footer-menu li {
+      display: inline-block;
+      margin-left: 20px;
+    }
+
+    .footer-menu li:hover a {
+      color: var(--accent);
+    }
+
+    .footer-menu li a {
+      font-size: 14px;
+      color: #878787;
+    }
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function generateSuccessToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-success', 'border-0');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      const container = document.getElementById('custom-toast-container');
+      if (container) {
+        container.appendChild(toast);
+      }
+
+      const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+      toastInstance.show();
+    }
+
+    function generateInfoToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-secondary', 'border-0');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      const container = document.getElementById('custom-toast-container');
+      if (container) {
+        container.appendChild(toast);
+      }
+
+      const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+      toastInstance.show();
+    }
+
+    function generateErrorToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'align-items-center', 'text-bg-danger', 'border-0');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            ${message}
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      const container = document.getElementById('custom-toast-container');
+      if (container) {
+        container.appendChild(toast);
+      }
+
+      const toastInstance = bootstrap.Toast.getOrCreateInstance(toast);
+      toastInstance.show();
+    }
+
+    function generateErrorToasts(xhr) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.errors && response.errors instanceof Object) {
+        const errorsArr = Object.values(response.errors);
+
+        errorsArr.forEach(
+          error => {
+            generateErrorToast(error);
+          }
+        )
+      } else {
+        generateErrorToast("Error, please try again later.");
+      }
+    }
+
+    const phpError = JSON.parse('<?= $js_error ?>');
+    const phpMessage = JSON.parse('<?= $js_message ?>');
+    const phpInfo = JSON.parse('<?= $js_info ?>');
+
+    if (phpError && phpError !== "") {
+      generateErrorToast(phpError);
+    }
+    if (phpMessage && phpMessage !== "") {
+      generateSuccessToast(phpMessage);
+    }
+    if (phpInfo && phpInfo !== "") {
+      generateInfoToast(phpInfo);
+    }
+  </script>
 </body>
 
 </html>
