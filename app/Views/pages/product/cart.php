@@ -253,7 +253,7 @@
                     ?>
                     <tr>
                         <td>
-                            <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid mb-2" alt="Product Image">
+                            <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid mb-2" alt="Product Image" style="height:100px; width:100px; object-fit:cover;">
                             <div class="card-title"><?= esc($item['product']->product_name) ?></div>
                             <?php if ($item['cartItem']->is_variant && $item['product']->has_variations) : ?>
                                 <div class="card-title">[<?= esc($item["product"]->variation_name) . ": " . esc($item["variant"]->option_name) ?>]</div>
@@ -289,7 +289,7 @@
 <div class="card-checkout">
     <div class="container">
         <div>
-            <p>Total Price: $<span id="total-price"><?= $total ?></span></p>
+            <p>Total Price: ₱<span id="total-price"><?= $total ?></span></p>
             <p>Total Items: <span id="total-items"><?= count($cartItems) ?></span></p>
         </div>
         <a href="<?= url_to("CartController::viewCheckoutCart") ?>" type="button" class="btn btn-primary btn-lg fw-bold">Check Out</a>

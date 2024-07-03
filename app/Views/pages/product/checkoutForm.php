@@ -90,7 +90,7 @@
           ?>
           <tr>
             <td class="text-center" style="height: 50px;">
-              <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded mb-2 mx-auto d-block" style="object-fit: scale-down; width: 50px;" alt="Product Image">
+              <img src="<?= json_decode($item['product']->images)[0]->url ?>" class="img-fluid rounded mb-2 mx-auto d-block" style="object-fit: cover; width: 50px; height:50px;" alt="Product Image">
             </td>
             <td class="text-center">
               <?= esc($item['product']->product_name) ?>
