@@ -161,9 +161,9 @@
         </ul>
       </div>
 
-      <div class="mb-3 form-check bg-success-subtle p-3 pl-5 rounded">
-        <input type="checkbox" class="form-check-input" id="terms_accept">
-        <label class="form-check-label fw-bold" for="terms_accept">Do you agree?</label>
+      <div class="mb-3 form-check bg-success-subtle pl-5 p-3 rounded">
+        <input type="checkbox" class="form-check-input" id="terms_accept" style="margin-left: 0px; margin-right: 5px;">
+        <label class="form-check-label fw-bold pl-4" for="terms_accept">Do you agree?</label>
       </div>
 
       <?php if (session()->has("errors")) : ?>
@@ -229,7 +229,7 @@
 <script>
   $("#pickup_date").flatpickr({
     dateFormat: "Y-m-d",
-    minDate: "today",
+    minDate: new Date().fp_incr(3), // 3 days from now
     maxDate: new Date().fp_incr(30), // 30 days from now
     "disable": [
       function(date) {

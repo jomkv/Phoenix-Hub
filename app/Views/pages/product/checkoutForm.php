@@ -122,7 +122,7 @@
     </table>
   </div>
 
-  <form class="mt-5 shadow-lg rounded p-5 pb-2 mb-4 needs-validation" novalidate method="post" action="<?= base_url() . 'cart/checkout' ?>" style="background-color: #faf9f6;">
+  <form class="mt-5 shadow-lg rounded p-5 pb-4 mb-4 needs-validation" novalidate method="post" action="<?= base_url() . 'cart/checkout' ?>" style="background-color: #faf9f6;">
     <h4>Pickup and Payment Details</h4>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Payment Method</label>
@@ -175,9 +175,9 @@
       </ul>
     </div>
 
-    <div class="mb-3 form-check bg-success-subtle p-3 pl-5 rounded">
-      <input type="checkbox" class="form-check-input" id="terms_accept">
-      <label class="form-check-label fw-bold" for="terms_accept">Do you agree?</label>
+    <div class="mb-3 form-check bg-success-subtle pl-5 p-3 rounded">
+      <input type="checkbox" class="form-check-input" id="terms_accept" style="margin-left: 0px; margin-right: 5px;">
+      <label class="form-check-label fw-bold pl-4" for="terms_accept">Do you agree?</label>
     </div>
 
     <?php if (session()->has("errors")) : ?>
@@ -197,7 +197,6 @@
   </form>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
 
 <script>
@@ -242,7 +241,7 @@
 <script>
   $("#pickup_date").flatpickr({
     dateFormat: "Y-m-d",
-    minDate: "today",
+    minDate: new Date().fp_incr(3), // 3 days from now
     maxDate: new Date().fp_incr(30), // 30 days from now
     "disable": [
       function(date) {
