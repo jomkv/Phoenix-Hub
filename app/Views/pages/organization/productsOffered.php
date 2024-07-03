@@ -8,23 +8,20 @@
 
   .card-prod {
     height: 300px;
-    /* Set a fixed height for all cards */
     position: relative;
     overflow: hidden;
     opacity: 0;
-    /* Start hidden */
     transform: translateY(100px);
-    /* Start slightly below */
     transition: opacity 0.5s ease, transform 0.5s ease;
-    /* Smooth transition */
     border-style: none;
     transition: transform 0.3s;
+    width: 100%;
+    max-width: 350px;
   }
 
   .card-img-prod {
     height: 100%;
     object-fit: cover;
-    /* Ensure the image covers the entire card */
   }
 
   .card-img-overlay {
@@ -34,7 +31,6 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    /* Dark overlay */
     color: white;
     display: flex;
     flex-direction: column;
@@ -42,6 +38,8 @@
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    font-size: 15px;
+    font-weight: bold;
   }
 
   .card-prod:hover .card-img-overlay {
@@ -50,32 +48,35 @@
 
   .card-prod.show {
     opacity: 1;
-    /* Show card */
     transform: translateY(0);
-    /* Slide up */
   }
 
-  .badge {
-    position: absolute;
-    top: 10px;
-    right: 0;
-    /* Position the badge in the upper right corner */
-    font-size: 1rem;
+  .product-price, .product-info, .stock-info {
+    white-space: normal;
+    word-wrap: break-word;
+    padding: 5px;
     z-index: 10;
-    /* Ensure the badge is on top of other elements */
+    max-width: 200px;
+  }
+
+  .product-price {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 100%;
+    max-width: 120px;
+    background-color: #7532FA;
+    font-size: 20px;
   }
 
   .product-info {
     position: absolute;
     bottom: 10px;
     left: 1px;
-    /* Position the product name and stock info in the bottom left corner */
-    font-size: 1rem;
+    font-size: 20px;
     z-index: 10;
-    /* Ensure the text is on top of other elements */
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
-    /* Add a background to improve readability */
     padding: 5px;
     border-radius: 5px;
   }
@@ -84,13 +85,10 @@
     position: absolute;
     bottom: 10px;
     right: 1px;
-    /* Position the stock info in the bottom right corner */
     font-size: 1rem;
     z-index: 10;
-    /* Ensure the text is on top of other elements */
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
-    /* Add a background to improve readability */
     padding: 5px;
     border-radius: 5px;
   }
@@ -99,8 +97,28 @@
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
+
+  .sold-out-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 20px;
+    z-index: 20;
+    display: none;
+    pointer-events: none;
+  }
+
+  .card-prod.sold-out .sold-out-overlay {
+    display: block;
+  }
 </style>
-<div class="row pt-4 gy-5" id="productsSection">
+
+<div class="row pt-4 gy-4 mb-5" id="productsSection">
   <div class="col-12 d-flex justify-content-end">
     <select class="form-select form-select-lg w-25" aria-label="Large select example">
       <option><a class="dropdown-item" href="#">None</a></option>
@@ -110,32 +128,59 @@
     </select>
   </div>
   <?php foreach ($productPayload as $payload) : ?>
-    <a href="<?= url_to("ProductController::viewProduct", $payload["product"]->product_id) ?>" class="col-md-3">
-      <div class="card text-bg-dark card-prod">
-        <img src="<?= json_decode($payload["product"]->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
-        <div class="badge text-bg-primary">₱
-          <?php if ($payload["product"]->has_variations === "0") : ?>
-            <?= $payload["product"]->price ?>
-          <?php else : ?>
-            <?= $payload["variants"][0]->price ?>
-          <?php endif; ?>
+    <?php 
+      $isSoldOut = false;
+      if ($payload["product"]->has_variations === "0") {
+        $isSoldOut = $payload["product"]->stock <= 0;
+      } else {
+        $isSoldOut = true;
+        foreach ($payload["variants"] as $variant) {
+          if ($variant->stock > 0) {
+            $isSoldOut = false;
+            break;
+          }
+        }
+      }
+    ?>
+    <div class="col-md-3">
+      <?php if (!$isSoldOut): ?>
+        <a href="<?= url_to("ProductController::viewProduct", $payload["product"]->product_id) ?>">
+      <?php endif; ?>
+        <div class="card text-bg-dark card-prod <?= $isSoldOut ? 'sold-out' : '' ?>">
+          <img src="<?= json_decode($payload["product"]->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
+          <div class="badge product-price">₱
+            <?php if ($payload["product"]->has_variations === "0") : ?>
+              <?= $payload["product"]->price ?>
+            <?php else : ?>
+              <?= $payload["variants"][0]->price ?>
+            <?php endif; ?>
+          </div>
+          <div class="product-info">
+            <?= strtoupper(esc($payload["product"]->product_name)) ?>
+          </div>
+          <div class="stock-info">
+            Stocks:
+            <?php if ($payload["product"]->has_variations === "0") : ?>
+              <?= $payload["product"]->stock ?>
+            <?php else : ?>
+              <?php 
+                $totalStock = 0;
+                foreach ($payload["variants"] as $variant) {
+                  $totalStock += $variant->stock;
+                }
+                echo $totalStock;
+              ?>
+            <?php endif; ?>
+          </div>
+          <div class="card-img-overlay">
+            <p class="card-text"><?= esc($payload["product"]->description) ?></p>
+          </div>
+          <div class="sold-out-overlay">Sold Out</div>
         </div>
-        <div class="product-info">
-          <?= esc($payload["product"]->product_name) ?>
-        </div>
-        <div class="stock-info">
-          Stock:
-          <?php if ($payload["product"]->has_variations === "0") : ?>
-            <?= $payload["product"]->stock ?>
-          <?php else : ?>
-            <?= $payload["variants"][0]->stock ?>
-          <?php endif; ?>
-        </div>
-        <div class="card-img-overlay">
-          <p class="card-text"><?= esc($payload["product"]->description) ?></p>
-        </div>
-      </div>
-    </a>
+      <?php if (!$isSoldOut): ?>
+        </a>
+      <?php endif; ?>
+    </div>
   <?php endforeach ?>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -143,7 +188,7 @@
       cards.forEach((card, index) => {
         setTimeout(() => {
           card.classList.add('show');
-        }, index * 200); // Stagger the animation for each card
+        }, index * 200);
       });
     });
   </script>

@@ -42,7 +42,7 @@
     </div>
   </div>
   <div class="col-12 text-center">
-    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn btn-primary " type="button" style="width: 250px; height: 50px;">Barter</a>
+    <a href="<?= url_to("TestViewsController::viewBarter") ?>" class=" btn" type="button" style="width: 250px; height: 50px; background-color:#7532FA; color:white;" >Barter</a>
   </div>
 </div>
 
