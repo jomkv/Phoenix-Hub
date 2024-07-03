@@ -120,7 +120,7 @@
     <div class="card-header">
       <div class="profile-container">
         <div>
-          <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+          <img src="<?= base_url() . 'student (3).png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
           <a href="<?= url_to("TestViewsController::viewStudentBarter") ?>" class="profile-name">Rhondel Divinasflores</a>
           <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
         </div>
