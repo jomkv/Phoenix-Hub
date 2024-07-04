@@ -105,7 +105,7 @@
     <a class="navbar-brand fs-5 fw-bold" href="<?= url_to("/") ?>">
       <img class="logo" src="<?= base_url() . 'typo-logo-lightgray.png' ?>" alt="Phoenix Hub Logo">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -129,13 +129,14 @@
             <a class="nav-link fs-5" href="<?= base_url() . 'cart' ?>">Cart</a>
           </li>
           <li class="nav-item">
-            <button class="nav-link fs-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</button>
+            <a class="nav-link fs-5" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</a>
           </li>
         <?php endif; ?>
       </ul>
     </div>
   </div>
 </nav>
+
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
