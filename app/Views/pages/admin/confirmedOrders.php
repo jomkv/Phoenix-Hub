@@ -27,36 +27,36 @@
     <!-- Placeholder for Line Graph -->
     <div id="line-graph-placeholder w-100 h-100">
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped w-100 mt-2" id="confirmed-table">
           <thead class="table-dark">
             <tr>
-              <th scope="col">Order ID</th>
-              <th scope="col">Total</th>
-              <th scope="col">Payment Mode</th>
-              <th scope="col">Payment Status</th>
-              <th scope="col">Order Status</th>
-              <th scope="col">Pickup Date</th>
-              <th scope="col">Inspect</th>
-              <th scope="col">Received</th>
+              <th scope="col" style="text-align:center;">Order ID</th>
+              <th scope="col" style="text-align:center;">Total</th>
+              <th scope="col" style="text-align:center;">Payment Mode</th>
+              <th scope="col" style="text-align:center;">Payment Status</th>
+              <th scope="col" style="text-align:center;">Order Status</th>
+              <th scope="col" style="text-align:center;">Pickup Date</th>
+              <th scope="col" style="text-align:center;">Inspect</th>
+              <th scope="col" style="text-align:center;">Received</th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($orders as $order) : ?>
               <tr>
-                <th scope="row"><?= $order->order_id ?></th>
-                <td>₱<?= $order->total ?></td>
-                <td><?= $order->payment_method ?></td>
-                <td><?= $order->is_paid === "0" ? "Not Paid" : "Paid" ?></td>
-                <td>
+                <th scope="row" style="text-align:center;"><?= $order->order_id ?></th>
+                <td style="text-align:center;">₱<?= $order->total ?></td>
+                <td style="text-align:center;"><?= $order->payment_method ?></td>
+                <td style="text-align:center;"><?= $order->is_paid === "0" ? "Not Paid" : "Paid" ?></td>
+                <td style="text-align:center;">
                   <p class="p-2 w-75 rounded-pill text-bg-success">
                     <?= ucfirst($order->status) ?>
                   </p>
                 </td>
-                <td><?= $order->pickup_date ?></td>
-                <td>
+                <td style="text-align:center;"><?= $order->pickup_date ?></td>
+                <td style="text-align:center;">
                   <button class="btn btn-primary view-product-btn" data-order-id="<?= $order->order_id ?>" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-eye"></i></button>
                 </td>
-                <td>
+                <td style="text-align:center;">
                   <button type="button" data-order-id="<?= $order->order_id ?>" class="btn btn-success receive-order-btn" data-bs-toggle="modal" data-bs-target="#receiveModal"><i class="bi bi-check-lg"></i></button>
                 </td>
               </tr>
@@ -142,8 +142,32 @@
   </div>
 </div>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+
 <script>
   $(document).ready(function() {
+    $('#confirmed-table').DataTable({
+      paging: false,
+      info: false,
+      responsive: true,
+      columnDefs: [{
+          orderable: false,
+          targets: [-1, -2]
+        } // Disable ordering on the Actions column
+      ],
+      language: {
+        search: "Search order:",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        infoEmpty: "No entries available",
+        paginate: {
+          previous: "Previous",
+          next: "Next"
+        }
+      }
+    });
+
     $('.receive-order-btn').click(function() {
       $('#receive-order-header').text(`Mark Order #${$(this).data('order-id')} as Received`);
       $('#receive-order-form').attr('action', `<?= base_url() ?>admin/order/receive/${$(this).data('order-id')}`)
