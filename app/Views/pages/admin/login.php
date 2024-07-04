@@ -23,10 +23,6 @@
         <div class="inputBx">
           <input type="submit" value="Login">
         </div>
-        <div class="links">
-          <a href="#">Forgot Password</a>
-          <a href="#">Sign up</a>
-        </div>
       </form>
     </div>
   </div>
@@ -59,6 +55,11 @@
   --yellow: #fbbd32;
   --navgray: #2A3144;
 }
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
 body {
   display: flex;
@@ -155,35 +156,44 @@ body {
   }
 }
 .login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-}
-.login h2 {
-  font-size: 2.5em;
-  font-style: italic;
-  color: var(--lightpurple);
-}
-.login .inputBx {
-  width: 100%;
-}
-.login .inputBx input {
-  width: 100%;
-  padding: 12px 20px;
-  background: transparent;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  font-size: 1.2em;
-  color: #fff;
-  outline: none;
-}
-.login .inputBx input[type="submit"] {
-  background: #7532FA;
-  border: none;
-  cursor: pointer;
-}
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .login h2 {
+        font-size: 2.5em;
+        font-style: italic;
+        color: var(--lightpurple);
+    }
+
+    .login .inputBx {
+        width: 100%;
+        padding: auto;
+    }
+
+    .login .inputBx input {
+        width: 100%;
+        padding: 12px 20px;
+        background: transparent;
+        border: 2px solid var(--black);
+        border-radius: 10px;
+        font-size: 1.2em;
+        color: #fff;
+        outline: none;
+    }
+
+    .login .inputBx input[type="submit"] {
+        background: #7532FA;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+        padding: 1.2rem;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
 
 .form-label, .form-control, #email, #password {
   background: transparent;
