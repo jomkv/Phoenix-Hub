@@ -18,7 +18,7 @@ class BarterModel extends Model
     'title'             => 'required|max_length[255]',
     'description'       => 'required|max_length[255]',
     'barter_category'   => 'required',
-    'price'             => 'required|numeric|greater_than[0]',
+    'price'             => 'numeric|greater_than[0]',
     'image'             => 'required_without[student_id]',
   ];
   protected $validationMessages   = [
@@ -37,7 +37,6 @@ class BarterModel extends Model
       'required'    => 'Category must be provided',
     ],
     'price' => [
-      'required'      => 'Product Price must be provided',
       'greater_than'  => 'Product Price must be greater than 0',
       'numeric'       => 'Product Price must be a valid number'
     ],

@@ -55,9 +55,9 @@ class ProductController extends BaseController
 
       return view('pages/product/productPage', ["product" => $product, "organization" => $organization, "variants" => $variations]);
     } catch (\LogicException $e) {
-      return redirect()->back()->with('error', $e->getMessage());
+      return redirect()->to("/")->with('error', $e->getMessage());
     } catch (\Exception $e) {
-      return redirect()->back()->with('error', 'Error, please try again later');
+      return redirect()->to("/")->with('error', 'Error, please try again later');
     }
   }
 

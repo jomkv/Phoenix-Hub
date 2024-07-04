@@ -44,6 +44,30 @@ class BarterController extends BaseController
     }
 
     /**
+     * @desc Returns a view to barter post
+     * @route GET /barter/:postId
+     * @access public
+     */
+    public function viewBarterPost($postId)
+    {
+        try {
+            $post = $this->getPostOrError($postId);
+            $student = $this->getStudentOrError($post->student_id);
+            $studentEmail = $student->getEmail();
+
+            if ($post->status !== "approved") {
+                return redirect()->back()->with('error', 'Post not found.');
+            }
+
+            return view('pages/barter/barter.php', ["post" => $post, "student" => $student, "studentEmail" => $studentEmail]);
+        } catch (\LogicException $e) {
+            return redirect()->back()->with('error', $e->getMessage())->with('stack', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->to("/")->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        }
+    }
+
+    /**
      * @desc view create barter item form
      * @route GET /barter/new
      * @access private
@@ -87,6 +111,10 @@ class BarterController extends BaseController
         try {
             $data = $this->request->getPost();
             $data["student_id"] = auth()->id();
+
+            if ($data["barter_category"] === "swap") {
+                $data["price"] = 1;
+            }
 
             // * Validate form data, excluding image
             if (!$this->model->validate($data)) {

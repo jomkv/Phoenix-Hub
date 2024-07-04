@@ -12,27 +12,45 @@ class Home extends BaseController
     {
         $model = new ProductModel();
         $variantModel = new VariationModel();
+        $orgModel = new OrganizationModel();
+
+        $filter = $this->request->getVar("filter");
 
         $products = [];
         $productPayload = [];
         $orgs = $this->getOrgs();
 
-        foreach ($orgs as $org) {
-            $currProducts = $model->where('organization_id', $org->organization_id)->findAll();
-            $products = [...$products, ...$currProducts];
+        if ($filter === "none" || !$filter || !is_numeric($filter) || $orgModel->find($filter) === null) {
+            foreach ($orgs as $org) {
+                $currProducts = $model->where('organization_id', $org->organization_id)->findAll();
+                $products = [...$products, ...$currProducts];
+            }
+
+            foreach ($products as $prod) {
+                $variants = $variantModel->where("product_id", $prod->product_id)->findAll();
+                $payload = [
+                    "product" => $prod,
+                    "variants" => $variants
+                ];
+
+                array_push($productPayload, $payload);
+            }
+        } else {
+            $products = $model->where('organization_id', $filter)->findAll();
+
+            foreach ($products as $prod) {
+                $variants = $variantModel->where("product_id", $prod->product_id)->findAll();
+                $payload = [
+                    "product" => $prod,
+                    "variants" => $variants
+                ];
+
+                array_push($productPayload, $payload);
+            }
         }
 
-        foreach ($products as $prod) {
-            $variants = $variantModel->where("product_id", $prod->product_id)->findAll();
-            $payload = [
-                "product" => $prod,
-                "variants" => $variants
-            ];
 
-            array_push($productPayload, $payload);
-        }   
-
-        return view('pages/home', ['organizations' => $orgs, 'productPayload' => $productPayload]);
+        return view('pages/home', ['organizations' => $orgs, 'productPayload' => $productPayload, 'filter' => $filter]);
     }
 
     protected function getOrgs()

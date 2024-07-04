@@ -117,11 +117,11 @@
             <div class="modal-body">
                 <div class="card text-start" style="margin-top: 10px;">
                     <div class="image-container mx-auto d-block">
-                        <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="Barter Post Image" id="preview_image">
+                        <img src="#" class="img-fluid" style="max-width: auto; height: 100%;" alt="Barter Post Image" id="preview_image">
                     </div>
                     <div class="card-header">
                         <div class="profile-container">
-                            <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+                            <img src="<?= base_url() . "student (2).png" ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
                             <p class="profile-name" style="margin-bottom: 0px;" id="preview_fullname">Rhondel Divinasflores</p>
                             <small class="text-muted" style="margin-left: 10px;" id="preview_date"><?= date('F j, Y') ?></small>
                         </div>
@@ -230,7 +230,11 @@
         fullnameEl.text(data.student.full_name);
         dateEl.text(data.post.date);
         titleEl.text(data.post.title);
-        priceEl.text(`₱${data.post.price}`);
+        if (data.post.barter_category === "swap") {
+            priceEl.html('<p class="badge text-bg-warning fs-5">Swap</p>')
+        } else {
+            priceEl.text(`₱${data.post.price}`);
+        }
         descriptionEl.text(data.post.description);
     }
 </script>

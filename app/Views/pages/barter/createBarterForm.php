@@ -25,14 +25,13 @@
                 <div class="mb-3">
                     <label for="barter_category">Category</label>
                     <select class="form-select" id="barter_category" name="barter_category">
-                        <option value="">Select a category</option>
+                        <option value="for_sale" selected>For Sale</option>
                         <option value="swap">Swap</option>
-                        <option value="for_sale">For Sale</option>
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" id="price-container">
                     <label for="price">Price (PHP)</label>
-                    <input class="form-control" type="number" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="1000.00" value="<?= old("price") ?>">
+                    <input class="form-control" type="number" id="price" name="price" pattern="\d+(\.\d{1,2})?" title="Please enter a valid price in PHP (numeric values only)" placeholder="1000.00" value="<?= old("price", null) ?>">
                 </div>
                 <div class="mb-3">
                     <label for="file">Upload File</label>
@@ -94,4 +93,23 @@
         margin-top: 120px;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('barter_category');
+        const priceContainer = document.getElementById('price-container');
+
+        categorySelect.addEventListener('change', function() {
+            if (categorySelect.value === 'swap') {
+                priceContainer.style.display = 'none';
+            } else {
+                priceContainer.style.display = 'block';
+            }
+        });
+
+        // Trigger change event on page load to set initial state
+        categorySelect.dispatchEvent(new Event('change'));
+    });
+</script>
+
 <?= $this->endSection() ?>

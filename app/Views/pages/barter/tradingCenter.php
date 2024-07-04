@@ -121,24 +121,27 @@
       <div class="card-header">
         <div class="profile-container">
           <div>
-            <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+            <img src="<?= base_url() . "student (2).png" ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
             <a href="<?= url_to("TestViewsController::viewStudentBarter") ?>" class="profile-name">
               <?= esc($post["student"]->full_name) ?>
             </a>
-            <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small> <!-- Display current date -->
+            <small class="text-muted" style="margin-left: 10px;"><?= $post["post"]->date ?></small> <!-- Display current date -->
           </div>
         </div>
-        <div class="product-title">
-          <h5>
-            <?= esc($post["post"]->title) ?>
-          </h5>
+        <div class="product-title d-flex align-items-center mb-2">
+          <p class="fw-semibold fs-3" style="margin-bottom: 0px; margin-right: 20px;"><?= esc($post["post"]->title) ?></p>
+          <?php if ($post["post"]->barter_category === "swap") : ?>
+            <p class="badge text-bg-warning fs-5">Swap</p>
+          <?php else : ?>
+            <p style="color: #ee4d42;" class="card-text fs-3" id="preview_price">₱<?= $post["post"]->price ?></p>
+          <?php endif; ?>
         </div>
       </div>
       <div class="image-container mx-auto d-block">
         <img src="<?= json_decode($post["post"]->images)->url ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
       </div>
       <div class="card-footer text-body-secondary">
-        <a href="<?= url_to("TestViewsController::viewBarterPost") ?>" class="btn btn-primary rounded" style=" background-color:#7532FA; border-color: #7532FA">View More</a>
+        <a href="<?= url_to("BarterController::viewBarterPost", $post["post"]->barter_id) ?>" class="btn btn-primary rounded" style=" background-color:#7532FA; border-color: #7532FA">View More</a>
       </div>
     </div>
   <?php endforeach; ?>

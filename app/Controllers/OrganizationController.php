@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Models\OrganizationModel;
 use App\Models\ProductModel;
 use App\Entities\Organization;
+use App\Models\CartItemModel;
+use App\Models\VariationModel;
+
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 class OrganizationController extends BaseController
@@ -12,10 +15,18 @@ class OrganizationController extends BaseController
   protected $helpers = ['form', 'upload'];
 
   private OrganizationModel $model;
+  private CartItemModel $cartItemModel;
+  private ProductModel $productModel;
+  private VariationModel $variationModel;
+  private $db;
 
   public function __construct()
   {
     $this->model = new OrganizationModel();
+    $this->cartItemModel = new CartItemModel();
+    $this->productModel = new ProductModel();
+    $this->variationModel = new VariationModel();
+    $this->db = \Config\Database::connect();
   }
 
   /**
@@ -152,7 +163,21 @@ class OrganizationController extends BaseController
     try {
       $org = $this->getOrganizationOrError($orgId);
 
-      // Delete uploaded org image
+      $products = $this->productModel->where("organization_id", $orgId)->findAll();
+
+      foreach ($products as $product) {
+        if ($product->has_variations) {
+          $variations = $this->variationModel->where("product_id", $product->product_id)->findAll();
+
+          foreach ($variations as $variant) {
+            $this->cartItemModel->where("variant_id", $variant->variation_id)->delete();
+          }
+        }
+
+        $this->cartItemModel->where("product_id", $product->product_id)->delete();
+      }
+
+      // * Delete uploaded org image
       delete_image(json_decode($org->logo)->public_id);
 
       $this->model->delete($org->organization_id);

@@ -383,6 +383,7 @@ class OrderController extends BaseController
 
       // * Update order status
       $order->status = "received";
+      $order->is_paid = true;
       if (!$this->orderModel->save($order)) {
         return redirect()->back()->with("error", "Error, unable to receive order.");
       }

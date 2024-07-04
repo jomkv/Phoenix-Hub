@@ -67,6 +67,7 @@ $routes->get('/payment/fail', 'PaymentController::fail');
 
 // * Barter
 $routes->get('/barter', 'BarterController::viewBarterHome');
+$routes->get('/barter/(:num)', 'BarterController::viewBarterPost/$1');
 $routes->get('/barter/new', 'BarterController::viewCreateBarter', ['filter' => ['isLoggedIn', 'preventAdmin']]);
 
 $routes->post('/barter/new', 'BarterController::createPost', ['filter' => ['isLoggedIn', 'preventAdmin']]);

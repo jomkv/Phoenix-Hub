@@ -33,19 +33,11 @@
                         <div class="d-flex align-items-start">
                             <div class="flex-grow-1">
                                 <h4 class="mb-2">
-                                    $ 78.00
+                                    <?= $studentCount ?>
                                 </h4>
                                 <p class="mb-2">
-                                    Total Earnings
+                                    Total Users
                                 </p>
-                                <div class="mb-0">
-                                    <span class="badge text-success me-2">
-                                        +9.0%
-                                    </span>
-                                    <span class="text-muted">
-                                        Since Last Month
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -57,19 +49,11 @@
                         <div class="d-flex align-items-start">
                             <div class="flex-grow-1">
                                 <h4 class="mb-2">
-                                    150
+                                    <?= $pendingPostCount ?>
                                 </h4>
                                 <p class="mb-2">
-                                    New Users
+                                    Pending Posts
                                 </p>
-                                <div class="mb-0">
-                                    <span class="badge text-primary me-2">
-                                        +15%
-                                    </span>
-                                    <span class="text-muted">
-                                        Since Last Week
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,59 +61,35 @@
             </div>
         </div>
         <div class="row">
-            <!-- Graph on the Left -->
-            <div class="col-12 col-md-6 d-flex order-md-1">
+            <div class="col-12 col-md-4 d-flex">
                 <div class="card flex-fill border-0">
                     <div class="card-body py-4">
-                        <h4 class="mb-2">Graph Title</h4>
-                        <p class="mb-2">Some description or content for the graph.</p>
-                        <!-- Placeholder for Graph -->
-                        <div id="graph-placeholder" style="width: 100%; height: 300px; background-color: #f0f0f0;">
-                            <!-- Graph content goes here -->
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
+                                <h4 class="mb-2">
+                                    <?= $pendingOrderCount ?>
+                                </h4>
+                                <p class="mb-2">
+                                    Pending Orders
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Table on the Right -->
-            <div class="col-12 col-md-6 d-flex order-md-2">
-                <div class="card border-0 flex-fill">
-                    <div class="card-header">
-                        <h5 class="card-title">Basic Table</h5>
-                        <h6 class="card-subtitle text-muted">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus, necessitatibus reprehenderit itaque!
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="col-12 col-md-4 d-flex">
+                <div class="card flex-fill border-0">
+                    <div class="card-body py-4">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
+                                <h4 class="mb-2">
+                                    <?= $deliverCount ?>
+                                </h4>
+                                <p class="mb-2">
+                                    Orders to Deliver
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

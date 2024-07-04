@@ -137,75 +137,37 @@
   }
 </style>
 
-<div class="container mb-3" style="margin-top:380px;">
+<div class="container mb-3" style="margin-top:100px;">
   <!-- Back button float -->
-  <a href="<?= url_to("TestViewsController::viewBarter") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
+  <a href="<?= url_to("BarterController::viewBarterHome") ?>" class="back-button"><i class="bi bi-arrow-left"></i></a>
   <div class="card text-start" style="margin-top: 10px;">
     <div class="image-container mx-auto d-block">
-      <img src="<?= base_url() . 'WALTAR.png' ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
+      <img src="<?= json_decode($post->images)->url ?>" class="img-fluid" style="max-width: auto; height: 100%;" alt="...">
     </div>
     <div class="card-header">
       <div class="profile-container">
         <div>
-          <img src="<?= base_url() . 'WALTAR.png' ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
-          <a class="profile-name">Rhondel Divinasflores</a>
-          <small class="text-muted" style="margin-left: 10px;"><?= date('F j, Y') ?></small>
+          <img src="<?= base_url() . "student (2).png" ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
+          <a class="profile-name"><?= esc($student->full_name) ?>s</a>
+          <small class="text-muted" style="margin-left: 10px;"><?= esc($post->date) ?></small>
         </div>
       </div>
-      <div class="product-title">
-        <h5>School Uniform</h5>
+      <div class="product-title d-flex align-items-center mb-2">
+        <p class="fw-semibold fs-3" style="margin-bottom: 0px; margin-right: 20px;"><?= esc($post->title) ?></p>
+        <?php if ($post->barter_category === "swap") : ?>
+          <p class="badge text-bg-warning fs-5">Swap</p>
+        <?php else : ?>
+          <p style="color: #ee4d42;" class="card-text fs-3" id="preview_price">₱<?= $post->price ?></p>
+        <?php endif; ?>
       </div>
       <div class="description">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sagittis, nisi vitae sollicitudin lobortis.</p>
+        <p><?= esc($post->description) ?></p>
       </div>
       <div class="contact-info">
         <h6>Contact Information</h6>
-        <p>Email: rhondel@example.com</p>
-        <p>Phone: (123) 456-7890</p>
+        <p>Email: <?= esc($studentEmail) ?></p>
+        <p>Phone: <?= esc($student->phone_number) ?></p>
       </div>
-    </div>
-  </div>
-
-  <!-- Comments Section -->
-  <div class="card mt-3">
-    <div class="card-header">
-      <h5>Comments</h5>
-    </div>
-    <div class="card-body comments-container">
-      <!-- Individual comment -->
-      <div class="media mb-3">
-        <img src="<?= base_url() . 'WALTAR.png' ?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
-        <div class="media-body">
-          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
-          <p>Great post! I really enjoyed reading it.</p>
-        </div>
-      </div>
-      <hr class="comment-divider">
-      <!-- Add more comments here -->
-      <div class="media mb-3">
-        <img src="<?= base_url() . 'WALTAR.png' ?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
-        <div class="media-body">
-          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
-          <p>Great post! I really enjoyed reading it.</p>
-        </div>
-      </div>
-      <hr class="comment-divider">
-      <div class="media mb-3">
-        <img src="<?= base_url() . 'WALTAR.png' ?>" class="mr-3 rounded-circle" alt="User Profile Picture" style="width: 40px; height: 40px; object-fit: cover; border: 3px solid #7532FA;">
-        <div class="media-body">
-          <a class="mt-0 fw-bold" style="color: black;">John Doe</a>
-          <p>Great post! I really enjoyed reading it.</p>
-        </div>
-      </div>
-    </div>
-    <!-- Comment input field -->
-    <div class="card-footer">
-      <form>
-        <div class="form-group">
-          <textarea class="form-control" id="comment" rows="2" placeholder="Write a comment..."></textarea>
-        </div>
-        <button type="submit" class="btn" style="background-color:#7433FA; color: white;">Submit</button>
-      </form>
     </div>
   </div>
 </div>
