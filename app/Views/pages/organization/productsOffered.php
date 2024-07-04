@@ -58,6 +58,7 @@
     padding: 5px;
     z-index: 10;
     max-width: 200px;
+    transition: opacity 0.3s ease;
   }
 
   .product-price {
@@ -99,6 +100,12 @@
     box-shadow: 0 10px 20px rgba(117, 50, 250, 0.4); /* Adjusted shadow color */
   }
 
+  .card-prod:hover .product-price,
+  .card-prod:hover .product-info,
+  .card-prod:hover .stock-info {
+    opacity: 0;
+  }
+
   .sold-out-overlay {
     position: absolute;
     top: 50%;
@@ -118,6 +125,8 @@
     display: block;
   }
 </style>
+
+
 
 <div class="row pt-4 gy-5 mb-5" id="productsSection">
   <div class="col-12 d-flex justify-content-end">
