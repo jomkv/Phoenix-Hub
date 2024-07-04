@@ -61,7 +61,7 @@
                     </div>
                 <?php endif ?>
 
-                <div class="d-grid col-12 col-md-8 mx-auto m-3">
+                <div class="inputBx">
                     <button type="submit" class="btn btn-primary btn-block" style="width: 100%;"><?= lang('Auth.login') ?></button>
                 </div>
 
@@ -115,14 +115,14 @@
     }
 
     body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: var(--lightgray);
-        width: 100%;
-        overflow: hidden;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--darkbg);
+  width: 100%;
+  overflow: hidden;
+}
 
     .custom-error-container {
         background-color: #f8d7da;
@@ -146,12 +146,12 @@
         /* Increase gap for more space */
     }
 
-    .form-container,
-    .logo-container {
-        width: 45%;
-        justify-content: center;
-        align-items: center;
-    }
+    .form-container, .logo-container {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
     .ring {
         position: relative;
@@ -252,6 +252,7 @@
 
     .login .inputBx {
         width: 100%;
+        padding: auto;
     }
 
     .login .inputBx input {
@@ -265,10 +266,14 @@
         outline: none;
     }
 
-    .login .inputBx input[type="submit"] {
+    .login .inputBx button[type="submit"] {
         background: #7532FA;
         border: none;
         cursor: pointer;
+        margin-top: 20px;
+        padding: 1.2rem;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
     }
 
     .form-label,
