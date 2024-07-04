@@ -42,7 +42,16 @@ class AdminViewController extends BaseController
    */
   public function viewDashboard(): string
   {
-    return view('pages/admin/dashboard');
+    $studentModel = auth()->getProvider();
+    $orderModel = new OrderModel();
+    $barterModel = new BarterModel();
+
+    $studentCount = count($studentModel->findAll()) - 1; // * -1 to exclude admin
+    $pendingOrdersCount = count($orderModel->where("status", "pending")->findAll());
+    $deliverCount = count($orderModel->where("status", "confirmed")->findAll());
+    $pendingPostsCount = count($barterModel->where("status", "pending")->findAll());
+
+    return view('pages/admin/dashboard', ["studentCount" => $studentCount, "pendingOrderCount" => $pendingOrdersCount, 'deliverCount' => $deliverCount, "pendingPostCount" => $pendingPostsCount]);
   }
 
   /**
@@ -177,7 +186,55 @@ class AdminViewController extends BaseController
    */
   public function viewReports(): string
   {
-    return view('pages/admin/reports');
+    $orderModel = new OrderModel();
+    $orgModel = new OrganizationModel();
+
+    // Get all paid orders and group them by month based on the pickup date
+    $paidOrders = $orderModel
+      ->select('SUM(total) as total, MONTH(pickup_date) as month')
+      ->where('is_paid', '1')
+      ->groupBy('month')
+      ->findAll();
+
+    // Initialize an array to hold the monthly earnings data
+    $monthlyEarnings = array_fill(1, 12, 0); // 12 months initialized to 0
+
+    // Populate the monthly earnings array with data from the database
+    foreach ($paidOrders as $order) {
+      $monthlyEarnings[(int)$order->month] = (float)$order->total;
+    }
+
+    // Fetch order count grouped by organization
+    $ordersByOrg = $this->getOrdersByOrganization();
+
+    $orgLabels = [];
+    $orgData = [];
+    foreach ($ordersByOrg as $order) {
+      $orgLabels[] = $order['organization_name'];
+      $orgData[] = $order['order_count'];
+    }
+
+    return view('pages/admin/reports', [
+      'monthlyEarnings' => $monthlyEarnings, 'orgLabels' => $orgLabels,
+      'orgData' => $orgData
+    ]);
+  }
+
+  public function getOrdersByOrganization()
+  {
+    $db = \Config\Database::connect();
+
+    // Join the necessary tables and group by organization to get the count of orders
+    $query = $db->table('order_items')
+      ->select('organizations.name as organization_name, COUNT(order_items.order_item_id) as order_count')
+      ->join('products', 'products.product_id = order_items.product_id', 'left')
+      ->join('variations', 'variations.variation_id = order_items.variant_id', 'left')
+      ->join('products as variant_products', 'variant_products.product_id = variations.product_id', 'left')
+      ->join('organizations', 'organizations.organization_id = products.organization_id OR organizations.organization_id = variant_products.organization_id', 'left')
+      ->groupBy('organizations.organization_id')
+      ->get();
+
+    return $query->getResultArray();
   }
 
   /**

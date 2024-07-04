@@ -17,8 +17,10 @@
     transition: transform 0.3s;
     width: 100%;
     max-width: 350px;
-    margin-bottom: 20px; /* Add margin between cards */
-    border-bottom: 10px solid #7532FA; /* Add border at the bottom */
+    margin-bottom: 20px;
+    /* Add margin between cards */
+    border-bottom: 10px solid #7532FA;
+    /* Add border at the bottom */
   }
 
   .card-img-prod {
@@ -52,7 +54,9 @@
     transform: translateY(0);
   }
 
-  .product-price, .product-info, .stock-info {
+  .product-price,
+  .product-info,
+  .stock-info {
     white-space: normal;
     word-wrap: break-word;
     padding: 5px;
@@ -96,7 +100,8 @@
 
   .card-prod:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(117, 50, 250, 0.4); /* Adjusted shadow color */
+    box-shadow: 0 10px 20px rgba(117, 50, 250, 0.4);
+    /* Adjusted shadow color */
   }
 
   .sold-out-overlay {
@@ -120,33 +125,36 @@
 </style>
 
 <div class="row pt-4 gy-5 mb-5" id="productsSection">
-  <div class="col-12 d-flex justify-content-end">
-    <select class="form-select form-select-lg w-25" aria-label="Large select example">
-      <option><a class="dropdown-item" href="#">None</a></option>
-      <?php foreach ($organizations as $organization) : ?>
-        <option><a class="dropdown-item" href="#"><?= esc($organization->name) ?></a></option>
-      <?php endforeach; ?>
-    </select>
+  <div class="col-12 d-flex justify-content-end text-end">
+    <div class="input-group mb-3 w-25">
+      <select class="form-select form-select-lg" aria-label="Large select example" id="org-filter">
+        <option value="none">None</option>
+        <?php foreach ($organizations as $organization) : ?>
+          <option class="org-filter-option" value="<?= $organization->organization_id ?>" <?= $filter === $organization->organization_id ? "selected" : "" ?>><?= esc($organization->name) ?></option>
+        <?php endforeach; ?>
+      </select>
+      <button type="button" class="btn fs-6 fw-semibold" style="background-color: #7532fa; color: white;" id="filter-boton">Filter</button>
+    </div>
   </div>
   <?php foreach ($productPayload as $payload) : ?>
-    <?php 
-      $isSoldOut = false;
-      if ($payload["product"]->has_variations === "0") {
-        $isSoldOut = $payload["product"]->stock <= 0;
-      } else {
-        $isSoldOut = true;
-        foreach ($payload["variants"] as $variant) {
-          if ($variant->stock > 0) {
-            $isSoldOut = false;
-            break;
-          }
+    <?php
+    $isSoldOut = false;
+    if ($payload["product"]->has_variations === "0") {
+      $isSoldOut = $payload["product"]->stock <= 0;
+    } else {
+      $isSoldOut = true;
+      foreach ($payload["variants"] as $variant) {
+        if ($variant->stock > 0) {
+          $isSoldOut = false;
+          break;
         }
       }
+    }
     ?>
     <div class="col-md-4"> <!-- Adjust column size here -->
-      <?php if (!$isSoldOut): ?>
+      <?php if (!$isSoldOut) : ?>
         <a href="<?= url_to("ProductController::viewProduct", $payload["product"]->product_id) ?>">
-      <?php endif; ?>
+        <?php endif; ?>
         <div class="card text-bg-dark card-prod <?= $isSoldOut ? 'sold-out' : '' ?>">
           <img src="<?= json_decode($payload["product"]->images)[0]->url ?>" class="card-img card-img-prod" alt="...">
           <div class="badge product-price">₱
@@ -164,12 +172,12 @@
             <?php if ($payload["product"]->has_variations === "0") : ?>
               <?= $payload["product"]->stock ?>
             <?php else : ?>
-              <?php 
-                $totalStock = 0;
-                foreach ($payload["variants"] as $variant) {
-                  $totalStock += $variant->stock;
-                }
-                echo $totalStock;
+              <?php
+              $totalStock = 0;
+              foreach ($payload["variants"] as $variant) {
+                $totalStock += $variant->stock;
+              }
+              echo $totalStock;
               ?>
             <?php endif; ?>
           </div>
@@ -178,12 +186,40 @@
           </div>
           <div class="sold-out-overlay">Sold Out</div>
         </div>
-      <?php if (!$isSoldOut): ?>
+        <?php if (!$isSoldOut) : ?>
         </a>
       <?php endif; ?>
     </div>
   <?php endforeach ?>
+
   <script>
+    function URL_add_parameter(url, param, value) {
+      var hash = {};
+      var parser = document.createElement('a');
+
+      parser.href = url;
+
+      var parameters = parser.search.split(/\?|&/);
+
+      for (var i = 0; i < parameters.length; i++) {
+        if (!parameters[i])
+          continue;
+
+        var ary = parameters[i].split('=');
+        hash[ary[0]] = ary[1];
+      }
+
+      hash[param] = value;
+
+      var list = [];
+      Object.keys(hash).forEach(function(key) {
+        list.push(key + '=' + hash[key]);
+      });
+
+      parser.search = '?' + list.join('&');
+      return parser.href;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const cards = document.querySelectorAll('.card');
       cards.forEach((card, index) => {
@@ -192,5 +228,9 @@
         }, index * 200);
       });
     });
+
+    document.getElementById("filter-boton").addEventListener('click', () => {
+      location.href = URL_add_parameter(location.href, 'filter', document.getElementById('org-filter').value);
+    })
   </script>
 </div>
