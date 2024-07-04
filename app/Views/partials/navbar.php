@@ -105,7 +105,7 @@
         <a class="navbar-brand fs-5 fw-bold" href="<?= url_to("/") ?>">
             <img class="logo" src="<?= base_url() . 'typo-logo-lightgray.png' ?>" alt="Phoenix Hub Logo">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
