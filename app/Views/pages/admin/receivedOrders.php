@@ -128,7 +128,7 @@
       responsive: true,
       columnDefs: [{
           orderable: false,
-          targets: [-1, -2]
+          targets: [-1]
         } // Disable ordering on the Actions column
       ],
       language: {
