@@ -81,6 +81,7 @@
                                 <th scope="col text-start" style="text-align:center;">Date</th>
                                 <th scope="col text-start" style="text-align:center;">View</th>
                                 <th scope="col text-start" style="text-align:center;">Approve</th>
+                                <th scope="col text-start" style="text-align:center;">Reject</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +96,9 @@
                                     </td>
                                     <td class="text-center">
                                         <button class="btn btn-success approve-post-btn" data-post-id="<?= $post["post"]->barter_id ?>" data-bs-toggle="modal" data-bs-target="#confirmModal"><i class="bi bi-check-lg"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" data-order-id="<?= $post["post"]->barter_id ?>" class=" btn btn-danger reject-post-btn" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -164,6 +168,27 @@
     </div>
 </div>
 
+<!-- Reject Post Modal -->
+<div class="modal fade" id="rejectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="rejectOrderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="reject-post-header">Reject Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="fs-5" style="color: black;">This action cannot be undone, are you sure you want to reject this post?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <form action="<?= base_url() ?>admin/barter/reject/-1" method="post" accept-charset="utf-8" id="reject-post-form">
+                    <button type="submit" class="btn btn-danger" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Yes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
@@ -179,7 +204,7 @@
             responsive: true,
             columnDefs: [{
                     orderable: false,
-                    targets: [-1, -2]
+                    targets: [-1, -2, -3]
                 } // Disable ordering on the Actions column
             ],
             language: {
@@ -197,6 +222,11 @@
         $('.approve-post-btn').click(function() {
             $('#approve_post_header').text(`Approve Post #${$(this).data('post-id')}`);
             $('#approve-post-form').attr('action', `<?= base_url() ?>admin/barter/approve/${$(this).data('post-id')}`)
+        });
+
+        $('.reject-post-btn').click(function() {
+            $('#reject-post-header').text(`Reject Post #${$(this).data('order-id')}`);
+            $('#reject-post-form').attr('action', `<?= base_url() ?>admin/barter/reject/${$(this).data('order-id')}`)
         });
 
         $('.view-post-btn').click(function() {

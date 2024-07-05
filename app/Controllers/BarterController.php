@@ -196,6 +196,29 @@ class BarterController extends BaseController
         }
     }
 
+    /**
+     * @desc approve a barter post
+     * @route POST /admin/barter/approve/:id
+     * @access private
+     */
+    public function rejectPost($postId)
+    {
+        try {
+            $post = $this->getPostOrError($postId);
+
+            $post->status = "rejected";
+            if ($this->model->save($post)) {
+                return redirect()->back()->with('message', 'Post successfully rejected.');
+            } else {
+                return redirect()->back()->with('error', 'Something went wrong.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        } catch (\LogicException $e) {
+            return redirect()->back()->with('error', 'Error, please try again later')->with('stack', $e->getMessage());
+        }
+    }
+
     public function getPostOrError($postId)
     {
         $post = $this->model->find($postId);

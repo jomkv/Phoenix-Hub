@@ -122,7 +122,7 @@
         <div class="profile-container">
           <div>
             <img src="<?= base_url() . "student (2).png" ?>" alt="Profile Picture" style="border: 3px solid #7532FA;">
-            <a href="<?= url_to("TestViewsController::viewStudentBarter") ?>" class="profile-name">
+            <a href="#" class="profile-name">
               <?= esc($post["student"]->full_name) ?>
             </a>
             <small class="text-muted" style="margin-left: 10px;"><?= $post["post"]->date ?></small> <!-- Display current date -->

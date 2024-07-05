@@ -139,5 +139,6 @@ $routes->post('/admin/order/cancel/(:num)', 'OrderController::cancelOrder/$1');
 
 $routes->post('/admin/barter/(:num)', 'BarterController::getBarterDetails/$1');
 $routes->post('/admin/barter/approve/(:num)', 'BarterController::approvePost/$1');
+$routes->post('/admin/barter/reject/(:num)', 'BarterController::rejectPost/$1');
 
 service('auth')->routes($routes);
