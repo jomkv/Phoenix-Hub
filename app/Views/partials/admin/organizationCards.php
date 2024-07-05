@@ -1,36 +1,18 @@
 <style>
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .custom-card {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    animation: fadeInUp 0.5s ease;
-    opacity: 0; /* Start invisible */
-  }
-
-  .custom-card:hover {
-    box-shadow: 0 4px 8px rgba(117, 50, 250, 0.6);
-    transform: translateY(-5px);
-  }
-
   .custom-card img {
     box-shadow: 0 4px 8px rgba(117, 50, 250, 0.6);
     transition: box-shadow 0.3s ease;
-    border-radius: 50%; /* Make image circular */
-    width: 250px; /* Ensure width and height are equal */
-    height: 250px; /* Ensure width and height are equal */
+    border-radius: 50%;
+    /* Make image circular */
+    width: 250px;
+    /* Ensure width and height are equal */
+    height: 250px;
+    /* Ensure width and height are equal */
   }
 
   .btn i {
-    margin-right: 5px; /* Add margin to the right of the icon */
+    margin-right: 5px;
+    /* Add margin to the right of the icon */
   }
 </style>
 
@@ -56,12 +38,12 @@
 
 <script>
   // Use JavaScript to trigger the animation after the DOM is fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.custom-card');
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.style.opacity = '1';
-      }, index * 100); // Delay based on index (100ms per card)
-    });
-  });
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   const cards = document.querySelectorAll('.custom-card');
+  //   cards.forEach((card, index) => {
+  //     setTimeout(() => {
+  //       card.style.opacity = '1';
+  //     }, index * 100); // Delay based on index (100ms per card)
+  //   });
+  // });
 </script>
