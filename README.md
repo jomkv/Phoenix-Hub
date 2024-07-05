@@ -15,6 +15,13 @@ Phoenix Hub is a platform where student organizations can sell their Merchandise
 * MySQL
 * Cloudinary
 
+## Members
+* Jom Karlo Verzosa (Lead, Backend)
+* Rhondel Divinas Flores (Frontend, UI/UX)
+* Norman Dominguez (Frontend, UI/UX)
+* Adrian Beltran (Frontend, UI/UX)
+* Miguel Mendoza (Frontend, UI/UX)
+
 ## Student Side Pages
 
 ###### Login 
