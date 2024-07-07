@@ -197,8 +197,8 @@ class BarterController extends BaseController
     }
 
     /**
-     * @desc approve a barter post
-     * @route POST /admin/barter/approve/:id
+     * @desc reject a barter post
+     * @route POST /admin/barter/reject/:id
      * @access private
      */
     public function rejectPost($postId)
