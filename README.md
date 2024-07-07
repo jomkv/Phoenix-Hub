@@ -1,68 +1,68 @@
-# CodeIgniter 4 Application Starter
+# Phoenix Hub
 
-## What is CodeIgniter?
+## What is Phoenix Hub?
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Phoenix Hub is a platform where student organizations can sell their Merchandise to students.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Technologies Used
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+* CodeIgniter4 
+* Shield
+* Paymongo
+* Bootstrap
+* Ajax
+* Jquery
+* MySQL
+* Cloudinary
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## Members
+* [Jom Karlo Verzosa](https://github.com/jomkv "Github") (Frontend, Backend)
+* [Rhondel Divinas Flores](https://github.com/rhondeldi "Github") (Frontend, UI/UX)
+* [Norman Dominguez](https://github.com/gitHubNorms777 "Github") (Frontend, UI/UX)
+* [Adrian Beltran](https://github.com/GitSon101 "Github") (Frontend, UI/UX)
+* [Miguel Mendoza](https://www.facebook.com/jotaronamii "Facebook") (Frontend, UI/UX)
 
-## Installation & updates
+## Student Side Pages
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+###### Login 
+![Login](https://github.com/jomkv/Phoenix-Hub/assets/74283383/4b81201e-b3ae-4fd9-9de5-324c5e3763ad)
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+###### Home
+![Home](https://github.com/jomkv/Phoenix-Hub/assets/74283383/05c312bd-d44c-4432-a6b3-0699b21f9799)
+![Home 2](https://github.com/jomkv/Phoenix-Hub/assets/74283383/b82e7656-280f-4c83-8fe7-5a1e9693f6f2)
+![Home 3](https://github.com/jomkv/Phoenix-Hub/assets/74283383/0e6411b2-6a1d-4ba9-8e7e-67e5737addb9)
 
-## Setup
+##### Product 
+![Product Page 2](https://github.com/jomkv/Phoenix-Hub/assets/74283383/076d2acc-7c65-4405-aead-aee20315c1db)
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+##### Checkout 
+![Checkout Page](https://github.com/jomkv/Phoenix-Hub/assets/74283383/9f376597-820e-4dcc-91d4-0bd1af9d2018)
 
-## Important Change with index.php
+##### Shopping Cart
+![Cart Page](https://github.com/jomkv/Phoenix-Hub/assets/74283383/b7b9f98f-c8df-4149-be2a-02e1361e2537)
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+##### Barter
+![Barter Home](https://github.com/jomkv/Phoenix-Hub/assets/74283383/07fe1ad0-f003-46e3-adf6-318b76f16823)
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Admin Side Pages
 
-**Please** read the user guide for a better explanation of how CI4 works!
+###### Organizations
+![Admin Orgs](https://github.com/jomkv/Phoenix-Hub/assets/74283383/a2272dd4-1b80-4c28-a61a-a5dff91467d4)
 
-## Repository Management
+###### Products
+![Admin Products](https://github.com/jomkv/Phoenix-Hub/assets/74283383/1ed24b67-f62a-4c99-a9cc-4e3e7be7372a)
+![Admin Products 2](https://github.com/jomkv/Phoenix-Hub/assets/74283383/c45af311-6493-4805-811c-f30335377b02)
+![Admin Products Edit](https://github.com/jomkv/Phoenix-Hub/assets/74283383/87c36e84-2442-41f2-a975-6e279a7b169f)
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+###### Orders
+![Admin Manage Orders](https://github.com/jomkv/Phoenix-Hub/assets/74283383/c323dc0b-a631-4333-a694-7148aee37207)
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+###### Barter
+![Manage Barter](https://github.com/jomkv/Phoenix-Hub/assets/74283383/e0fa8d4d-225c-4809-bb26-49a5c27fe1ed)
+![Barter 2](https://github.com/jomkv/Phoenix-Hub/assets/74283383/fe55a230-8c22-4fc1-bba1-5321674097f9)
 
-## Server Requirements
+##### Payment History
+![Admin Payment History](https://github.com/jomkv/Phoenix-Hub/assets/74283383/fea64498-66ef-4fce-b767-5db7bbb1154e)
 
-PHP version 8.1 or higher is required, with the following extensions installed:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
 
-> [!WARNING]
-> The end of life date for PHP 7.4 was November 28, 2022.
-> The end of life date for PHP 8.0 was November 26, 2023.
-> If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> The end of life date for PHP 8.1 will be November 25, 2024.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
