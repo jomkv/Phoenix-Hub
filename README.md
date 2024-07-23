@@ -15,13 +15,6 @@ Phoenix Hub is a platform where student organizations can sell their Merchandise
 * MySQL
 * Cloudinary
 
-## Members
-* [Jom Karlo Verzosa](https://github.com/jomkv "Github") (Frontend, Backend)
-* [Rhondel Divinas Flores](https://github.com/rhondeldi "Github") (Frontend, UI/UX)
-* [Norman Dominguez](https://github.com/gitHubNorms777 "Github") (Frontend, UI/UX)
-* [Adrian Beltran](https://github.com/GitSon101 "Github") (Frontend, UI/UX)
-* [Miguel Mendoza](https://www.facebook.com/jotaronamii "Facebook") (Frontend, UI/UX)
-
 ## Student Side Pages
 
 ###### Login 
